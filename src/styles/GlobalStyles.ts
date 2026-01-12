@@ -2,13 +2,13 @@ import { createGlobalStyle } from 'styled-components';
 
 export const GlobalStyles = createGlobalStyle`
   :root {
-    font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+    font-family: ${({ theme }) => theme.typography.fontFamily.sans};
     line-height: 1.5;
-    font-weight: 400;
+    font-weight: ${({ theme }) => theme.typography.weights.regular};
     
     color-scheme: dark;
-    color: rgba(255, 255, 255, 0.87);
-    background-color: #020617;
+    color: ${({ theme }) => theme.colors.text.primary};
+    background-color: ${({ theme }) => theme.colors.background};
     
     font-synthesis: none;
     text-rendering: optimizeLegibility;
@@ -28,11 +28,18 @@ export const GlobalStyles = createGlobalStyle`
     min-width: 320px;
     min-height: 100vh;
     overflow-x: hidden;
+    background-color: ${({ theme }) => theme.colors.background};
+    color: ${({ theme }) => theme.colors.text.primary};
   }
 
   a {
     text-decoration: none;
     color: inherit;
+    transition: ${({ theme }) => theme.transitions.default};
+  }
+
+  button {
+    font-family: inherit;
   }
 
   html {

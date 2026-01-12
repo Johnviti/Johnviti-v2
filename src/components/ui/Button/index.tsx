@@ -13,61 +13,61 @@ const ButtonContainer = styled(motion.button)<{ $variant: string; $size: string 
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  border-radius: 9999px;
-  font-weight: 500;
-  transition: all 0.2s;
+  gap: ${({ theme }) => theme.spacing.sm};
+  border-radius: ${({ theme }) => theme.borderRadius.full};
+  font-weight: ${({ theme }) => theme.typography.weights.medium};
+  transition: ${({ theme }) => theme.transitions.default};
   cursor: pointer;
   font-family: inherit;
   
-  ${({ $size }) => {
+  ${({ $size, theme }) => {
     switch ($size) {
       case 'sm':
         return css`
-          padding: 0.5rem 1rem;
-          font-size: 0.875rem;
+          padding: ${theme.spacing.sm} ${theme.spacing.md};
+          font-size: ${theme.typography.sizes.sm};
         `;
       case 'lg':
         return css`
-          padding: 1rem 2rem;
-          font-size: 1.125rem;
+          padding: ${theme.spacing.md} ${theme.spacing.xl};
+          font-size: ${theme.typography.sizes.lg};
         `;
       default: // md
         return css`
-          padding: 0.75rem 1.5rem;
-          font-size: 1rem;
+          padding: 0.75rem ${theme.spacing.lg};
+          font-size: ${theme.typography.sizes.base};
         `;
     }
   }}
 
-  ${({ $variant }) => {
+  ${({ $variant, theme }) => {
     switch ($variant) {
       case 'primary':
         return css`
-          background-color: white;
-          color: black;
-          border: 1px solid white;
+          background-color: ${theme.colors.white};
+          color: ${theme.colors.black};
+          border: 1px solid ${theme.colors.white};
           &:hover {
-            background-color: #f3f4f6;
+            background-color: #f3f4f6; // Keep this or add to theme
           }
         `;
       case 'outline':
         return css`
-          background-color: transparent;
-          color: white;
-          border: 1px solid rgba(255, 255, 255, 0.2);
+          background-color: ${theme.colors.transparent};
+          color: ${theme.colors.text.primary};
+          border: 1px solid ${theme.colors.border.highlight};
           &:hover {
-            background-color: rgba(255, 255, 255, 0.1);
+            background-color: ${theme.colors.border.light};
             border-color: rgba(255, 255, 255, 0.4);
           }
         `;
       case 'ghost':
         return css`
-          background-color: transparent;
-          color: #9ca3af;
+          background-color: ${theme.colors.transparent};
+          color: ${theme.colors.text.secondary};
           border: none;
           &:hover {
-            color: white;
+            color: ${theme.colors.text.primary};
           }
         `;
       default:

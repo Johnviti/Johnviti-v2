@@ -1,10 +1,10 @@
 import { ArrowUpRight } from 'lucide-react';
-import { useScrollPosition } from '../../../hooks/useScrollPosition';
-import { Logo } from '../../ui/Logo';
-import { NavItem } from '../../ui/NavItem';
-import { Button } from '../../ui/Button';
+import { useScrollPosition } from '@/hooks/useScrollPosition';
+import { Logo } from '@/components/ui/Logo';
+import { NavItem } from '@/components/ui/NavItem';
+import { Button } from '@/components/ui/Button';
 import { HeaderContainer, Nav, Actions } from './Header.styles';
-import { HeaderProps } from './Header.types';
+import type { HeaderProps } from './Header.types';
 
 export const Header = ({}: HeaderProps) => {
   const scrollPosition = useScrollPosition();

@@ -1,5 +1,6 @@
 import { ArrowUpRight, Atom, Linkedin, Instagram } from 'lucide-react';
-import { Button } from '../../ui/Button';
+import { Button } from '@/components/ui/Button';
+import { useTheme } from 'styled-components';
 import {
   HeroSection,
   BackgroundGradient,
@@ -17,6 +18,8 @@ import {
 } from './Hero.styles';
 
 export const Hero = () => {
+  const theme = useTheme();
+
   return (
     <HeroSection>
       <BackgroundGradient />
@@ -42,7 +45,7 @@ export const Hero = () => {
           Sistemas 
           <ReactBox>
             <Atom size={32} />
-            <span style={{ marginLeft: '8px', fontSize: '1rem', fontWeight: 500 }}>React</span>
+            <span style={{ marginLeft: theme.spacing.sm, fontSize: theme.typography.sizes.base, fontWeight: theme.typography.weights.medium }}>React</span>
           </ReactBox> 
           Ideias em Código
         </TextRow>
@@ -66,7 +69,7 @@ export const Hero = () => {
 
       <SideBar>
         <VerticalText>John Amorim</VerticalText>
-        <span style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)', color: '#94a3b8', fontSize: '0.875rem' }}>Siga-me</span>
+        <span style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)', color: theme.colors.text.secondary, fontSize: theme.typography.sizes.sm }}>Siga-me</span>
         <SocialLinks>
           <SocialLink href="#" target="_blank" whileHover={{ scale: 1.1 }}>
             <Linkedin size={20} />

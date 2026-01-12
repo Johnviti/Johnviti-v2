@@ -8,16 +8,16 @@ interface NavItemProps {
 }
 
 const ItemContainer = styled(motion.a)<{ $active?: boolean }>`
-  color: ${({ $active }) => ($active ? 'white' : '#9ca3af')};
+  color: ${({ $active, theme }) => ($active ? theme.colors.text.primary : theme.colors.text.secondary)};
   text-decoration: none;
-  font-size: 1rem;
-  font-weight: 500;
+  font-size: ${({ theme }) => theme.typography.sizes.base};
+  font-weight: ${({ theme }) => theme.typography.weights.medium};
   cursor: pointer;
   position: relative;
-  transition: color 0.2s;
+  transition: ${({ theme }) => theme.transitions.default};
 
   &:hover {
-    color: white;
+    color: ${({ theme }) => theme.colors.text.primary};
   }
 `;
 

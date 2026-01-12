@@ -4,19 +4,19 @@ const LogoContainer = styled.div`
   display: flex;
   flex-direction: column;
   line-height: 0.9;
-  font-weight: 700;
-  color: white;
+  font-weight: ${({ theme }) => theme.typography.weights.bold};
+  color: ${({ theme }) => theme.colors.text.primary};
   cursor: pointer;
 `;
 
 const JohnText = styled.span`
-  font-family: 'Times New Roman', serif;
-  font-size: 1.25rem;
+  font-family: ${({ theme }) => theme.typography.fontFamily.serif};
+  font-size: ${({ theme }) => theme.typography.sizes.xl};
   letter-spacing: 0.05em;
 `;
 
 const AmorimText = styled.span`
-  font-family: sans-serif;
+  font-family: ${({ theme }) => theme.typography.fontFamily.sans};
   font-size: 0.85rem;
   letter-spacing: 0.1em;
 `;
