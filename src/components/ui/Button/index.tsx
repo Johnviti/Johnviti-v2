@@ -1,98 +1,43 @@
-import styled, { css } from 'styled-components';
 import { motion } from 'framer-motion';
+import { clsx, type ClassValue } from 'clsx';
+import { twMerge } from 'tailwind-merge';
 
-interface ButtonProps {
+function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
+
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'outline' | 'ghost';
   size?: 'sm' | 'md' | 'lg';
   children: React.ReactNode;
-  onClick?: () => void;
-  className?: string;
 }
-
-const ButtonContainer = styled(motion.button)<{ $variant: string; $size: string }>`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: ${({ theme }) => theme.spacing.sm};
-  border-radius: ${({ theme }) => theme.borderRadius.full};
-  font-weight: ${({ theme }) => theme.typography.weights.medium};
-  transition: ${({ theme }) => theme.transitions.default};
-  cursor: pointer;
-  font-family: inherit;
-  
-  ${({ $size, theme }) => {
-    switch ($size) {
-      case 'sm':
-        return css`
-          padding: ${theme.spacing.sm} ${theme.spacing.md};
-          font-size: ${theme.typography.sizes.sm};
-        `;
-      case 'lg':
-        return css`
-          padding: ${theme.spacing.md} ${theme.spacing.xl};
-          font-size: ${theme.typography.sizes.lg};
-        `;
-      default: // md
-        return css`
-          padding: 0.75rem ${theme.spacing.lg};
-          font-size: ${theme.typography.sizes.base};
-        `;
-    }
-  }}
-
-  ${({ $variant, theme }) => {
-    switch ($variant) {
-      case 'primary':
-        return css`
-          background-color: ${theme.colors.white};
-          color: ${theme.colors.black};
-          border: 1px solid ${theme.colors.white};
-          &:hover {
-            background-color: #f3f4f6; // Keep this or add to theme
-          }
-        `;
-      case 'outline':
-        return css`
-          background-color: ${theme.colors.transparent};
-          color: ${theme.colors.text.primary};
-          border: 1px solid ${theme.colors.border.highlight};
-          &:hover {
-            background-color: ${theme.colors.border.light};
-            border-color: rgba(255, 255, 255, 0.4);
-          }
-        `;
-      case 'ghost':
-        return css`
-          background-color: ${theme.colors.transparent};
-          color: ${theme.colors.text.secondary};
-          border: none;
-          &:hover {
-            color: ${theme.colors.text.primary};
-          }
-        `;
-      default:
-        return css``;
-    }
-  }}
-`;
 
 export const Button = ({ 
   variant = 'primary', 
   size = 'md', 
   children, 
-  onClick,
-  className 
+  className,
+  ...props 
 }: ButtonProps) => {
   return (
-    <ButtonContainer
-      $variant={variant}
-      $size={size}
-      onClick={onClick}
-      className={className}
+    <motion.button
+      className={cn(
+        'inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all duration-200 cursor-pointer font-inherit',
+        {
+          'bg-white text-black border border-white hover:bg-gray-100': variant === 'primary',
+          'bg-transparent text-text-primary border border-border-highlight hover:bg-border-light hover:border-white/40': variant === 'outline',
+          'bg-transparent text-text-secondary border-none hover:text-text-primary': variant === 'ghost',
+          'px-4 py-2 text-sm': size === 'sm',
+          'px-6 py-3 text-base': size === 'md',
+          'px-8 py-4 text-lg': size === 'lg',
+        },
+        className
+      )}
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
+      {...props as any}
     >
       {children}
-    </ButtonContainer>
+    </motion.button>
   );
 };

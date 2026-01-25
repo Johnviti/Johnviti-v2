@@ -1,5 +1,10 @@
-import styled from 'styled-components';
 import { motion } from 'framer-motion';
+import { clsx, type ClassValue } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+
+function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
 
 interface NavItemProps {
   href: string;
@@ -7,29 +12,18 @@ interface NavItemProps {
   active?: boolean;
 }
 
-const ItemContainer = styled(motion.a)<{ $active?: boolean }>`
-  color: ${({ $active, theme }) => ($active ? theme.colors.text.primary : theme.colors.text.secondary)};
-  text-decoration: none;
-  font-size: ${({ theme }) => theme.typography.sizes.base};
-  font-weight: ${({ theme }) => theme.typography.weights.medium};
-  cursor: pointer;
-  position: relative;
-  transition: ${({ theme }) => theme.transitions.default};
-
-  &:hover {
-    color: ${({ theme }) => theme.colors.text.primary};
-  }
-`;
-
 export const NavItem = ({ href, children, active }: NavItemProps) => {
   return (
-    <ItemContainer 
+    <motion.a 
       href={href} 
-      $active={active}
+      className={cn(
+        'no-underline text-base font-medium cursor-pointer relative transition-all duration-200',
+        active ? 'text-text-primary' : 'text-text-secondary hover:text-text-primary'
+      )}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
     >
       {children}
-    </ItemContainer>
+    </motion.a>
   );
 };

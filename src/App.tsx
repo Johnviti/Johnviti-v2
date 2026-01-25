@@ -1,18 +1,18 @@
-import { ThemeProvider } from 'styled-components';
 import { Header } from '@/components/layout/Header';
 import { Hero } from '@/components/layout/Hero';
-import { GlobalStyles } from '@/styles/GlobalStyles';
-import { theme } from '@/styles/theme';
+import { Projects } from '@/components/layout/Projects';
+import { GlowingCursor } from '@/components/ui/GlowingCursor';
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <GlobalStyles />
+    <>
+      <GlowingCursor />
       <Header />
       <main>
         <Hero />
+        <Projects />
       </main>
-    </ThemeProvider>
+    </>
   );
 }
 
