@@ -7,16 +7,16 @@ import { Button } from '@/components/ui/Button';
 import type { HeaderProps } from './Header.types';
 import { clsx } from 'clsx';
 
-export const Header = ({}: HeaderProps) => {
+export const Header = ({ }: HeaderProps) => {
   const scrollPosition = useScrollPosition();
   const isScrolled = scrollPosition > 50;
 
   return (
-    <motion.header 
+    <motion.header
       className={clsx(
         'fixed z-header transition-all duration-300 flex items-center',
-        isScrolled 
-          ? 'top-4 left-1/2 -translate-x-1/2 rounded-full bg-background/80 backdrop-blur-md border border-border-lighter py-3 px-6 gap-8 w-auto justify-center shadow-lg' 
+        isScrolled
+          ? 'top-4 left-1/2 -translate-x-1/2 rounded-full bg-background/80 backdrop-blur-md border border-border-lighter py-3 px-6 gap-8 w-auto justify-center shadow-lg'
           : 'top-0 left-0 right-0 w-full justify-between px-8 py-6 bg-transparent border-b border-transparent'
       )}
       initial={{ y: -100, opacity: 0 }}
@@ -26,10 +26,10 @@ export const Header = ({}: HeaderProps) => {
       <div className={clsx("transition-all duration-300", isScrolled && "scale-90")}>
         <Logo />
       </div>
-      
+
       <nav className={clsx(
-        "hidden md:flex items-center",
-        isScrolled ? "gap-6" : "gap-8"
+        "hidden md:flex items-center overflow-hidden transition-all duration-500 ease-in-out",
+        isScrolled ? "w-0 opacity-0 pointer-events-none" : "w-auto opacity-100 gap-8"
       )}>
         <NavItem href="#home" active>Home</NavItem>
         <NavItem href="#about">Sobre</NavItem>
