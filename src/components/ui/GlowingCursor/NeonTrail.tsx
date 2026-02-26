@@ -44,16 +44,18 @@ export const NeonTrail = ({ mouseX, mouseY }: NeonTrailProps) => {
             particles.current.push({
                 x,
                 y,
-                vx: (Math.random() - 0.5) * 0.2, // Minimized scatter for tight trail
+                vx: (Math.random() - 0.5) * 0.2,
                 vy: (Math.random() - 0.5) * 0.2,
                 life: 1,
                 color,
-                size: Math.random() * 4 + 2 // Slightly larger for better glow
+                size: Math.random() * 4 + 2
             });
         };
 
         const animate = () => {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            // Use a slight fade effect for the trail instead of full clear, enables smoother visuals with fewer particles
+            // But if transparent background is needed, we must clear.
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Keep clearRect for clean background
 
             // Interpolate mouse position for smooth trail
             const currentX = mouseX.get();
@@ -64,7 +66,8 @@ export const NeonTrail = ({ mouseX, mouseY }: NeonTrailProps) => {
 
             if (dist > 0) {
                 // Create particles along the path
-                const steps = Math.min(dist, 40); // Increased density
+                // Reduce limit from 40 to 10 to save CPU
+                const steps = Math.min(dist, 10);
                 for (let i = 0; i < steps; i++) {
                     createParticle(
                         lastMousePos.current.x + (dx * i) / steps,
@@ -76,29 +79,32 @@ export const NeonTrail = ({ mouseX, mouseY }: NeonTrailProps) => {
             lastMousePos.current = { x: currentX, y: currentY };
 
             // Update and draw particles
-            particles.current.forEach((p, index) => {
+            // Iterate backwards to allow safe removal
+            ctx.globalCompositeOperation = 'lighter';
+
+            for (let i = particles.current.length - 1; i >= 0; i--) {
+                const p = particles.current[i];
                 p.x += p.vx;
                 p.y += p.vy;
-                p.life -= 0.015; // Slower fade for longer trail
+                p.life -= 0.02; // Slightly faster fade
 
                 if (p.life <= 0) {
-                    particles.current.splice(index, 1);
-                    return;
+                    particles.current.splice(i, 1);
+                    continue;
                 }
 
                 ctx.beginPath();
-                ctx.globalCompositeOperation = 'lighter';
-                ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
-                ctx.fillStyle = p.color;
-                // Add glow effect
-                ctx.shadowBlur = 20;
-                ctx.shadowColor = p.color;
-                ctx.globalAlpha = p.life;
-                ctx.fill();
-                ctx.shadowBlur = 0;
-                ctx.globalAlpha = 1;
-            });
+                // Radial gradient is faster than shadowBlur for glow
+                const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size * p.life * 2);
+                gradient.addColorStop(0, `rgba(59, 130, 246, ${p.life})`);
+                gradient.addColorStop(1, 'rgba(59, 130, 246, 0)');
 
+                ctx.fillStyle = gradient;
+                ctx.arc(p.x, p.y, p.size * p.life * 2, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            ctx.globalCompositeOperation = 'source-over'; // Reset
             animationFrameId.current = requestAnimationFrame(animate);
         };
 
