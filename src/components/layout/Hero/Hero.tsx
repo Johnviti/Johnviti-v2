@@ -61,15 +61,3 @@ export const Hero = () => {
     </section>
   );
 };
-
-
-// selector {
-//   backdrop-filter: blur(10px);
-//   -webkit-backdrop-filter: blur(10px);
-//   box-shadow:
-//     -2px -2px 2px 0px rgba(255, 255, 255, 0.28) inset,
-//      2px  2px 2px 0px rgba(255, 255, 255, 0.28) inset,
-//     -16px -16px 23.1px 0px rgba(0, 0, 0, 0.25) inset,
-//       0px  12px 43.7px 0px rgba(0, 0, 0, 0.40)
-//   !important;
-// }
