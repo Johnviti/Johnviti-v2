@@ -2,9 +2,9 @@
 @config "../tailwind.config.js";
 
 @layer base {
-  body {
-    @apply bg-background text-text-primary font-sans antialiased cursor-none;
-    margin: 0;
-    padding: 0;
-  }
+    body {
+        @apply bg-background text-text-primary font-sans antialiased cursor-none;
+        margin: 0;
+        padding: 0;
+    }
 }

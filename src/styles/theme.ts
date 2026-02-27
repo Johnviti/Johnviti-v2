@@ -1,6 +1,6 @@
 export const theme = {
   colors: {
-    background: '#020617',
+    background: '#00132A',
     text: {
       primary: 'rgba(255, 255, 255, 0.87)',
       secondary: '#94a3b8',
@@ -19,9 +19,21 @@ export const theme = {
       lighter: 'rgba(255, 255, 255, 0.05)',
       highlight: 'rgba(255, 255, 255, 0.2)',
     },
+    glass: {
+      background: 'rgba(255, 255, 255, 0.05)',
+      border: 'rgba(255, 255, 255, 0.1)',
+      hover: 'rgba(255, 255, 255, 0.1)',
+    },
     white: '#ffffff',
     black: '#000000',
     transparent: 'transparent',
+  },
+  layout: {
+    container: {
+      margin: '90px',
+      gutter: '20px',
+      columns: 12,
+    },
   },
   typography: {
     fontFamily: {
