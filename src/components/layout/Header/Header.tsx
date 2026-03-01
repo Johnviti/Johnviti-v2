@@ -18,6 +18,9 @@ export const Header = ({ }: HeaderProps) => {
         </div>
 
         <div className={clsx("flex items-center gap-4", isScrolled && "scale-90")}>
+          <p className="text-white text-sm 2xl:text-base">
+            Precisando de um desenvolvedor?
+          </p>
           <Button variant={isScrolled ? "primary" : "glass"} size="sm">
             Contrate-me <ArrowUpRight size={16} />
           </Button>

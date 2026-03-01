@@ -1,123 +1,118 @@
 import { useEffect, useRef } from 'react';
 
 export const GlowingCursor = () => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const cursorRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+    const cursor = cursorRef.current;
+    if (!cursor) return;
 
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
+    const amount = 20;
+    // Inicializa no meio da tela
+    const mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+    const dots: { x: number; y: number; scale: number; element: HTMLSpanElement }[] = [];
 
-    let mouseMoved = false;
-    let animationFrameId: number;
+    for (let i = 0; i < amount; i++) {
+      const element = document.createElement("span");
+      const scale = 1 - 0.05 * i;
 
-    const pointer = {
-      x: 0.5 * window.innerWidth,
-      y: 0.5 * window.innerHeight,
-    };
+      element.style.position = "absolute";
+      element.style.width = "26px";
+      element.style.height = "26px";
+      element.style.borderRadius = "50%";
+      element.style.background = "#00B2FF"; // A cor do cursor solicitada
+      element.style.transformOrigin = "center center";
 
-    const params = {
-      pointsNumber: 40,
-      widthFactor: 0.3,
-      mouseThreshold: 0.6,
-      spring: 0.4,
-      friction: 0.5,
-    };
-
-    const trail = new Array(params.pointsNumber);
-    for (let i = 0; i < params.pointsNumber; i++) {
-      trail[i] = {
-        x: pointer.x,
-        y: pointer.y,
-        dx: 0,
-        dy: 0,
-      };
+      cursor.appendChild(element);
+      dots.push({ x: mouse.x, y: mouse.y, scale, element });
     }
 
-    const updateMousePosition = (eX: number, eY: number) => {
-      pointer.x = eX;
-      pointer.y = eY;
+    const onMouseMove = (e: MouseEvent) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
     };
 
-    const handleMouseMove = (e: MouseEvent) => {
-      mouseMoved = true;
-      updateMousePosition(e.pageX, e.pageY);
-    };
-
-    const handleTouchMove = (e: TouchEvent) => {
-      mouseMoved = true;
-      updateMousePosition(e.targetTouches[0].pageX, e.targetTouches[0].pageY);
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('touchmove', handleTouchMove);
-
-    const setupCanvas = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-
-    window.addEventListener('resize', setupCanvas);
-    setupCanvas();
-
-    const update = (t: number) => {
-      if (!mouseMoved) {
-        pointer.x = (0.5 + 0.3 * Math.cos(0.002 * t) * Math.sin(0.005 * t)) * window.innerWidth;
-        pointer.y = (0.5 + 0.2 * Math.cos(0.005 * t) + 0.1 * Math.cos(0.01 * t)) * window.innerHeight;
+    const onTouchMove = (e: TouchEvent) => {
+      if (e.touches.length > 0) {
+        mouse.x = e.touches[0].clientX;
+        mouse.y = e.touches[0].clientY;
       }
+    };
 
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("touchmove", onTouchMove);
 
-      trail.forEach((p, pIdx) => {
-        const prev = pIdx === 0 ? pointer : trail[pIdx - 1];
-        const spring = pIdx === 0 ? 0.4 * params.spring : params.spring;
-        p.dx += (prev.x - p.x) * spring;
-        p.dy += (prev.y - p.y) * spring;
-        p.dx *= params.friction;
-        p.dy *= params.friction;
-        p.x += p.dx;
-        p.y += p.dy;
+    let animationFrameId: number;
+
+    const render = () => {
+      let x = mouse.x;
+      let y = mouse.y;
+
+      dots.forEach((dot, index) => {
+        dot.x = x;
+        dot.y = y;
+
+        // Aplica tradução baseada na pos x e y. O -13 centraliza a bolinha de 26px
+        dot.element.style.transform = `translate(${dot.x - 13}px, ${dot.y - 13}px) scale(${dot.scale})`;
+
+        const nextDot = dots[index + 1] || dots[0];
+        x += (nextDot.x - dot.x) * 0.35;
+        y += (nextDot.y - dot.y) * 0.35;
       });
 
-      ctx.lineCap = 'round';
-      ctx.beginPath();
-      ctx.moveTo(trail[0].x, trail[0].y);
-
-      for (let i = 1; i < trail.length - 1; i++) {
-        const xc = 0.5 * (trail[i].x + trail[i + 1].x);
-        const yc = 0.5 * (trail[i].y + trail[i + 1].y);
-        ctx.quadraticCurveTo(trail[i].x, trail[i].y, xc, yc);
-        ctx.lineWidth = params.widthFactor * (params.pointsNumber - i);
-        ctx.stroke();
-      }
-      ctx.lineTo(trail[trail.length - 1].x, trail[trail.length - 1].y);
-
-      // Usar a cor primária (ou branca) com um glow para combinar com o fundo escuro do tema
-      ctx.strokeStyle = 'rgba(56, 189, 248, 0.8)';
-      ctx.shadowBlur = 10;
-      ctx.shadowColor = '#38bdf8';
-
-      ctx.stroke();
-
-      animationFrameId = window.requestAnimationFrame(update);
+      animationFrameId = requestAnimationFrame(render);
     };
 
-    update(0);
+    render();
 
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('touchmove', handleTouchMove);
-      window.removeEventListener('resize', setupCanvas);
-      window.cancelAnimationFrame(animationFrameId);
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("touchmove", onTouchMove);
+      cancelAnimationFrame(animationFrameId);
+      if (cursor) {
+        cursor.innerHTML = '';
+      }
     };
   }, []);
 
   return (
-    <canvas
-      ref={canvasRef}
-      className="fixed inset-0 pointer-events-none z-[9999]"
-    />
+    <>
+      {/* SVG filter (necessário para efeito goo) */}
+      <svg xmlns="http://www.w3.org/2000/svg" style={{ position: 'fixed', width: 0, height: 0 }}>
+        <defs>
+          <filter id="goo">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur" />
+            <feColorMatrix
+              in="blur"
+              mode="matrix"
+              values="1 0 0 0 0  
+                      0 1 0 0 0  
+                      0 0 1 0 0  
+                      0 0 0 35 -15"
+              result="goo"
+            />
+            <feComposite in="SourceGraphic" in2="goo" operator="atop" />
+          </filter>
+        </defs>
+      </svg>
+
+      {/* Cursor container com o filtro CSS */}
+      <div
+        ref={cursorRef}
+        className="pointer-events-none fixed top-0 left-0 z-[9999]"
+        style={{ filter: 'url("#goo")' }}
+      ></div>
+
+      {/* Esconde cursor padrão nas telas que possuem mouse */}
+      <style>
+        {`
+          @media (pointer: fine) {
+            body {
+              cursor: none !important;
+            }
+          }
+        `}
+      </style>
+    </>
   );
 };
