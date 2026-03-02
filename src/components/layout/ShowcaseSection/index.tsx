@@ -8,6 +8,7 @@ import card02 from '@/assets/card-02.png';
 import card03 from '@/assets/card-03.png';
 import card04 from '@/assets/card-04.png';
 import card05 from '@/assets/card-05.png';
+import portfolioVideo from '@/assets/portfolio.webm';
 
 const floatingMediaData = [
     // Left side (2 images)
@@ -24,7 +25,7 @@ export const ShowcaseSection = () => {
     const containerRef = useRef<HTMLElement>(null);
     const videoRef = useRef<HTMLDivElement>(null);
     const textGroupRef = useRef<HTMLDivElement>(null);
-    const videoTextRef = useRef<HTMLDivElement>(null);
+    const actualVideoRef = useRef<HTMLVideoElement>(null);
 
     useEffect(() => {
         if (typeof window !== "undefined") {
@@ -78,16 +79,16 @@ export const ShowcaseSection = () => {
                     0
                 );
 
-                // Hide the internal "Motion em construção" UI of the VideoShowcase as it shrinks
-                tl.fromTo(videoTextRef.current, {
-                    opacity: 1,
-                    scale: 1,
-                }, {
-                    opacity: 0,
-                    scale: 0.8,
-                    duration: 0.3,
-                    ease: "power2.inOut",
-                }, 0);
+                // Handle video play/pause based on visibility
+                ScrollTrigger.create({
+                    trigger: containerRef.current,
+                    start: "top bottom",
+                    end: "bottom top",
+                    onEnter: () => actualVideoRef.current?.play().catch(() => { }),
+                    onLeave: () => actualVideoRef.current?.pause(),
+                    onEnterBack: () => actualVideoRef.current?.play().catch(() => { }),
+                    onLeaveBack: () => actualVideoRef.current?.pause(),
+                });
 
                 // Reveal the content layout
                 tl.fromTo(textGroupRef.current, {
@@ -173,37 +174,19 @@ export const ShowcaseSection = () => {
             </div>
 
             {/* The Video Layer acting as full screen -> shrinking into position */}
-            {/* It starts at absolute top-0 left-0 width 100% height 100% and scales down */}
             <div
                 ref={videoRef}
                 className="absolute top-0 left-0 w-full h-full z-40 overflow-hidden bg-gradient-to-br from-slate-800 to-slate-900 border-none shadow-[0_0_50px_rgba(0,170,255,0.05)] flex items-center justify-center"
             >
-                {/* Visual effect background */}
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.05)_0,transparent_50%)]"></div>
-
-                {/* Elements that completely fade out when shrunk */}
-                <div ref={videoTextRef} className="relative z-10 flex flex-col items-center justify-center text-center px-4 w-full h-full">
-                    <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-slate-800/80 mb-4 md:mb-6 flex items-center justify-center border border-white/10 shadow-[0_0_50px_rgba(0,170,255,0.1)] pointer-events-none">
-                        <div className="w-0 h-0 border-t-[8px] border-t-transparent border-l-[14px] border-l-[#00aaff] border-b-[8px] border-b-transparent translate-x-1 md:border-t-[12px] md:border-l-[20px] md:border-b-[12px]"></div>
-                    </div>
-                    <div className="whitespace-nowrap">
-                        <h3 className="text-xl md:text-2xl font-bold text-white mb-2 drop-shadow-md">Apresentação do Projeto</h3>
-                        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#b7ff00]/10 border border-[#b7ff00]/20 text-[#b7ff00] text-xs md:text-sm font-medium">
-                            <span className="w-2 h-2 rounded-full bg-[#b7ff00] animate-pulse"></span>
-                            Motion em construção
-                        </div>
-                    </div>
-                </div>
-
-                {/* Optional dark mock dashboard image overlay that softly appears when video is small */}
-                <div className="absolute inset-0 w-full h-full bg-[#030b15] opacity-0 transition-opacity duration-1000 -z-10">
-                    <img
-                        src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2000&auto=format&fit=crop"
-                        loading="lazy"
-                        className="w-full h-full object-cover opacity-20"
-                        alt="Background UI Layout"
-                    />
-                </div>
+                <video
+                    ref={actualVideoRef}
+                    src={portfolioVideo}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="w-full h-full object-cover object-top"
+                />
             </div>
 
         </section>
