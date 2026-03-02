@@ -3,13 +3,21 @@ import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+import card01 from '@/assets/card-01.png';
+import card02 from '@/assets/card-02.png';
+import card03 from '@/assets/card-03.png';
+import card04 from '@/assets/card-04.png';
+import card05 from '@/assets/card-05.png';
+
 const floatingMediaData = [
-    { src: "https://eyekiller.s3-assets.com/scrolling-media/Designers-homepage.jpg", type: "img", classes: "top-[10%] left-[5%] xl:left-[10%] w-[100px] lg:w-[140px] xl:w-[180px] aspect-[4/3] rounded-lg" },
-    { src: "https://eyekiller.s3-assets.com/homepage-hero/here-we-are-oliver-jeffers.jpg", type: "img", classes: "top-[15%] right-[5%] xl:right-[15%] w-[90px] lg:w-[120px] xl:w-[150px] aspect-[3/4] rounded-lg" },
-    { src: "https://eyekiller.s3-assets.com/homepage-hero/arts-council-website-homepage.jpg", type: "img", classes: "top-[40%] left-[2%] xl:left-[8%] w-[130px] lg:w-[180px] xl:w-[240px] aspect-[4/3] rounded-lg" },
-    { src: "https://eyekiller.s3-assets.com/videos/Mahlatini-homepage-video.mp4", type: "video", classes: "top-[45%] right-[-5%] xl:right-[5%] w-[160px] lg:w-[240px] xl:w-[320px] aspect-[16/9] rounded-lg" },
-    { src: "https://eyekiller.s3-assets.com/homepage-hero/grand-opera-house-website-featured-image-optimised.jpg", type: "img", classes: "bottom-[5%] left-[10%] xl:left-[15%] w-[90px] lg:w-[120px] xl:w-[150px] aspect-[4/5] rounded-xl" },
-    { src: "https://eyekiller.s3-assets.com/videos/Lyric-Homepage-EK-New.mp4", type: "video", classes: "bottom-[5%] right-[10%] xl:right-[20%] w-[70px] lg:w-[100px] xl:w-[130px] aspect-[9/16] rounded-xl lg:rounded-[24px]" },
+    // Left side (2 images)
+    { src: card01, type: "img", classes: "top-[15%] left-[2%] xl:left-[6%] w-[120px] lg:w-[180px] xl:w-[240px] aspect-[4/3] rounded-xl lg:rounded-2xl shadow-2xl" },
+    { src: card02, type: "img", classes: "bottom-[12%] left-[6%] xl:left-[10%] w-[120px] lg:w-[180px] xl:w-[240px] aspect-[4/3] rounded-xl lg:rounded-2xl shadow-2xl" },
+
+    // Right side (3 images)
+    { src: card03, type: "img", classes: "top-[8%] right-[8%] xl:right-[8%] w-[140px] lg:w-[180px] xl:w-[240px] aspect-[4/3] rounded-xl lg:rounded-2xl shadow-2xl" },
+    { src: card04, type: "img", classes: "top-[50%] right-[-2%] xl:right-[-2%] w-[140px] lg:w-[180px] xl:w-[240px] aspect-[4/3] rounded-xl lg:rounded-2xl shadow-2xl -translate-y-1/2" },
+    { src: card05, type: "img", classes: "bottom-[8%] right-[2%] xl:right-[8%] w-[140px] lg:w-[180px] xl:w-[240px] aspect-[4/3] rounded-xl lg:rounded-2xl shadow-2xl" },
 ];
 
 export const ShowcaseSection = () => {
@@ -57,8 +65,8 @@ export const ShowcaseSection = () => {
                         border: "0px solid rgba(255,255,255,0)"
                     },
                     {
-                        width: isMobile ? "280px" : "360px",
-                        height: isMobile ? "180px" : "240px",
+                        width: isMobile ? "80px" : "320px",
+                        height: isMobile ? "120px" : "180px",
                         top: isMobile ? "5%" : "8%",
                         left: "50%",
                         xPercent: -50,
@@ -119,11 +127,27 @@ export const ShowcaseSection = () => {
     return (
         <section ref={containerRef} className="relative w-full h-[100dvh] overflow-hidden flex flex-col items-center justify-center">
 
+            {/* Floating Media Layout - these act as decoration around the content, aligned to viewport */}
+            <div className="absolute inset-0 w-full h-full z-10 pointer-events-none hidden md:block">
+                {floatingMediaData.map((media, index) => (
+                    <div
+                        key={index}
+                        className={`floating-media absolute overflow-hidden opacity-100 ${media.classes}`}
+                    >
+                        {media.type === "img" ? (
+                            <img src={media.src} className="w-full h-full object-cover" alt="" />
+                        ) : (
+                            <video src={media.src} autoPlay loop muted playsInline className="w-full h-full object-cover" />
+                        )}
+                    </div>
+                ))}
+            </div>
+
             {/* The main Showcase layout underneath */}
-            <div className="relative w-full lg:max-w-7xl mx-auto flex items-center justify-center h-full pt-10 px-4">
+            <div className="relative w-full lg:max-w-7xl mx-auto flex items-center justify-center h-full pt-10 px-4 z-20">
 
                 {/* Main Text Container */}
-                <div ref={textGroupRef} className="text-center relative z-20 flex flex-col items-center mt-20 lg:mt-32">
+                <div ref={textGroupRef} className="text-center relative flex flex-col items-center mt-20 lg:mt-32">
                     <h2 className="text-white text-3xl md:text-5xl lg:text-7xl xl:text-[80px] font-medium tracking-wide mb-2">
                         DESENVOLVENDO
                     </h2>
@@ -146,20 +170,6 @@ export const ShowcaseSection = () => {
                         Sites, sistemas e experiências web construídas com estratégia, tecnologia e atenção aos detalhes.
                     </p>
                 </div>
-
-                {/* Floating Media Layout - these act as decoration around the content */}
-                {floatingMediaData.map((media, index) => (
-                    <div
-                        key={index}
-                        className={`floating-media absolute overflow-hidden pointer-events-none hidden md:block opacity-100 ${media.classes}`}
-                    >
-                        {media.type === "img" ? (
-                            <img src={media.src} className="w-full h-full object-cover" alt="" />
-                        ) : (
-                            <video src={media.src} autoPlay loop muted playsInline className="w-full h-full object-cover pointer-events-none" />
-                        )}
-                    </div>
-                ))}
             </div>
 
             {/* The Video Layer acting as full screen -> shrinking into position */}

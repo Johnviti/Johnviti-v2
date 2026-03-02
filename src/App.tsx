@@ -8,7 +8,6 @@ import bgImage from '@/assets/background.png';
 import { ShowcaseSection } from '@/components/layout/ShowcaseSection';
 import { FeaturedWork } from '@/components/layout/FeaturedWork';
 import { MarqueeSection } from '@/components/layout/MarqueeSection';
-import { LegacySection } from '@/components/layout/LegacySection';
 import { Footer } from '@/components/layout/Footer';
 
 function App() {

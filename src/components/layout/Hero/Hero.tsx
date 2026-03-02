@@ -115,11 +115,8 @@ export const Hero = () => {
       {/* Hero Fotter Right */}
       <motion.div
         initial="hidden" animate={isSignatureDone ? "visible" : "hidden"} variants={fadeUp(0.5)}
-        className="flex flex-col basis-full max-w-full xl:basis-[30%] xl:max-w-[30%] 2xl:basis-[35%] 2xl:max-w-[35%] 3xl:basis-[30%] 3xl:max-w-[30%] items-start justify-end gap-2 pb-4 2xl:pb-6"
+        className="flex flex-col min-w-0 overflow-visible basis-full max-w-full xl:basis-[30%] xl:max-w-[30%] 2xl:basis-[35%] 2xl:max-w-[35%] 3xl:basis-[30%] 3xl:max-w-[30%] items-start justify-end gap-2 pb-4 2xl:pb-6"
       >
-        {/* <h2 className='text-white font-bold text-lg 2xl:text-xl'>
-          My Projects
-        </h2> */}
         <div className="w-full flex justify-center py-8 min-h-[350px]">
           <DisplayCards />
         </div>

@@ -1,43 +1,49 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
+import card01 from '@/assets/card-01.png';
+import card02 from '@/assets/card-02.png';
+import card03 from '@/assets/card-03.png';
+import card04 from '@/assets/card-04.png';
+import card05 from '@/assets/card-05.png';
+
 const projects = [
     {
-        title: 'Oliver Jeffers',
-        description: 'Bringing Oliver’s world-famous art and stories to life through vibrant design and creative content.',
-        media: 'https://eyekiller.s3-assets.com/videos/Oliver-Jeffers-Featured-Video.mp4',
-        type: 'video',
-        badge: 'Honorable Mention',
-        href: '#'
-    },
-    {
-        title: 'Mahlatini',
-        description: 'Transforming a luxury travel brand with premium design, seamless functionality and intelligent UX.',
-        media: 'https://eyekiller.s3-assets.com/videos/Mahlatini-Featured-Video.mp4',
-        type: 'video',
-        badge: 'Awwwards Nominee',
-        href: '#'
-    },
-    {
-        title: 'Grand Opera House',
-        description: 'Enabling a standout user experience with flexible design and powerful Spektrix integration.',
-        media: 'https://eyekiller.s3-assets.com/work/featured-image/_1582x1582_crop_center-center_none/Grand-Opera-House-Featured-Image.jpg',
+        title: 'Plataforma de E-commerce',
+        description: 'Uma experiência de compras escalável e imersiva focada na conversão de ponta a ponta.',
+        media: card01,
         type: 'img',
-        badge: '114% More Users Converted',
+        badge: 'Top Performance',
+        href: '#'
+    },
+    {
+        title: 'App de Mobilidade Urbana',
+        description: 'Conectando pessoas através de um aplicativo performático com rastreamento em tempo real e UX premium.',
+        media: card02,
+        type: 'img',
+        badge: 'UI/UX Excellence',
+        href: '#'
+    },
+    {
+        title: 'Dashboard Analítico',
+        description: 'Transformando dados complexos em insights visuais claros com um ecossistema de alta disponibilidade.',
+        media: card03,
+        type: 'img',
+        badge: '114% Growth Rates',
         isGreenBadge: true,
         href: '#'
     },
     {
-        title: 'Game of Thrones Studio Tour',
-        description: 'Reimagining an iconic attraction with immersive design, storytelling, and seamless booking.',
-        media: 'https://eyekiller.s3-assets.com/videos/Game-of-Thrones-Featured-Video.mp4',
-        type: 'video',
+        title: 'Sistema de Gestão Integrada',
+        description: 'Automatizando processos corporativos com uma solução web responsiva e integração de microsserviços.',
+        media: card04,
+        type: 'img',
         href: '#'
     },
     {
-        title: 'Arts Council of Northern Ireland',
-        description: 'Advancing accessibility and engagement with intuitive design, inclusivity, and innovation.',
-        media: 'https://eyekiller.s3-assets.com/work/featured-image/_1582x1582_crop_center-center_none/Arts-Council-of-NI-Featured-Image_2025-03-27-114234_gffy.jpg',
+        title: 'Tech Fintech App',
+        description: 'Arquitetura robusta assegurando transações financeiras ágeis com o mais elevado padrão de segurança global.',
+        media: card05,
         type: 'img',
         href: '#'
     },
@@ -92,19 +98,19 @@ const CtaCard = () => {
     return (
         <div className="aspect-[1/1] w-full break-inside-avoid bg-white/[0.02] border border-white/5 backdrop-blur-lg rounded-[20px] flex flex-col justify-center mt-[50px] md:mt-0 p-10 md:p-12 lg:p-16 xl:p-20 text-center relative mb-8 hover:bg-white/[0.04] transition-colors">
 
-            <h3 className="text-4xl md:text-5xl lg:text-7xl xl:text-8xl font-bold text-white uppercase text-balance md:inline-block relative mb-6 max-w-full m-0 tracking-tight leading-none bg-clip-text text-transparent bg-gradient-to-br from-white to-white/60">
-                Like what you see?
+            <h3 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white uppercase text-balance md:inline-block relative mb-6 max-w-full m-0 tracking-tight leading-none bg-clip-text text-transparent bg-gradient-to-br from-white to-white/60">
+                Vamos tirar sua ideia do papel
             </h3>
             <p className="text-[#a1a1aa] text-sm md:text-base lg:text-lg leading-relaxed text-balance mx-auto font-light mb-8 max-w-md">
-                Explore our portfolio and discover what we can achieve for you. Let’s create something extraordinary together.
+                Desenvolvo sites e sistemas sob medida, focados em resultado, performance e experiência.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center w-full">
                 <a href="#" className="relative group inline-flex items-center justify-center bg-[#0ea5e9] text-white font-medium uppercase text-sm md:text-base min-h-[48px] md:min-h-[54px] rounded-full px-8 no-underline transition-colors w-full sm:w-auto hover:bg-[#0284c7]">
-                    Let's Talk
+                    Vamos Conversar
                 </a>
                 <a href="#" className="relative group inline-flex items-center justify-center bg-transparent border border-white/20 text-white hover:border-[#0ea5e9] hover:text-[#0ea5e9] hover:bg-[#0ea5e9]/10 font-medium uppercase text-sm md:text-base min-h-[48px] md:min-h-[54px] rounded-full px-8 no-underline transition-all duration-300 w-full sm:w-auto">
-                    See all work
+                    Ver mais projetos &rarr;
                 </a>
             </div>
         </div>
