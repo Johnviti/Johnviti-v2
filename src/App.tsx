@@ -14,23 +14,24 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />
-      <div
-        className="fixed inset-0 z-[-1] pointer-events-none bg-[length:100vw_auto] bg-top bg-no-repeat opacity-80"
-        style={{ backgroundImage: `url(${bgImage})` }}
-      />
-      <GlowingCursor />
-      <div className="w-full relative px-0">
+      <div className="relative min-h-screen w-full overflow-hidden">
+        <div
+          className="absolute inset-0 -z-10 pointer-events-none
+                     bg-top bg-repeat-y opacity-80
+                     bg-[length:100vw_auto]"
+          style={{ backgroundImage: `url(${bgImage})` }}
+        />
+        <GlowingCursor />
         <Header />
-        <main className="w-full">
+        <main className="w-full relative z-10">
           <div className="h-[calc(100dvh-76px)] min-h-[600px] lg:px-[90px]">
             <Hero />
           </div>
           <ShowcaseSection />
           <MarqueeSection />
-          <div className="pb-16 md:pb-32 relative z-20 ">
+          <div className="pb-16 md:pb-32">
             <FeaturedWork />
           </div>
-          {/* <LegacySection /> */}
           <Footer />
         </main>
       </div>
