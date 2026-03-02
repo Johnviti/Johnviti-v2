@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import JohnAmorim from '@/assets/john-amorim.png';
 import Signature from '@/components/ui/Signature';
 import Globe from '@/components/ui/Globe';
-import { Github, Linkedin, Instagram } from "lucide-react";
+import { Github, Linkedin } from "lucide-react";
 import SignatureStroke from '@/components/ui/SignatureStroke';
 
 import DisplayCards from '@/components/ui/display-cards';
@@ -53,7 +53,7 @@ export const Hero = ({ onIntroComplete }: HeroProps) => {
   };
 
   return (
-    <section className="h-full w-full max-w-[1905px] flex flex justify-center relative pb-0 bg-transparent">
+    <section className="h-[calc(100dvh-76px)] w-full max-w-[1905px] mt-[76px] flex flex justify-center relative pb-0 bg-transparent mx-auto">
 
       {/* <ParticlesBackground /> */}
 
@@ -127,12 +127,12 @@ export const Hero = ({ onIntroComplete }: HeroProps) => {
           initial="hidden" animate={isSignatureDone ? "visible" : "hidden"} variants={imageReveal(0.2)}
           className='relative'
         >
-          <img src={JohnAmorim} alt="John Amorim" className="w-auto h-[calc(100dvh-76px)] relative drop-shadow-2xl pointer-events-none" />
+          <img src={JohnAmorim} alt="John Amorim" className="w-auto h-[100dvh] relative drop-shadow-2xl pointer-events-none" />
         </motion.figure>
       </div>
 
       <motion.p initial="hidden" animate={isSignatureDone ? "visible" : "hidden"} variants={fadeUpText(0.6)} className="absolute text-white text-lg 2xl:text-xl left-30 top-20 z-30">Eu sou</motion.p>
-      <motion.p initial="hidden" animate={isSignatureDone ? "visible" : "hidden"} variants={fadeUpText(0.7)} className="absolute bt-0 text-white text-lg 2xl:text-xl left-55 min-[1690px]:top-95 top-100 2xl:top-90 z-30">Desenvolvedor e Designer</motion.p>
+      <motion.p initial="hidden" animate={isSignatureDone ? "visible" : "hidden"} variants={fadeUpText(0.7)} className="absolute bt-0 text-white text-lg 2xl:text-xl left-55 min-[1380px]:top-[calc(var(--spacing) * 60)] min-[1690px]:top-[100] top-100 2xl:top-95 z-30">Desenvolvedor e Designer</motion.p>
 
       <motion.div initial="hidden" animate={isStrokeDone ? "visible" : "hidden"} variants={instantAppear} className="flex flex-col w-full z-20  items-center absolute">
         <figure className="absolute w-full h-full flex items-start justify-center pointer-events-none">

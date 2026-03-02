@@ -9,13 +9,8 @@ import { ShowcaseSection } from '@/components/layout/ShowcaseSection';
 import { FeaturedWork } from '@/components/layout/FeaturedWork';
 import { MarqueeSection } from '@/components/layout/MarqueeSection';
 import { Footer } from '@/components/layout/Footer';
-import { useState, useCallback } from 'react';
-import { motion } from 'framer-motion';
 
 function App() {
-  const [showHeader, setShowHeader] = useState(false);
-  const premiumEase = [0.21, 0.47, 0.32, 0.98] as const;
-
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />
@@ -27,18 +22,10 @@ function App() {
           style={{ backgroundImage: `url(${bgImage})` }}
         />
         <GlowingCursor />
-        {showHeader && (
-          <motion.div
-            initial={{ opacity: 0, y: -12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, ease: premiumEase }}
-          >
-            <Header />
-          </motion.div>
-        )}
+        <Header />
         <main className="w-full relative z-10">
-          <div className="h-hero min-h-hero lg:px-container lg:px-[90px] h-[calc(100dvh-76px)] min-h-[600px]">
-            <Hero onIntroComplete={() => setShowHeader(true)} />
+          <div className="mt-header h-hero min-h-hero lg:px-container lg:px-[90px] h-[100dvh] min-h-[600px]">
+            <Hero />
           </div>
           <ShowcaseSection />
           <MarqueeSection />
