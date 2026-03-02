@@ -48,11 +48,11 @@ interface DisplayCardsProps {
 export default function DisplayCards({ cards }: DisplayCardsProps) {
     const defaultCards: DisplayCardProps[] = [
         {
-            icon: <Code2 className="size-5 text-[#00aaff]" />,
-            title: "Front-end & Produto",
-            description: "Front-end para produtos reais",
+            icon: <MonitorPlay className="size-5 text-purple-400" />,
+            title: "Motion & Experiência",
+            description: "Motion UX & microinterações",
             date: "",
-            titleClassName: "text-[#00aaff]",
+            titleClassName: "text-purple-400",
             className: "[grid-area:stack] hover:-translate-y-10 sm:hover:-translate-y-12 xl:hover:-translate-y-14 2xl:hover:-translate-y-16",
         },
         {
@@ -65,20 +65,21 @@ export default function DisplayCards({ cards }: DisplayCardsProps) {
         },
         {
             icon: <BarChart3 className="size-5 text-[#facc15]" />,
-            title: "Business Intelligence & Dados",
+            title: "Transformar Dados em Sistemas",
             description: "Dashboards & BI estratégicos",
             date: "",
             titleClassName: "text-[#facc15]",
             className: "[grid-area:stack] translate-x-12 translate-y-16 transition-all hover:-translate-y-6 sm:hover:-translate-y-8 xl:hover:-translate-y-10 2xl:hover:-translate-y-12",
         },
         {
-            icon: <MonitorPlay className="size-5 text-purple-400" />,
-            title: "Motion & Experiência",
-            description: "Motion UX & microinterações",
+            icon: <Code2 className="size-5 text-[#00aaff]" />,
+            title: "Front-end & Produto",
+            description: "Front-end para produtos reais",
             date: "",
-            titleClassName: "text-purple-400",
+            titleClassName: "text-[#00aaff]",
             className: "[grid-area:stack] translate-x-16 translate-y-24 transition-all hover:-translate-y-[1px]",
-        },
+
+        }
     ];
 
     const displayCards = cards || defaultCards;
