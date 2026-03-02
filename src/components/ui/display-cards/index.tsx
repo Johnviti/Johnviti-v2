@@ -54,7 +54,7 @@ export default function DisplayCards({ cards }: DisplayCardsProps) {
             date: "React, Node, Typescript",
             titleClassName: "text-[#b7ff00]",
             className:
-                "[grid-area:stack] hover:-translate-y-8 before:absolute before:w-[100%] before:outline-1 before:rounded-xl before:outline-border before:h-[100%] before:content-[''] before:bg-blend-overlay before:bg-background/50 transition-all hover:before:opacity-0 before:transition-opacity before:duration-700 hover:grayscale-0 before:left-0 before:top-0",
+                "[grid-area:stack] hover:-translate-y-8",
         },
         {
             icon: <MonitorPlay className="size-5 text-[#00aaff]" />,
@@ -63,7 +63,7 @@ export default function DisplayCards({ cards }: DisplayCardsProps) {
             date: "Figma & Framer",
             titleClassName: "text-[#00aaff]",
             className:
-                "[grid-area:stack] translate-x-6 translate-y-8 hover:-translate-y-1 before:absolute before:w-[100%] before:outline-1 before:rounded-xl before:outline-border before:h-[100%] before:content-[''] before:bg-blend-overlay before:bg-background/50 transition-all hover:before:opacity-0 before:transition-opacity before:duration-700 hover:grayscale-0 before:left-0 before:top-0",
+                "[grid-area:stack] translate-x-6 translate-y-8 hover:-translate-y-1",
         },
         {
             icon: <Code2 className="size-5 text-purple-400" />,
