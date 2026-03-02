@@ -32,11 +32,6 @@ export const Hero = ({ onIntroComplete }: HeroProps) => {
     visible: { opacity: 1, y: 0, transition: { duration: 1.2, ease: premiumEase, delay } }
   });
 
-  const fadeUpText = (delay: number) => ({
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 1, ease: premiumEase, delay } }
-  });
-
   const fadeInScale = (delay: number, customOpacity: number = 1) => ({
     hidden: { opacity: 0, scale: 0.95 },
     visible: { opacity: customOpacity, scale: 1, transition: { duration: 2.5, ease: "easeOut" as const, delay } }
