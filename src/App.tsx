@@ -14,7 +14,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />
-      <div className="relative min-h-screen w-full overflow-hidden">
+      <div className="relative min-h-screen w-full overflow-x-hidden">
         <div
           className="absolute inset-0 z-0 pointer-events-none
                      bg-top bg-repeat-y opacity-80
@@ -24,7 +24,7 @@ function App() {
         <GlowingCursor />
         <Header />
         <main className="w-full relative z-10">
-          <div className="h-hero min-h-hero lg:px-container">
+          <div className="h-hero min-h-hero lg:px-container lg:px-[90px] h-[calc(100dvh-76px)] min-h-[600px]">
             <Hero />
           </div>
           <ShowcaseSection />
