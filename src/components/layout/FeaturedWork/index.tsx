@@ -7,43 +7,44 @@ import card04 from '@/assets/card-04.png';
 import card05 from '@/assets/card-05.png';
 
 const projects = [
-    {
-        title: 'Plataforma de E-commerce',
-        description: 'Uma experiência de compras escalável e imersiva focada na conversão de ponta a ponta.',
+   {
+        title: 'E-commerce “Karma Free”',
+        description: 'Plataforma de e-commerce com forte apelo visual, focada em storytelling de produto, performance e conversão.',
         media: card01,
         type: 'img',
-        badge: 'Top Performance',
+        badge: 'E-commerce',
         href: '#'
     },
     {
-        title: 'App de Mobilidade Urbana',
-        description: 'Conectando pessoas através de um aplicativo performático com rastreamento em tempo real e UX premium.',
+        title: 'Painéis Gerenciais',
+        description: 'Interface de acesso corporativo segura e moderna para sistemas de gestão, priorizando clareza e usabilidade.',
         media: card02,
         type: 'img',
-        badge: 'UI/UX Excellence',
+        badge: 'Sistema Interno',
         href: '#'
     },
     {
-        title: 'Dashboard Analítico',
-        description: 'Transformando dados complexos em insights visuais claros com um ecossistema de alta disponibilidade.',
+        title: 'Sistema de Intervenções Educacionais',
+        description: 'Painel analítico para acompanhamento de indicadores educacionais, riscos e desempenho em tempo real.',
         media: card03,
         type: 'img',
-        badge: '114% Growth Rates',
-        isGreenBadge: true,
+        badge: 'Dashboard',
         href: '#'
     },
     {
-        title: 'Sistema de Gestão Integrada',
-        description: 'Automatizando processos corporativos com uma solução web responsiva e integração de microsserviços.',
+        title: 'E-commerce “Pai Eterno”',
+        description: 'Loja virtual com navegação intuitiva, foco em experiência do usuário e fortalecimento da identidade da marca.',
         media: card04,
         type: 'img',
+        badge: 'E-commerce',
         href: '#'
     },
     {
-        title: 'Tech Fintech App',
-        description: 'Arquitetura robusta assegurando transações financeiras ágeis com o mais elevado padrão de segurança global.',
+         title: 'Observatório da Indústria',
+        description: 'Plataforma institucional com visual tecnológico, voltada à apresentação de dados, serviços e projetos estratégicos.',
         media: card05,
         type: 'img',
+        badge: 'Plataforma Institucional',
         href: '#'
     },
 ];

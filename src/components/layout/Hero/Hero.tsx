@@ -8,12 +8,17 @@ import SignatureStroke from '@/components/ui/SignatureStroke';
 
 import DisplayCards from '@/components/ui/display-cards';
 
-export const Hero = () => {
+type HeroProps = {
+  onIntroComplete?: () => void;
+};
+
+export const Hero = ({ onIntroComplete }: HeroProps) => {
   const [isSignatureDone, setIsSignatureDone] = useState(false);
   const [isStrokeDone, setIsStrokeDone] = useState(false);
 
   const handleSignatureComplete = useCallback(() => {
     setIsSignatureDone(true);
+    onIntroComplete && onIntroComplete();
   }, []);
 
   const handleStrokeComplete = useCallback(() => {
@@ -64,17 +69,41 @@ export const Hero = () => {
           Especializado em Web Designer,UX/UI, Front-end Development and FullStack
         </p>
         <div className="flex w-full items-center justify-start gap-2">
-          <p className="text-sm 2xl:text-base">follow me</p>
+          <p className="text-sm text-[#00B2FF] 2xl:text-base">Siga-me</p>
           <div className="flex items-center gap-2">
-            <a href="https://github.com/Johnviti" target="_blank" rel="noopener noreferrer">
-              <Github size={16} />
-            </a>
-            <a href="https://www.linkedin.com/in/johnviti/" target="_blank" rel="noopener noreferrer">
-              <Linkedin size={16} />
-            </a>
-            <a href="https://www.instagram.com/johnviti/" target="_blank" rel="noopener noreferrer">
-              <Instagram size={16} />
-            </a>
+            <motion.a
+              href="https://github.com/Johnviti"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex items-center justify-center w-8 h-8 rounded-full transition-all duration-300 hover:bg-[#00B2FF]/20 hover:ring-1 hover:ring-[#00B2FF]/40 hover:backdrop-blur-[2px]"
+              whileTap={{ scale: 0.95 }}
+              whileHover={{ y: -4, scale: 1.1 }}
+              transition={{ type: 'spring', stiffness: 800, damping: 14 }}
+            >
+              <Github size={16} className="text-[#00B2FF] drop-shadow-[0_0_6px_rgba(0,178,255,0.3)] group-hover:drop-shadow-[0_0_10px_rgba(0,178,255,0.5)]" />
+            </motion.a>
+            <motion.a
+              href="https://www.linkedin.com/in/john-amorim-648480225/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex items-center justify-center w-8 h-8 rounded-full transition-all duration-300 hover:bg-[#00B2FF]/20 hover:ring-1 hover:ring-[#00B2FF]/40 hover:backdrop-blur-[2px]"
+              whileTap={{ scale: 0.95 }}
+              whileHover={{ y: -4, scale: 1.1 }}
+              transition={{ type: 'spring', stiffness: 800, damping: 14 }}
+            >
+              <Linkedin size={16} className="text-[#00B2FF] drop-shadow-[0_0_6px_rgba(0,178,255,0.3)] group-hover:drop-shadow-[0_0_10px_rgba(0,178,255,0.5)]" />
+            </motion.a>
+            {/* <motion.a
+              href="https://www.instagram.com/johnviti/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#00B2FF]/10 ring-1 ring-[#00B2FF]/20 backdrop-blur-[2px] transition-all duration-200 hover:bg-[#00B2FF]/20 hover:ring-[#00B2FF]/40"
+              whileTap={{ scale: 0.95 }}
+              whileHover={{ y: -4, scale: 1.1 }}
+              transition={{ type: 'spring', stiffness: 800, damping: 14 }}
+            >
+              <Instagram size={16} className="text-[#00B2FF] drop-shadow-[0_0_6px_rgba(0,178,255,0.3)] group-hover:drop-shadow-[0_0_10px_rgba(0,178,255,0.5)]" />
+            </motion.a> */}
           </div>
         </div>
       </motion.div>
@@ -102,8 +131,8 @@ export const Hero = () => {
         </motion.figure>
       </div>
 
-      <motion.p initial="hidden" animate={isSignatureDone ? "visible" : "hidden"} variants={fadeUpText(0.6)} className="absolute text-white text-lg 2xl:text-xl left-30 top-20 z-30">I am</motion.p>
-      <motion.p initial="hidden" animate={isSignatureDone ? "visible" : "hidden"} variants={fadeUpText(0.7)} className="absolute bt-0 text-white text-lg 2xl:text-xl left-55 top-100 2xl:top-90 z-30">Developer & Designer</motion.p>
+      <motion.p initial="hidden" animate={isSignatureDone ? "visible" : "hidden"} variants={fadeUpText(0.6)} className="absolute text-white text-lg 2xl:text-xl left-30 top-20 z-30">Eu sou</motion.p>
+      <motion.p initial="hidden" animate={isSignatureDone ? "visible" : "hidden"} variants={fadeUpText(0.7)} className="absolute bt-0 text-white text-lg 2xl:text-xl left-55 min-[1690px]:top-95 top-100 2xl:top-90 z-30">Desenvolvedor e Designer</motion.p>
 
       <motion.div initial="hidden" animate={isStrokeDone ? "visible" : "hidden"} variants={instantAppear} className="flex flex-col w-full z-20  items-center absolute">
         <figure className="absolute w-full h-full flex items-start justify-center pointer-events-none">
