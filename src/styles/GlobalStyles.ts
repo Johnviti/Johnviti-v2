@@ -5,6 +5,7 @@ export const GlobalStyles = createGlobalStyle`
     color-scheme: dark;
     --bg-body: #0b0b0b1a;
     --dark: #0909081f;
+    --dark-hsl: 240, 10%, 5%;
   }
 
 

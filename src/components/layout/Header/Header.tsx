@@ -8,32 +8,32 @@ import {
 import { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import type { HeaderProps } from "./Header.types";
-import { clsx } from "clsx";
 import LogoIcon from "@/assets/logo-john-amorim.svg";
 
 export const Header = ({}: HeaderProps) => {
   const { scrollY } = useScroll();
 
   // progresso do efeito (0 → 300px)
-  const progress = useTransform(scrollY, [0, 300], [0, 1], {
-    clamp: true,
-  });
+  const progress = useTransform(scrollY, [0, 300], [0, 1], { clamp: true });
 
-  // animações principais
-  const scale = useTransform(progress, [0, 1], [1, 0.9]);
-  const maxWidth = useTransform(progress, [0, 1], [1920, 600]);
+  // ↓↓↓ diminui mais quando rolar
+  const scale = useTransform(progress, [0, 1], [1, 0.84]);
+  const maxWidth = useTransform(progress, [0, 1], [1920, 300]);
 
-  // padding da pílula
-  const paddingY = useTransform(progress, [0, 1], [20, 16]);
+  // PREMIUM: desliza levemente pra esquerda ao encolher
+  const x = useTransform(progress, [0, 1], [0, -48]);
+
+  // padding da pílula (menor no scroll)
+  const paddingY = useTransform(progress, [0, 1], [20, 12]);
 
   // fundo entra só no scroll
   const backgroundColor = useTransform(
     progress,
     [0, 0.2, 1],
     [
-      "hsla(var(--dark-hsl) / 0)",      // totalmente transparente
-      "hsla(var(--dark-hsl) / 0.35)",   // começa a aparecer
-      "hsla(var(--dark-hsl) / 0.6)",    // fundo final
+      "hsla(var(--dark-hsl) / 0)", // transparente
+      "hsla(var(--dark-hsl) / 0.12)", // começa
+      "hsla(var(--dark-hsl) / 0.3)", // final
     ]
   );
 
@@ -41,7 +41,7 @@ export const Header = ({}: HeaderProps) => {
   const backdropFilter = useTransform(
     progress,
     [0, 1],
-    ["blur(0px)", "blur(10px)"]
+    ["blur(0px)", "blur(12px)"]
   );
 
   // sombra suave
@@ -54,7 +54,6 @@ export const Header = ({}: HeaderProps) => {
     ]
   );
 
-  // apenas para micro ajustes internos (logo/texto)
   const [isScrolled, setIsScrolled] = useState(false);
   useMotionValueEvent(scrollY, "change", (v) => {
     setIsScrolled(v > 50);
@@ -62,42 +61,55 @@ export const Header = ({}: HeaderProps) => {
 
   return (
     <motion.header className="fixed top-0 left-0 right-0 z-50 w-full pt-6 pb-4 lg:px-[90px]">
-      {/* inside-header */}
       <motion.div
+        // IMPORTANT: tira o mx-auto pra não centralizar
         className="mx-auto flex w-full items-center justify-between rounded-full px-5"
         style={{
           maxWidth,
           scale,
+          x, // PREMIUM: deslocamento suave
           paddingTop: paddingY,
           paddingBottom: paddingY,
           backgroundColor,
           backdropFilter,
           boxShadow,
+          transformOrigin: "left center", // PREMIUM: ancora o scale à esquerda
         }}
       >
-        <div
-          className={clsx(
-            "transition-transform duration-300",
-            isScrolled && "scale-90"
-          )}
+        {/* LOGO (reduz um pouco mais no scroll) */}
+        <motion.div
+          className="origin-left"
+          animate={{ scale: isScrolled ? 0.88 : 1 }}
+          transition={{ duration: 0.25, ease: "easeOut" }}
         >
           <img src={LogoIcon} alt="John Amorim" className="h-8 w-auto" />
-        </div>
+        </motion.div>
 
-        <div
-          className={clsx(
-            "flex items-center gap-4 transition-transform duration-300",
-            isScrolled && "scale-90"
-          )}
-        >
-          <p className="text-white text-sm 2xl:text-base">
+        {/* AÇÃO À DIREITA */}
+        <div className="flex items-center gap-4">
+          {/* TEXTO some no scroll (com animação) */}
+          <motion.p
+            className="text-white text-sm 2xl:text-base whitespace-nowrap"
+            animate={{
+              opacity: isScrolled ? 0 : 1,
+              width: isScrolled ? 0 : "auto",
+              marginRight: 0,
+            }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            style={{ overflow: "hidden" }}
+          >
             Precisando de um desenvolvedor?
-          </p>
+          </motion.p>
 
           {/* botão SEMPRE glass */}
-          <Button variant="glass" size="sm">
-            Contrate-me <ArrowUpRight size={16} />
-          </Button>
+          <motion.div
+            animate={{ scale: isScrolled ? 0.92 : 1 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+          >
+            <Button variant="glass" size="sm">
+              Contrate-me <ArrowUpRight size={16} />
+            </Button>
+          </motion.div>
         </div>
       </motion.div>
     </motion.header>

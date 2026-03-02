@@ -131,8 +131,8 @@ export const Hero = ({ onIntroComplete }: HeroProps) => {
         </motion.figure>
       </div>
 
-      <motion.p initial="hidden" animate={isSignatureDone ? "visible" : "hidden"} variants={fadeUpText(0.6)} className="absolute text-white text-lg 2xl:text-xl left-30 top-20 z-30">Eu sou</motion.p>
-      <motion.p initial="hidden" animate={isSignatureDone ? "visible" : "hidden"} variants={fadeUpText(0.7)} className="absolute bt-0 text-white text-lg 2xl:text-xl left-55 min-[1380px]:top-[calc(var(--spacing) * 60)] min-[1690px]:top-[100] top-100 2xl:top-95 z-30">Desenvolvedor e Designer</motion.p>
+      {/* <motion.p initial="hidden" animate={isSignatureDone ? "visible" : "hidden"} variants={fadeUpText(0.6)} className="absolute text-white text-lg 2xl:text-xl left-30 top-20 z-30">Eu sou</motion.p> */}
+      {/* <motion.p initial="hidden" animate={isSignatureDone ? "visible" : "hidden"} variants={fadeUpText(0.7)} className="absolute bt-0 text-white text-lg 2xl:text-xl left-55 min-[1380px]:top-[calc(var(--spacing) * 60)] min-[1690px]:top-[100] top-100 2xl:top-95 z-30">Desenvolvedor e Designer</motion.p> */}
 
       <motion.div initial="hidden" animate={isStrokeDone ? "visible" : "hidden"} variants={instantAppear} className="flex flex-col w-full z-20  items-center absolute">
         <figure className="absolute w-full h-full flex items-start justify-center pointer-events-none">
