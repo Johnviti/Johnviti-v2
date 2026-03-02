@@ -16,7 +16,7 @@ function App() {
       <GlobalStyles />
       <div className="relative min-h-screen w-full overflow-hidden">
         <div
-          className="absolute inset-0 -z-10 pointer-events-none
+          className="absolute inset-0 z-0 pointer-events-none
                      bg-top bg-repeat-y opacity-80
                      bg-[length:100vw_auto]"
           style={{ backgroundImage: `url(${bgImage})` }}
