@@ -69,7 +69,7 @@ export const Hero = ({ onIntroComplete }: HeroProps) => {
           Especializado em Web Designer,UX/UI, Front-end Development and FullStack
         </p>
         <div className="flex w-full items-center justify-start gap-2">
-          <p className="text-sm text-[#00B2FF] 2xl:text-base">Siga-me</p>
+          <p className="text-sm text-white 2xl:text-base">Siga-me</p>
           <div className="flex items-center gap-2">
             <motion.a
               href="https://github.com/Johnviti"
@@ -80,7 +80,7 @@ export const Hero = ({ onIntroComplete }: HeroProps) => {
               whileHover={{ y: -4, scale: 1.1 }}
               transition={{ type: 'spring', stiffness: 800, damping: 14 }}
             >
-              <Github size={16} className="text-[#00B2FF] drop-shadow-[0_0_6px_rgba(0,178,255,0.3)] group-hover:drop-shadow-[0_0_10px_rgba(0,178,255,0.5)]" />
+              <Github size={16} className="text-white hover:text-[#00B2FF] drop-shadow-[0_0_6px_rgba(0,178,255,0.3)] group-hover:drop-shadow-[0_0_10px_rgba(0,178,255,0.5)]" />
             </motion.a>
             <motion.a
               href="https://www.linkedin.com/in/john-amorim-648480225/"
@@ -91,7 +91,7 @@ export const Hero = ({ onIntroComplete }: HeroProps) => {
               whileHover={{ y: -4, scale: 1.1 }}
               transition={{ type: 'spring', stiffness: 800, damping: 14 }}
             >
-              <Linkedin size={16} className="text-[#00B2FF] drop-shadow-[0_0_6px_rgba(0,178,255,0.3)] group-hover:drop-shadow-[0_0_10px_rgba(0,178,255,0.5)]" />
+              <Linkedin size={16} className="text-white hover:text-[#00B2FF] drop-shadow-[0_0_6px_rgba(0,178,255,0.3)] group-hover:drop-shadow-[0_0_10px_rgba(0,178,255,0.5)]" />
             </motion.a>
             {/* <motion.a
               href="https://www.instagram.com/johnviti/"
