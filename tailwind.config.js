@@ -40,17 +40,30 @@ export default {
         'success-glow': '0 0 8px #22c55e',
       },
       zIndex: {
+        'background': '-20',
         'header': '50',
         'modal': '100',
       },
       animation: {
         'float': 'float 6s ease-in-out infinite',
         'float-reverse': 'float 6s ease-in-out infinite reverse',
+        'blob': 'blob 20s infinite alternate cubic-bezier(0.4, 0, 0.2, 1)',
+        'aurora': 'aurora 60s linear infinite',
       },
       keyframes: {
         float: {
           '0%, 100%': { transform: 'translateY(0)' },
           '50%': { transform: 'translateY(-10px)' },
+        },
+        blob: {
+          '0%': { transform: 'translate(0px, 0px) scale(1)' },
+          '33%': { transform: 'translate(5vw, -5vh) scale(1.1)' },
+          '66%': { transform: 'translate(-4vw, 4vh) scale(0.9)' },
+          '100%': { transform: 'translate(0px, 0px) scale(1)' },
+        },
+        aurora: {
+          from: { backgroundPosition: '50% 50%, 50% 50%' },
+          to: { backgroundPosition: '350% 50%, 350% 50%' },
         }
       }
     },

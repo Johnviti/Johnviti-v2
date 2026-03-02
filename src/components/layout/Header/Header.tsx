@@ -11,7 +11,7 @@ export const Header = ({ }: HeaderProps) => {
   const isScrolled = scrollPosition > 50;
 
   return (
-    <motion.header className="w-full z-50 pt-6 pb-4">
+    <motion.header className="w-full z-50 pt-6 pb-4 lg:px-[90px]">
       <div className="flex items-center justify-between w-full">
         <div className={clsx("transition-all duration-300", isScrolled && "scale-90")}>
           <img src={LogoIcon} alt="John Amorim" className="h-8 w-auto" />
