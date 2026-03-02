@@ -3,10 +3,11 @@ import { motion } from 'framer-motion';
 import JohnAmorim from '@/assets/john-amorim.png';
 import Signature from '@/components/ui/Signature';
 import Globe from '@/components/ui/Globe';
-import { Github, Linkedin } from "lucide-react";
 import SignatureStroke from '@/components/ui/SignatureStroke';
 
 import DisplayCards from '@/components/ui/display-cards';
+import { GithubIcon } from '@/components/ui/lucide-animated/github';
+import { LinkedinIcon } from '@/components/ui/lucide-animated/linkedin';
 
 type HeroProps = {
   onIntroComplete?: () => void;
@@ -61,7 +62,7 @@ export const Hero = ({ onIntroComplete }: HeroProps) => {
           Expertise
         </h2>
         <p className="text-white text-sm 2xl:text-base">
-          Especializado em Web Designer,UX/UI, Front-end Development and FullStack
+          Especializado em Web Designer, UX/UI, Front-end Development e FullStack
         </p>
         <div className="flex w-full items-center justify-start gap-2">
           <p className="text-sm text-white 2xl:text-base">Siga-me</p>
@@ -75,7 +76,7 @@ export const Hero = ({ onIntroComplete }: HeroProps) => {
               whileHover={{ y: -4, scale: 1.1 }}
               transition={{ type: 'spring', stiffness: 800, damping: 14 }}
             >
-              <Github size={16} className="text-white hover:text-[#00B2FF] drop-shadow-[0_0_6px_rgba(0,178,255,0.3)] group-hover:drop-shadow-[0_0_10px_rgba(0,178,255,0.5)]" />
+              <GithubIcon size={16} className="text-white hover:text-[#00B2FF] drop-shadow-[0_0_6px_rgba(0,178,255,0.3)] group-hover:drop-shadow-[0_0_10px_rgba(0,178,255,0.5)]" />
             </motion.a>
             <motion.a
               href="https://www.linkedin.com/in/john-amorim-648480225/"
@@ -86,7 +87,7 @@ export const Hero = ({ onIntroComplete }: HeroProps) => {
               whileHover={{ y: -4, scale: 1.1 }}
               transition={{ type: 'spring', stiffness: 800, damping: 14 }}
             >
-              <Linkedin size={16} className="text-white hover:text-[#00B2FF] drop-shadow-[0_0_6px_rgba(0,178,255,0.3)] group-hover:drop-shadow-[0_0_10px_rgba(0,178,255,0.5)]" />
+              <LinkedinIcon size={16} className="text-white hover:text-[#00B2FF] drop-shadow-[0_0_6px_rgba(0,178,255,0.3)] group-hover:drop-shadow-[0_0_10px_rgba(0,178,255,0.5)]" />
             </motion.a>
             {/* <motion.a
               href="https://www.instagram.com/johnviti/"

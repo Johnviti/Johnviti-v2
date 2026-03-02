@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { Sparkles, Code2, MonitorPlay } from "lucide-react";
+import { Sparkles, Code2, MonitorPlay, BarChart3 } from "lucide-react";
 import type { ReactNode } from "react";
 
 export interface DisplayCardProps {
@@ -25,7 +25,7 @@ export function DisplayCard({
     return (
         <div
             className={cn(
-                "relative flex h-32 sm:h-36 w-[16rem] sm:w-[19rem] xl:w-[21rem] -skew-y-[8deg] select-none flex-col justify-between rounded-xl border-2 border-white/10 bg-[#020617]/70 backdrop-blur-sm px-4 py-3 transition-all duration-700 after:absolute after:-right-1 after:top-[-5%] after:h-[110%] after:w-[20rem] after:bg-gradient-to-l after:from-[#020617] after:to-transparent after:content-[''] hover:border-white/30 hover:bg-[#051125] [&>*]:flex [&>*]:items-center [&>*]:gap-2",
+                "relative flex h-32 sm:h-36 w-[16rem] sm:w-[19rem] xl:w-[21rem] -skew-y-[8deg] select-none flex-col justify-between rounded-xl border-2 border-white/10 bg-[#020617]/70 backdrop-blur-sm px-4 py-3 transition-all duration-700 will-change-transform transform-gpu after:absolute after:-right-1 after:top-[-5%] after:h-[110%] after:w-[20rem] after:bg-gradient-to-l after:from-[#020617] after:to-transparent after:content-[''] hover:border-white/30 hover:bg-[#051125] hover:-translate-y-10 sm:hover:-translate-y-12 xl:hover:-translate-y-14 2xl:hover:-translate-y-16  [&>*]:flex [&>*]:items-center [&>*]:gap-2",
                 className
             )}
         >
@@ -48,31 +48,36 @@ interface DisplayCardsProps {
 export default function DisplayCards({ cards }: DisplayCardsProps) {
     const defaultCards: DisplayCardProps[] = [
         {
-            icon: <Sparkles className="size-5 text-[#b7ff00]" />,
-            title: "Fullstack",
-            description: "Sites & Sistemas Web",
-            date: "React, Node, Typescript",
-            titleClassName: "text-[#b7ff00]",
-            className:
-                "[grid-area:stack] hover:-translate-y-8",
-        },
-        {
-            icon: <MonitorPlay className="size-5 text-[#00aaff]" />,
-            title: "UI/UX Design",
-            description: "Experiências memoráveis",
-            date: "Figma & Framer",
+            icon: <Code2 className="size-5 text-[#00aaff]" />,
+            title: "Front-end & Produto",
+            description: "Front-end para produtos reais",
+            date: "",
             titleClassName: "text-[#00aaff]",
-            className:
-                "[grid-area:stack] translate-x-6 translate-y-8 hover:-translate-y-1",
+            className: "[grid-area:stack]",
         },
         {
-            icon: <Code2 className="size-5 text-purple-400" />,
-            title: "Motion UX",
-            description: "Animações Avançadas",
-            date: "GSAP & Framer Motion",
+            icon: <Sparkles className="size-5 text-[#b7ff00]" />,
+            title: "UX/UI & Design System",
+            description: "UX/UI orientado a produto",
+            date: "",
+            titleClassName: "text-[#b7ff00]",
+            className: "[grid-area:stack] translate-x-6 translate-y-8",
+        },
+        {
+            icon: <BarChart3 className="size-5 text-[#facc15]" />,
+            title: "Business Intelligence & Dados",
+            description: "Dashboards & BI estratégicos",
+            date: "",
+            titleClassName: "text-[#facc15]",
+            className: "[grid-area:stack] translate-x-12 translate-y-16 transition-all",
+        },
+        {
+            icon: <MonitorPlay className="size-5 text-purple-400" />,
+            title: "Motion & Experiência",
+            description: "Motion UX & microinterações",
+            date: "",
             titleClassName: "text-purple-400",
-            className:
-                "[grid-area:stack] translate-x-12 translate-y-16 hover:translate-y-8 transition-all ",
+            className: "[grid-area:stack] translate-x-16 translate-y-24 transition-all",
         },
     ];
 

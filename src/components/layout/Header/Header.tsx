@@ -14,7 +14,7 @@ export const Header = ({}: HeaderProps) => {
   const { scrollY } = useScroll();
 
   // progresso do efeito (0 → 300px)
-  const progress = useTransform(scrollY, [0, 300], [0, 1], { clamp: true });
+  const progress = useTransform(scrollY, [0, 200], [0, 1], { clamp: true });
 
   // ↓↓↓ diminui mais quando rolar
   const scale = useTransform(progress, [0, 1], [1, 0.84]);
@@ -62,8 +62,7 @@ export const Header = ({}: HeaderProps) => {
   return (
     <motion.header className="fixed top-0 left-0 right-0 z-50 w-full pt-6 pb-4 lg:px-[90px]">
       <motion.div
-        // IMPORTANT: tira o mx-auto pra não centralizar
-        className="mx-auto flex w-full items-center justify-between rounded-full px-5"
+        className={`${isScrolled ? "mr-auto" : "mx-auto"} flex w-full items-center justify-between rounded-full px-5`}
         style={{
           maxWidth,
           scale,
