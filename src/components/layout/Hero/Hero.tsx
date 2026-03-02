@@ -5,8 +5,7 @@ import Signature from '@/components/ui/Signature';
 import Globe from '@/components/ui/Globe';
 import { Github, Linkedin, Instagram } from "lucide-react";
 import SignatureStroke from '@/components/ui/SignatureStroke';
-import ParticlesBackground from '@/components/ui/ParticlesBackground';
-import ShadowOverlay from '@/components/ui/ShadowOverlay';
+
 import DisplayCards from '@/components/ui/display-cards';
 
 export const Hero = () => {

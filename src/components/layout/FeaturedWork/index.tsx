@@ -1,5 +1,4 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+
 
 import card01 from '@/assets/card-01.png';
 import card02 from '@/assets/card-02.png';
@@ -49,7 +48,7 @@ const projects = [
     },
 ];
 
-const WorkCard = ({ project, index }: { project: any, index: number }) => {
+const WorkCard = ({ project }: { project: any }) => {
     return (
         <div className="w-full text-left break-inside-avoid mb-8 sm:mb-14 overflow-hidden rounded-[8px] lg:rounded-[11px] xl:rounded-[16px] 2xl:rounded-[20px]">
             <a href={project.href} className="group block relative no-underline">
@@ -124,7 +123,7 @@ export const FeaturedWork = () => {
                 {/* We use CSS columns to create the masonry effect natively in tailwind */}
                 <div className="columns-1 md:columns-2 gap-8 md:gap-12 2xl:gap-16 w-full mx-auto">
                     {projects.map((project, index) => (
-                        <WorkCard key={index} project={project} index={index} />
+                        <WorkCard key={index} project={project} />
                     ))}
                     <CtaCard />
                 </div>
