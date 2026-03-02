@@ -24,7 +24,7 @@ function App() {
         <GlowingCursor />
         <Header />
         <main className="w-full relative z-10">
-          <div className="h-[calc(100dvh-76px)] min-h-[600px] lg:px-[90px]">
+          <div className="h-hero min-h-hero lg:px-container">
             <Hero />
           </div>
           <ShowcaseSection />

@@ -35,6 +35,14 @@ export default {
       },
       spacing: {
         'section': '8rem',
+        header: '76px',
+        container: '90px',
+      },
+      minHeight: {
+        hero: '600px',
+      },
+      height: {
+        hero: 'calc(100dvh - 76px)',
       },
       boxShadow: {
         'success-glow': '0 0 8px #22c55e',
