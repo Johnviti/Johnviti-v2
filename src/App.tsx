@@ -9,8 +9,22 @@ import { ShowcaseSection } from '@/components/layout/ShowcaseSection';
 import { FeaturedWork } from '@/components/layout/FeaturedWork';
 import { MarqueeSection } from '@/components/layout/MarqueeSection';
 import { Footer } from '@/components/layout/Footer';
+import { Headset3D, Headset3DConfigurator } from '@/components/ui/Headset3D';
 
 function App() {
+  if (window.location.pathname === '/3d-test') {
+    return (
+      <ThemeProvider theme={theme}>
+        <GlobalStyles />
+        <div className="w-screen h-screen relative overflow-hidden flex items-center justify-center">
+          <h1 className="absolute top-10 text-white font-bold text-2xl z-20 pointer-events-none">Página de Teste 3D</h1>
+          {/* Render Configurator */}
+          <Headset3DConfigurator />
+        </div>
+      </ThemeProvider>
+    );
+  }
+
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />

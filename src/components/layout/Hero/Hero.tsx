@@ -8,6 +8,7 @@ import SignatureStroke from '@/components/ui/SignatureStroke';
 import DisplayCards from '@/components/ui/display-cards';
 import { GithubIcon } from '@/components/ui/lucide-animated/github';
 import { LinkedinIcon } from '@/components/ui/lucide-animated/linkedin';
+import { Headset3D } from '@/components/ui/Headset3D';
 
 type HeroProps = {
   onIntroComplete?: () => void;
@@ -123,6 +124,7 @@ export const Hero = ({ onIntroComplete }: HeroProps) => {
           initial="hidden" animate={isSignatureDone ? "visible" : "hidden"} variants={imageReveal(0.2)}
           className='relative'
         >
+          <Headset3D />
           <img src={JohnAmorim} alt="John Amorim" className="w-auto h-[100dvh] relative drop-shadow-2xl pointer-events-none" />
         </motion.figure>
       </div>

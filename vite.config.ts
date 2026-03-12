@@ -4,6 +4,7 @@ import path from 'path'
 
 // https://vite.dev/config/
 export default defineConfig({
+  assetsInclude: ['**/*.glb'],
   plugins: [react()],
   resolve: {
     alias: {
