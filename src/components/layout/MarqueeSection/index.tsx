@@ -1,11 +1,11 @@
-import React from 'react';
 import { motion, useScroll, useTransform, useSpring, useVelocity, useAnimationFrame, useMotionValue } from 'framer-motion';
 import { useRef, useState } from 'react';
 import { wrap } from '@motionone/utils';
 import { Zap, Code, Rocket, Layout, Database } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 
 // We create a single Marquee Item to reuse
-const MarqueeItem = ({ text, Icon }: { text: string; Icon: React.ElementType }) => {
+const MarqueeItem = ({ text, Icon }: { text: string; Icon: LucideIcon }) => {
     return (
         <div className="shrink-0 flex items-center gap-x-4 px-2 pb-3 lg:pt-5 lg:pb-10 lg:gap-x-10 lg:px-5">
             <h2 className="inline-flex flex-wrap text-balance relative text-left justify-start text-white text-6xl md:text-7xl lg:text-8xl xl:text-9xl 2xl:text-[12rem] leading-none font-bold tracking-tight flex-1 lg:pb-10 uppercase whitespace-nowrap m-0 drop-shadow-lg">

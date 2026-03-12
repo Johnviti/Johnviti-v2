@@ -9,8 +9,25 @@ import { ShowcaseSection } from '@/components/layout/ShowcaseSection';
 import { FeaturedWork } from '@/components/layout/FeaturedWork';
 import { MarqueeSection } from '@/components/layout/MarqueeSection';
 import { Footer } from '@/components/layout/Footer';
+import { Headset3DConfigurator } from '@/components/ui/Headset3D';
+import { useState } from 'react';
 
 function App() {
+  const [isIntroComplete, setIsIntroComplete] = useState(false);
+
+  if (window.location.pathname === '/3d-test') {
+    return (
+      <ThemeProvider theme={theme}>
+        <GlobalStyles />
+        <div className="w-screen h-screen relative overflow-hidden flex items-center justify-center">
+          <h1 className="absolute top-10 text-white font-bold text-2xl z-20 pointer-events-none">Página de Teste 3D</h1>
+          {/* Render Configurator */}
+          <Headset3DConfigurator />
+        </div>
+      </ThemeProvider>
+    );
+  }
+
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />
@@ -22,10 +39,10 @@ function App() {
           style={{ backgroundImage: `url(${bgImage})` }}
         />
         <GlowingCursor />
-        <Header />
+        <Header isVisible={isIntroComplete} />
         <main className="w-full relative z-10">
-          <div className="mt-header h-hero min-h-hero lg:px-container lg:px-[90px] h-[100dvh] min-h-[600px]">
-            <Hero />
+          <div className="mt-header h-hero min-h-hero lg:px-container lg:px-[90px] h-[calc(100dvh-76px)] min-h-[600px]">
+            <Hero onIntroComplete={() => setIsIntroComplete(true)} />
           </div>
           <ShowcaseSection />
           <MarqueeSection />
