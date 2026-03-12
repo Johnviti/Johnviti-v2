@@ -9,7 +9,7 @@ import { ShowcaseSection } from '@/components/layout/ShowcaseSection';
 import { FeaturedWork } from '@/components/layout/FeaturedWork';
 import { MarqueeSection } from '@/components/layout/MarqueeSection';
 import { Footer } from '@/components/layout/Footer';
-import { Headset3D, Headset3DConfigurator } from '@/components/ui/Headset3D';
+import { Headset3DConfigurator } from '@/components/ui/Headset3D';
 import { useState } from 'react';
 
 function App() {

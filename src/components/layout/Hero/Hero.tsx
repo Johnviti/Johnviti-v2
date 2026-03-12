@@ -8,7 +8,7 @@ import SignatureStroke from '@/components/ui/SignatureStroke';
 import DisplayCards from '@/components/ui/display-cards';
 import { GithubIcon } from '@/components/ui/lucide-animated/github';
 import { LinkedinIcon } from '@/components/ui/lucide-animated/linkedin';
-import { Headset3D } from '@/components/ui/Headset3D';
+// import { Headset3D } from '@/components/ui/Headset3D';
 
 type HeroProps = {
   onIntroComplete?: () => void;
