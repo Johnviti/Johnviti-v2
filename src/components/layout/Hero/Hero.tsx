@@ -50,7 +50,7 @@ export const Hero = ({ onIntroComplete }: HeroProps) => {
   };
 
   return (
-    <section className="h-[calc(100dvh-76px)] w-full max-w-[1905px] mt-[76px] flex flex justify-center relative pb-0 bg-transparent mx-auto">
+    <section className="h-full w-full max-w-[1905px] mt-[76px] flex flex justify-center relative pb-0 bg-transparent mx-auto">
 
       {/* <ParticlesBackground /> */}
 
@@ -113,8 +113,8 @@ export const Hero = ({ onIntroComplete }: HeroProps) => {
         <Globe />
       </motion.div>
 
-      <div className="flex flex-col w-full z-[5] items-center absolute">
-        <figure className="absolute w-full h-full flex items-start justify-center  pointer-events-none">
+      <div className="flex flex-col w-full z-[5] items-center absolute inset-0">
+        <figure className="absolute w-full h-full flex items-center justify-center pb-[20vh] pointer-events-none scale-95 xl:scale-95">
           <Signature color="#00B2FF" strokeColor="#00B2FF" strokeWidth={0.5} onComplete={handleSignatureComplete} onStrokeComplete={handleStrokeComplete} />
         </figure>
       </div>
@@ -124,7 +124,7 @@ export const Hero = ({ onIntroComplete }: HeroProps) => {
           initial="hidden" animate={isSignatureDone ? "visible" : "hidden"} variants={imageReveal(0.2)}
           className='relative'
         >
-          <Headset3D />
+          {/* <Headset3D /> */}
           <img src={JohnAmorim} alt="John Amorim" className="w-auto h-[100dvh] relative drop-shadow-2xl pointer-events-none" />
         </motion.figure>
       </div>
@@ -132,8 +132,8 @@ export const Hero = ({ onIntroComplete }: HeroProps) => {
       {/* <motion.p initial="hidden" animate={isSignatureDone ? "visible" : "hidden"} variants={fadeUpText(0.6)} className="absolute text-white text-lg 2xl:text-xl left-30 top-20 z-30">Eu sou</motion.p> */}
       {/* <motion.p initial="hidden" animate={isSignatureDone ? "visible" : "hidden"} variants={fadeUpText(0.7)} className="absolute bt-0 text-white text-lg 2xl:text-xl left-55 min-[1380px]:top-[calc(var(--spacing) * 60)] min-[1690px]:top-[100] top-100 2xl:top-95 z-30">Desenvolvedor e Designer</motion.p> */}
 
-      <motion.div initial="hidden" animate={isStrokeDone ? "visible" : "hidden"} variants={instantAppear} className="flex flex-col w-full z-20  items-center absolute">
-        <figure className="absolute w-full h-full flex items-start justify-center pointer-events-none">
+      <motion.div initial="hidden" animate={isStrokeDone ? "visible" : "hidden"} variants={instantAppear} className="flex flex-col w-full z-20 items-center absolute inset-0">
+        <figure className="absolute w-full h-full flex items-center justify-center pb-[20vh] pointer-events-none scale-95 xl:scale-95">
           <SignatureStroke strokeColor="#00b3ffff" strokeWidth={1} />
         </figure>
       </motion.div>

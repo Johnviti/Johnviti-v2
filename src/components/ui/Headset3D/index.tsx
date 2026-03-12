@@ -1,4 +1,4 @@
-import { useRef, Suspense } from 'react';
+import { useRef, Suspense, useEffect } from 'react';
 import { useGLTF, Environment, Float, ContactShadows, OrbitControls, Bounds } from '@react-three/drei';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
@@ -9,28 +9,62 @@ import headsetModelUrl from '@/assets/3d/headset_sog_h70.glb';
 const Model = ({
     autoRotate,
     wireframe,
+    wireframeAngle = 5,
+    wireframeMode = 'edges',
     scale = 0.5
 }: {
     autoRotate: boolean,
     wireframe: boolean,
+    wireframeAngle?: number,
+    wireframeMode?: 'edges' | 'topology',
     scale?: number
 }) => {
     const group = useRef<THREE.Group>(null);
     const { scene } = useGLTF(headsetModelUrl);
 
-    // Apply wireframe to all child meshes
-    scene.traverse((child) => {
-        if (child instanceof THREE.Mesh && child.material) {
-            child.material.wireframe = wireframe;
-        }
-    });
+    useEffect(() => {
+        const addedEdges: THREE.LineSegments[] = [];
+
+        scene.traverse((child) => {
+            if (child instanceof THREE.Mesh && child.material) {
+                if (wireframe) {
+                    // Esconde a malha principal
+                    child.material.visible = false;
+
+                    // Usa EdgesGeometry para as quinas ou WireframeGeometry para todos os triângulos (topologia bruta)
+                    const edges = wireframeMode === 'edges' 
+                        ? new THREE.EdgesGeometry(child.geometry, wireframeAngle) 
+                        : new THREE.WireframeGeometry(child.geometry);
+                        
+                    const line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.3 }));  // Baixei a opacidade para 30% pra não doer o olho na topologia completa
+                    
+                    child.add(line);
+                    addedEdges.push(line);
+                } else {
+                    // Restaura a visibilidade da malha normal
+                    child.material.visible = true;
+                    child.material.wireframe = false;
+                }
+            }
+        });
+
+        // Cleanup: remove as linhas quando desligar o wireframe ou mudar o modo/ângulo
+        return () => {
+            addedEdges.forEach(line => {
+                if (line.parent) line.parent.remove(line);
+                line.geometry.dispose();
+                (line.material as THREE.Material).dispose();
+            });
+        };
+    }, [scene, wireframe, wireframeAngle, wireframeMode]);
 
     useFrame((state) => {
         if (group.current) {
             if (autoRotate) {
-                // Subtle rotation animation to make it feel alive
+                // Rotação contínua (360 graus) ao invés de apenas oscilar
                 const t = state.clock.getElapsedTime();
-                group.current.rotation.y = Math.sin(t / 2) * 0.1 - 0.2;
+                group.current.rotation.y = Math.PI + (t * 0.3); 
+                // Apenas um levíssimo movimento em X para dar fluidez
                 group.current.rotation.x = Math.cos(t / 2) * 0.05 + 0.1;
             } else {
                 group.current.rotation.y = 0;
@@ -48,8 +82,10 @@ const Model = ({
 
 export const Headset3D = ({ className }: { className?: string }) => {
     return (
-        <div className={className || "absolute top-[10%] right-[20%] w-[300px] h-[300px] z-50 pointer-events-none xl:right-[25%] 2xl:right-[30%]"}>
-            <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
+        // Removido o 'pointer-events-none' para habilitar a interação do mouse e adicionado cursor-grab
+        <div className={className || "absolute top-[-80px] right-[20%] w-[400px] h-[400px] z-50 cursor-grab active:cursor-grabbing xl:right-[25%] 2xl:right-[20%]"}>
+            <Canvas camera={{ position: [0, 0, 10], fov: 15 }}>
+                <OrbitControls enableZoom={false} enablePan={false} />
                 <ambientLight intensity={0.3} color="#2b2baa" />
                 <directionalLight 
                     position={[5, 5, 5]} 
@@ -64,7 +100,7 @@ export const Headset3D = ({ className }: { className?: string }) => {
                             rotationIntensity={0.5}
                             floatIntensity={1}
                         >
-                            <Model autoRotate={true} wireframe={false} scale={1} />
+                            <Model autoRotate={false} wireframe={true} scale={1} />
                         </Float>
                     </Bounds>
 
@@ -91,6 +127,8 @@ export const Headset3DConfigurator = ({ className }: { className?: string }) => 
             background: true,
             autoRotate: true,
             wireframe: false,
+            wireframeMode: { value: 'edges', options: ['edges', 'topology'] },
+            wireframeAngle: { value: 5, min: 0, max: 90, step: 1 }, 
             scale: { value: 1, min: 0.1, max: 2, step: 0.05 } 
         }),
         Lighting: folder({
@@ -128,7 +166,7 @@ export const Headset3DConfigurator = ({ className }: { className?: string }) => 
                                 rotationIntensity={0.5}
                                 floatIntensity={1}
                             >
-                                <Model autoRotate={displayControls.autoRotate} wireframe={displayControls.wireframe} scale={displayControls.scale} />
+                                <Model autoRotate={displayControls.autoRotate} wireframe={displayControls.wireframe} wireframeMode={displayControls.wireframeMode as 'edges' | 'topology'} wireframeAngle={displayControls.wireframeAngle} scale={displayControls.scale} />
                             </Float>
                         </Bounds>
 

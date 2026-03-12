@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/Button";
 import type { HeaderProps } from "./Header.types";
 import LogoIcon from "@/assets/logo-john-amorim.svg";
 
-export const Header = ({}: HeaderProps) => {
+export const Header = ({ isVisible = true }: HeaderProps) => {
   const { scrollY } = useScroll();
 
   // progresso do efeito (0 → 300px)
@@ -60,7 +60,12 @@ export const Header = ({}: HeaderProps) => {
   });
 
   return (
-    <motion.header className="fixed top-0 left-0 right-0 z-50 w-full pt-6 pb-4 lg:px-[90px]">
+    <motion.header 
+      className="fixed top-0 left-0 right-0 z-50 w-full lg:px-[90px]"
+      initial={{ y: -100, opacity: 0 }}
+      animate={{ y: isVisible ? 0 : -100, opacity: isVisible ? 1 : 0 }}
+      transition={{ duration: 0.8, ease: [0.21, 0.47, 0.32, 0.98] }}
+    >
       <motion.div
         className={`${isScrolled ? "mr-auto" : "mx-auto"} flex w-full items-center justify-between rounded-full px-5`}
         style={{
