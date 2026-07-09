@@ -10,11 +10,11 @@ interface PreloaderProps {
 }
 
 const CROSSHAIRS = [
-  { left: '8.333%', top: '9%' },
-  { left: '33.333%', top: '30%' },
-  { left: '66.666%', top: '46%' },
-  { left: '25%', top: '68%' },
-  { left: '91.666%', top: '85%' },
+  { left: '8.333%', top: '12%' },
+  { left: '50%', top: '30%' },
+  { left: '91.666%', top: '48%' },
+  { left: '25%', top: '74%' },
+  { left: '66.666%', top: '84%' },
 ];
 
 const STAGE_KEYS = ['grid', 'type', 'layout', 'assets'] as const;
@@ -68,7 +68,7 @@ export function Preloader({ onReveal }: PreloaderProps) {
         .to('.pl-title rect', { strokeDashoffset: 0, duration: 0.9, stagger: 0.2 }, 1.4)
         .to('.pl-stage-1', { opacity: 1, duration: 0.2 }, 1.9)
         .to('.pl-para line', { strokeDashoffset: 0, duration: 0.5, stagger: 0.08 }, 1.9)
-        .to('.pl-cards rect', { strokeDashoffset: 0, duration: 0.7, stagger: 0.12 }, 2.2)
+        .to('.pl-band [data-draw]', { strokeDashoffset: 0, duration: 0.7, stagger: 0.1 }, 2.2)
         .to('.pl-stage-2', { opacity: 1, duration: 0.2 }, 2.6)
         .to('.pl-cross', { opacity: 0.9, duration: 0.25, stagger: 0.07, ease: 'power2.out' }, 2.7)
         .to('.pl-stage-3', { opacity: 1, duration: 0.2 }, 3.1);
@@ -130,7 +130,7 @@ export function Preloader({ onReveal }: PreloaderProps) {
       ref={rootRef}
       role="status"
       aria-label={t('preloader.loading')}
-      className="fixed inset-0 z-[100] bg-ink"
+      className="fixed inset-0 z-[100] bg-base"
     >
       <svg
         aria-hidden
@@ -169,25 +169,29 @@ export function Preloader({ onReveal }: PreloaderProps) {
           <rect data-draw x="91.5" y="3.9" width="4.5" height="2" pathLength={1} vectorEffect="non-scaling-stroke" />
         </g>
 
-        {/* Blocos do título do hero */}
-        <g className="pl-title fill-none stroke-paper/30">
-          <rect data-draw x="3.5" y="30" width="62" height="14" pathLength={1} vectorEffect="non-scaling-stroke" />
-          <rect data-draw x="3.5" y="46" width="50" height="14" pathLength={1} vectorEffect="non-scaling-stroke" />
+        {/* Barras do título gigante do hero (duas linhas full-width) */}
+        <g className="pl-title fill-none stroke-ink/40">
+          <rect data-draw x="3.5" y="12" width="93" height="16" pathLength={1} vectorEffect="non-scaling-stroke" />
+          <rect data-draw x="3.5" y="30" width="93" height="16" pathLength={1} vectorEffect="non-scaling-stroke" />
         </g>
 
-        {/* Parágrafo de introdução */}
+        {/* Linha de status à esquerda + parágrafo de introdução à direita */}
         <g className="pl-para stroke-line">
-          <line data-draw x1="70" y1="32" x2="93" y2="32" pathLength={1} vectorEffect="non-scaling-stroke" />
-          <line data-draw x1="70" y1="34.5" x2="93" y2="34.5" pathLength={1} vectorEffect="non-scaling-stroke" />
-          <line data-draw x1="70" y1="37" x2="93" y2="37" pathLength={1} vectorEffect="non-scaling-stroke" />
-          <line data-draw x1="70" y1="39.5" x2="86" y2="39.5" pathLength={1} vectorEffect="non-scaling-stroke" />
+          <line data-draw x1="3.5" y1="55" x2="25" y2="55" pathLength={1} vectorEffect="non-scaling-stroke" />
+          <line data-draw x1="62" y1="52" x2="93" y2="52" pathLength={1} vectorEffect="non-scaling-stroke" />
+          <line data-draw x1="62" y1="54.5" x2="93" y2="54.5" pathLength={1} vectorEffect="non-scaling-stroke" />
+          <line data-draw x1="62" y1="57" x2="85" y2="57" pathLength={1} vectorEffect="non-scaling-stroke" />
+          <rect data-draw x="62" y="60.5" width="12" height="4" rx="2" pathLength={1} vectorEffect="non-scaling-stroke" fill="none" />
         </g>
 
-        {/* Cards de conteúdo */}
-        <g className="pl-cards fill-none stroke-line">
-          <rect data-draw x="3.5" y="68" width="28" height="17" pathLength={1} vectorEffect="non-scaling-stroke" />
-          <rect data-draw x="36" y="68" width="28" height="17" pathLength={1} vectorEffect="non-scaling-stroke" />
-          <rect data-draw x="68.5" y="68" width="28" height="17" pathLength={1} vectorEffect="non-scaling-stroke" />
+        {/* Faixa do marquee com blocos de palavras */}
+        <g className="pl-band fill-none stroke-line">
+          <line data-draw x1="0" y1="74" x2="100" y2="74" pathLength={1} vectorEffect="non-scaling-stroke" />
+          <line data-draw x1="0" y1="84" x2="100" y2="84" pathLength={1} vectorEffect="non-scaling-stroke" />
+          <rect data-draw x="8" y="77.5" width="13" height="3" pathLength={1} vectorEffect="non-scaling-stroke" />
+          <rect data-draw x="30" y="77.5" width="10" height="3" pathLength={1} vectorEffect="non-scaling-stroke" />
+          <rect data-draw x="49" y="77.5" width="15" height="3" pathLength={1} vectorEffect="non-scaling-stroke" />
+          <rect data-draw x="73" y="77.5" width="11" height="3" pathLength={1} vectorEffect="non-scaling-stroke" />
         </g>
       </svg>
 

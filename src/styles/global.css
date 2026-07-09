@@ -1,12 +1,13 @@
 @import "tailwindcss";
 
 @theme {
-  --color-ink: #0a0a0b;
-  --color-ink-soft: #131315;
-  --color-paper: #f2f0eb;
-  --color-muted: #85837e;
-  --color-line: rgba(242, 240, 235, 0.14);
-  --color-line-faint: rgba(242, 240, 235, 0.06);
+  --color-base: #f1efea;
+  --color-ink: #141413;
+  --color-muted: #6e6c66;
+  --color-line: rgba(20, 20, 19, 0.16);
+  --color-line-faint: rgba(20, 20, 19, 0.06);
+  --color-line-inv: rgba(241, 239, 234, 0.22);
+  --color-block: #dedcd5;
   --color-accent: #ff4d00;
 
   --font-display: "Space Grotesk Variable", "Space Grotesk", system-ui, sans-serif;
@@ -14,14 +15,14 @@
 }
 
 html {
-  background: var(--color-ink);
+  background: var(--color-base);
   scrollbar-width: thin;
-  scrollbar-color: var(--color-muted) var(--color-ink);
+  scrollbar-color: var(--color-muted) var(--color-base);
 }
 
 body {
-  background: var(--color-ink);
-  color: var(--color-paper);
+  background: var(--color-base);
+  color: var(--color-ink);
   font-family: var(--font-display);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -30,7 +31,19 @@ body {
 
 ::selection {
   background: var(--color-accent);
-  color: var(--color-ink);
+  color: var(--color-base);
+}
+
+/* Tipografia vazada (outline) — usada em palavras de destaque no hero */
+.text-outline {
+  -webkit-text-stroke: 2px var(--color-ink);
+  color: transparent;
+}
+
+@media (max-width: 768px) {
+  .text-outline {
+    -webkit-text-stroke-width: 1.2px;
+  }
 }
 
 /* Label técnico em mono — usado em metas, medições e microdetalhes blueprint */
@@ -41,6 +54,19 @@ body {
   text-transform: uppercase;
 }
 
+/* Faixa de texto infinita estilo riseatseven */
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 22s linear infinite;
+}
+
 /* Link de pular para o conteúdo — visível apenas com foco de teclado */
 .skip-link {
   position: fixed;
@@ -48,8 +74,8 @@ body {
   left: 1rem;
   z-index: 200;
   padding: 0.75rem 1.25rem;
-  background: var(--color-paper);
-  color: var(--color-ink);
+  background: var(--color-ink);
+  color: var(--color-base);
   font-family: var(--font-mono);
   font-size: 0.75rem;
   letter-spacing: 0.15em;
@@ -61,7 +87,7 @@ body {
 }
 
 :focus-visible {
-  outline: 1px solid var(--color-paper);
+  outline: 1px solid var(--color-ink);
   outline-offset: 3px;
 }
 
@@ -74,5 +100,9 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  .marquee-track {
+    animation: none;
   }
 }
