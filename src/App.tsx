@@ -1,59 +1,62 @@
-import { Header } from '@/components/layout/Header';
-import { Hero } from '@/components/layout/Hero';
-import { GlowingCursor } from '@/components/ui/GlowingCursor';
-import { ThemeProvider } from 'styled-components';
-import { GlobalStyles } from '@/styles/GlobalStyles';
-import { theme } from '@/styles/theme';
-import bgImage from '@/assets/background.png';
-import { ShowcaseSection } from '@/components/layout/ShowcaseSection';
-import { FeaturedWork } from '@/components/layout/FeaturedWork';
-import { MarqueeSection } from '@/components/layout/MarqueeSection';
-import { Footer } from '@/components/layout/Footer';
-import { Headset3DConfigurator } from '@/components/ui/Headset3D';
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { AnimatePresence } from 'framer-motion';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import { I18nProvider } from './i18n';
+import { useI18n } from './i18n/context';
+import { AppReadyContext } from './context/app-ready';
+import { SmoothScroll } from './components/SmoothScroll';
+import { useLenis } from './hooks/useLenis';
+import { GridLines } from './components/layout/GridLines';
+import { Header } from './components/layout/Header';
+import { Preloader } from './components/preloader/Preloader';
+import Home from './pages/Home';
+import Project from './pages/Project';
 
-function App() {
-  const [isIntroComplete, setIsIntroComplete] = useState(false);
+function ScrollToTop() {
+  const location = useLocation();
+  const lenisRef = useLenis();
 
-  if (window.location.pathname === '/3d-test') {
-    return (
-      <ThemeProvider theme={theme}>
-        <GlobalStyles />
-        <div className="w-screen h-screen relative overflow-hidden flex items-center justify-center">
-          <h1 className="absolute top-10 text-white font-bold text-2xl z-20 pointer-events-none">Página de Teste 3D</h1>
-          {/* Render Configurator */}
-          <Headset3DConfigurator />
-        </div>
-      </ThemeProvider>
-    );
-  }
+  useEffect(() => {
+    if ((location.state as { scrollTo?: string } | null)?.scrollTo) return;
+    lenisRef?.current?.scrollTo(0, { immediate: true });
+    window.scrollTo(0, 0);
+  }, [location.pathname, location.state, lenisRef]);
 
+  return null;
+}
+
+function SkipLink() {
+  const { t } = useI18n();
   return (
-    <ThemeProvider theme={theme}>
-      <GlobalStyles />
-      <div className="relative min-h-screen w-full overflow-x-hidden bg-[#020617]">
-        <div
-          className="absolute inset-0 z-0 pointer-events-none
-                     bg-top bg-repeat-y opacity-80
-                     bg-[length:100vw_auto]"
-          style={{ backgroundImage: `url(${bgImage})` }}
-        />
-        <GlowingCursor />
-        <Header isVisible={isIntroComplete} />
-        <main className="w-full relative z-10">
-          <div className="mt-header h-hero min-h-hero lg:px-container lg:px-[90px] h-[calc(100dvh-76px)] min-h-[600px]">
-            <Hero onIntroComplete={() => setIsIntroComplete(true)} />
-          </div>
-          <ShowcaseSection />
-          <MarqueeSection />
-          <div className="pb-16 md:pb-32">
-            <FeaturedWork />
-          </div>
-          <Footer />
-        </main>
-      </div>
-    </ThemeProvider>
+    <a href="#main" className="skip-link">
+      {t('nav.work') === 'Trabalhos' ? 'Pular para o conteúdo' : 'Skip to content'}
+    </a>
   );
 }
 
-export default App;
+export default function App() {
+  const [ready, setReady] = useState(false);
+  const location = useLocation();
+  const handleReveal = useCallback(() => setReady(true), []);
+
+  return (
+    <I18nProvider>
+      <SmoothScroll>
+        <AppReadyContext.Provider value={ready}>
+          <SkipLink />
+          <GridLines />
+          <Preloader onReveal={handleReveal} />
+          <Header />
+          <ScrollToTop />
+          <AnimatePresence mode="wait">
+            <Routes location={location} key={location.pathname}>
+              <Route path="/" element={<Home />} />
+              <Route path="/projects/:slug" element={<Project />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </AnimatePresence>
+        </AppReadyContext.Provider>
+      </SmoothScroll>
+    </I18nProvider>
+  );
+}
