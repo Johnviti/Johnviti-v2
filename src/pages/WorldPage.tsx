@@ -24,6 +24,11 @@ const EXHIBIT_RADIUS = 13;
 const NEAR_DISTANCE = 4.5;
 const UP = new THREE.Vector3(0, 1, 0);
 
+// Scratch vectors reused across frames to avoid per-frame allocations
+const scratchForward = new THREE.Vector3();
+const scratchRight = new THREE.Vector3();
+const scratchMove = new THREE.Vector3();
+
 const EXHIBIT_POSITIONS = PROJECTS.map((_, i) => {
   const angle = (i / PROJECTS.length) * Math.PI * 2;
   return {
@@ -115,29 +120,29 @@ const CenterTotem = () => {
   );
 };
 
-const Decorations = () => {
-  const items = useMemo(() => {
-    let seed = 1337;
-    const rand = () => {
-      seed = (seed * 16807) % 2147483647;
-      return seed / 2147483647;
+const DECORATIONS = (() => {
+  let seed = 1337;
+  const rand = () => {
+    seed = (seed * 16807) % 2147483647;
+    return seed / 2147483647;
+  };
+  return Array.from({ length: 70 }, () => {
+    const angle = rand() * Math.PI * 2;
+    const radius = 17.5 + rand() * 27;
+    return {
+      x: Math.sin(angle) * radius,
+      z: Math.cos(angle) * radius,
+      type: rand() < 0.72 ? 'tree' : 'rock',
+      scale: 0.7 + rand() * 1.1,
+      rotation: rand() * Math.PI * 2,
     };
-    return Array.from({ length: 70 }, () => {
-      const angle = rand() * Math.PI * 2;
-      const radius = 17.5 + rand() * 27;
-      return {
-        x: Math.sin(angle) * radius,
-        z: Math.cos(angle) * radius,
-        type: rand() < 0.72 ? 'tree' : 'rock',
-        scale: 0.7 + rand() * 1.1,
-        rotation: rand() * Math.PI * 2,
-      };
-    });
-  }, []);
+  });
+})();
 
+const Decorations = () => {
   return (
     <>
-      {items.map((item, i) =>
+      {DECORATIONS.map((item, i) =>
         item.type === 'tree' ? (
           <group key={i} position={[item.x, 0, item.z]} rotation={[0, item.rotation, 0]} scale={item.scale}>
             <mesh position={[0, 0.5, 0]}>
@@ -174,9 +179,6 @@ const Player = ({
   const { camera } = useThree();
   const keys = useRef<Record<string, boolean>>({});
   const nearRef = useRef(-1);
-  const forward = useMemo(() => new THREE.Vector3(), []);
-  const right = useMemo(() => new THREE.Vector3(), []);
-  const move = useMemo(() => new THREE.Vector3(), []);
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => (keys.current[e.code] = true);
@@ -215,17 +217,17 @@ const Player = ({
     const mx = (k.KeyD || k.ArrowRight ? 1 : 0) - (k.KeyA || k.ArrowLeft ? 1 : 0);
 
     if (mz !== 0 || mx !== 0) {
-      camera.getWorldDirection(forward);
-      forward.y = 0;
-      forward.normalize();
-      right.crossVectors(forward, UP);
-      move
-        .copy(forward)
+      camera.getWorldDirection(scratchForward);
+      scratchForward.y = 0;
+      scratchForward.normalize();
+      scratchRight.crossVectors(scratchForward, UP);
+      scratchMove
+        .copy(scratchForward)
         .multiplyScalar(mz)
-        .addScaledVector(right, mx)
+        .addScaledVector(scratchRight, mx)
         .normalize()
         .multiplyScalar((k.ShiftLeft || k.ShiftRight ? 9 : 5.5) * delta);
-      camera.position.add(move);
+      camera.position.add(scratchMove);
     }
 
     camera.position.y = 1.7;

@@ -20,4 +20,12 @@ export default defineConfig([
       globals: globals.browser,
     },
   },
+  {
+    // react-three-fiber scenes: mutating three.js objects (camera, textures,
+    // object3D transforms) inside useFrame/useEffect is the intended API.
+    files: ['src/pages/GalleryPage.tsx', 'src/pages/WorldPage.tsx'],
+    rules: {
+      'react-hooks/immutability': 'off',
+    },
+  },
 ])
