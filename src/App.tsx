@@ -12,6 +12,7 @@ const ThreeDTestPage = lazy(() => import('@/ThreeDTestPage'));
 const GalleryPage = lazy(() => import('@/pages/GalleryPage'));
 const MinimalPage = lazy(() => import('@/pages/MinimalPage'));
 const WorldPage = lazy(() => import('@/pages/WorldPage'));
+const PlaygroundPage = lazy(() => import('@/pages/PlaygroundPage'));
 
 const PageLoader = () => (
   <div className="flex min-h-svh items-center justify-center bg-cream text-ink">
@@ -31,6 +32,8 @@ function App() {
       <MinimalPage />
     ) : path === '/mundo' ? (
       <WorldPage />
+    ) : path === '/playground' ? (
+      <PlaygroundPage />
     ) : null;
 
   if (page) {
