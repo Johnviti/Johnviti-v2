@@ -1,58 +1,72 @@
-import { Header } from '@/components/layout/Header';
-import { Hero } from '@/components/layout/Hero';
-import { GlowingCursor } from '@/components/ui/GlowingCursor';
-import { ThemeProvider } from 'styled-components';
-import { GlobalStyles } from '@/styles/GlobalStyles';
-import { theme } from '@/styles/theme';
-import bgImage from '@/assets/background.png';
-import { ShowcaseSection } from '@/components/layout/ShowcaseSection';
-import { FeaturedWork } from '@/components/layout/FeaturedWork';
-import { MarqueeSection } from '@/components/layout/MarqueeSection';
-import { Footer } from '@/components/layout/Footer';
-import { Headset3DConfigurator } from '@/components/ui/Headset3D';
-import { useState } from 'react';
+import { lazy, Suspense } from 'react';
+import { Header } from '@/components/site/Header';
+import { Hero } from '@/components/site/Hero';
+import { CaseStudies } from '@/components/site/CaseStudies';
+import { Statement } from '@/components/site/Statement';
+import { Services } from '@/components/site/Services';
+import { Marquee } from '@/components/site/Marquee';
+import { Footer } from '@/components/site/Footer';
+import { SOCIALS } from '@/data/site';
+
+const ThreeDTestPage = lazy(() => import('@/ThreeDTestPage'));
+const GalleryPage = lazy(() => import('@/pages/GalleryPage'));
+const MinimalPage = lazy(() => import('@/pages/MinimalPage'));
+const WorldPage = lazy(() => import('@/pages/WorldPage'));
+
+const PageLoader = () => (
+  <div className="flex min-h-svh items-center justify-center bg-cream text-ink">
+    <span className="animate-pulse text-sm">carregando…</span>
+  </div>
+);
 
 function App() {
-  const [isIntroComplete, setIsIntroComplete] = useState(false);
+  const path = window.location.pathname.replace(/\/+$/, '') || '/';
 
-  if (window.location.pathname === '/3d-test') {
-    return (
-      <ThemeProvider theme={theme}>
-        <GlobalStyles />
-        <div className="w-screen h-screen relative overflow-hidden flex items-center justify-center">
-          <h1 className="absolute top-10 text-white font-bold text-2xl z-20 pointer-events-none">Página de Teste 3D</h1>
-          {/* Render Configurator */}
-          <Headset3DConfigurator />
-        </div>
-      </ThemeProvider>
-    );
+  const page =
+    path === '/3d-test' ? (
+      <ThreeDTestPage />
+    ) : path === '/galeria' ? (
+      <GalleryPage />
+    ) : path === '/minimal' ? (
+      <MinimalPage />
+    ) : path === '/mundo' ? (
+      <WorldPage />
+    ) : null;
+
+  if (page) {
+    return <Suspense fallback={<PageLoader />}>{page}</Suspense>;
   }
 
+  const github = SOCIALS.find((s) => s.label === 'GitHub')?.href ?? '#';
+
   return (
-    <ThemeProvider theme={theme}>
-      <GlobalStyles />
-      <div className="relative min-h-screen w-full overflow-x-hidden bg-[#020617]">
-        <div
-          className="absolute inset-0 z-0 pointer-events-none
-                     bg-top bg-repeat-y opacity-80
-                     bg-[length:100vw_auto]"
-          style={{ backgroundImage: `url(${bgImage})` }}
+    <div className="bg-cream text-ink">
+      <Header />
+      <main>
+        <Hero />
+        <CaseStudies />
+        <Statement
+          id="sobre"
+          text="Trabalho de ponta a ponta e uno design, tecnologia e dados para criar produtos digitais que geram resultado de verdade."
         />
-        <GlowingCursor />
-        <Header isVisible={isIntroComplete} />
-        <main className="w-full relative z-10">
-          <div className="mt-header h-hero min-h-hero lg:px-container lg:px-[90px] h-[calc(100dvh-76px)] min-h-[600px]">
-            <Hero onIntroComplete={() => setIsIntroComplete(true)} />
-          </div>
-          <ShowcaseSection />
-          <MarqueeSection />
-          <div className="pb-16 md:pb-32">
-            <FeaturedWork />
-          </div>
-          <Footer />
-        </main>
-      </div>
-    </ThemeProvider>
+        <Services />
+        <Statement text="Projetos para clientes são só uma parte do que eu faço. Também adoro experimentar por conta própria.">
+          <a
+            href={github}
+            target="_blank"
+            rel="noreferrer"
+            className="group mt-10 inline-flex items-center gap-2 text-lg"
+          >
+            <span className="underline decoration-1 underline-offset-4 transition-opacity group-hover:opacity-60">
+              Ver experimentos no GitHub
+            </span>
+            <span className="transition-transform duration-300 group-hover:translate-x-1">↗</span>
+          </a>
+        </Statement>
+        <Marquee />
+      </main>
+      <Footer />
+    </div>
   );
 }
 
