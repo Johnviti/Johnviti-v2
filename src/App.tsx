@@ -13,6 +13,10 @@ const GalleryPage = lazy(() => import('@/pages/GalleryPage'));
 const MinimalPage = lazy(() => import('@/pages/MinimalPage'));
 const WorldPage = lazy(() => import('@/pages/WorldPage'));
 const PlaygroundPage = lazy(() => import('@/pages/PlaygroundPage'));
+const OrbitPage = lazy(() => import('@/pages/OrbitPage'));
+const MosaicPage = lazy(() => import('@/pages/MosaicPage'));
+const GaleriaImersivaPage = lazy(() => import('@/pages/GaleriaImersivaPage'));
+const CasePage = lazy(() => import('@/pages/CasePage'));
 
 const PageLoader = () => (
   <div className="flex min-h-svh items-center justify-center bg-cream text-ink">
@@ -22,6 +26,7 @@ const PageLoader = () => (
 
 function App() {
   const path = window.location.pathname.replace(/\/+$/, '') || '/';
+  const caseSlug = path.startsWith('/case/') ? path.slice('/case/'.length) : null;
 
   const page =
     path === '/3d-test' ? (
@@ -34,6 +39,14 @@ function App() {
       <WorldPage />
     ) : path === '/playground' ? (
       <PlaygroundPage />
+    ) : path === '/orbita' ? (
+      <OrbitPage />
+    ) : path === '/mosaico' ? (
+      <MosaicPage />
+    ) : path === '/galeria-imersiva' ? (
+      <GaleriaImersivaPage />
+    ) : caseSlug ? (
+      <CasePage slug={caseSlug} />
     ) : null;
 
   if (page) {

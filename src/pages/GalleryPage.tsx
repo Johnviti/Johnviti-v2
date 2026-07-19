@@ -164,7 +164,7 @@ const GalleryPage = () => {
           >
             ← john amorim<sup className="text-[0.6em]">®</sup>
           </a>
-          <nav className="pointer-events-auto flex gap-4 text-[#f2f0ea]/60">
+          <nav className="pointer-events-auto flex max-w-[70vw] flex-wrap justify-end gap-x-4 gap-y-1 text-[#f2f0ea]/60">
             {VERSIONS.filter((v) => v.path !== '/galeria').map((version) => (
               <a
                 key={version.path}

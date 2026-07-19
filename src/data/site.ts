@@ -67,6 +67,9 @@ export const VERSIONS = [
   { label: 'galeria 3d', path: '/galeria' },
   { label: 'mundo 3d', path: '/mundo' },
   { label: 'playground 3d', path: '/playground' },
+  { label: 'órbita', path: '/orbita' },
+  { label: 'mosaico', path: '/mosaico' },
+  { label: 'galeria imersiva', path: '/galeria-imersiva' },
 ];
 
 export const SERVICES = [

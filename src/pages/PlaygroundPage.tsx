@@ -7,6 +7,7 @@ import {
   useState,
   type MutableRefObject,
   type PointerEvent as ReactPointerEvent,
+  type ReactNode,
 } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Billboard, Text, useProgress, useTexture } from '@react-three/drei';
@@ -22,15 +23,100 @@ import { CONTACT_EMAIL, PROJECTS, SOCIALS, VERSIONS } from '@/data/site';
 
 const WORLD_HALF = 58;
 const SPAWN_POSITION: [number, number, number] = [0, 0.7, 12];
-const CAMERA_OFFSET = new THREE.Vector3(0, 13, 14);
-const MAX_FORWARD_SPEED = 16;
-const MAX_REVERSE_SPEED = 7;
-const ACCELERATION = 24;
-const COAST_DRAG = 1.4;
 const WHEEL_RADIUS = 0.34;
 const EXHIBIT_RADIUS = 30;
 const NEAR_DISTANCE = 6.5;
 const CONTACT_POSITION = new THREE.Vector3(0, 0, 30);
+
+// ---------------------------------------------------------------------------
+// Avatar customization
+// ---------------------------------------------------------------------------
+
+const SKIN_TONES = ['#f4cfa6', '#e6b287', '#c98d5e', '#9c6a44', '#6e4a30'] as const;
+const HAIR_COLORS = ['#232120', '#5b3a24', '#a06a2c', '#c9b38a', '#8d8d8d'] as const;
+const SHIRT_COLORS = ['#e0492e', '#3f6fbf', '#597a4c', '#e7a52e', '#232120', '#f6f2e7'] as const;
+const PANTS_COLORS = ['#2b3345', '#232120', '#6f6d66', '#3f6fbf', '#c96f4a'] as const;
+const CAR_COLORS = ['#e0492e', '#3f6fbf', '#597a4c', '#e7a52e', '#232120', '#7e4fc9'] as const;
+
+const HAIRSTYLES = [
+  { id: 'curto', label: 'curto' },
+  { id: 'coque', label: 'coque' },
+  { id: 'bone', label: 'boné' },
+  { id: 'careca', label: 'careca' },
+] as const;
+
+type HairstyleId = (typeof HAIRSTYLES)[number]['id'];
+
+type CharacterStyle = {
+  skin: string;
+  hair: string;
+  hairstyle: HairstyleId;
+  shirt: string;
+  pants: string;
+};
+
+type AvatarConfig = {
+  mode: 'character' | 'car';
+  character: CharacterStyle;
+  carColor: string;
+};
+
+const DEFAULT_AVATAR: AvatarConfig = {
+  mode: 'character',
+  character: {
+    skin: SKIN_TONES[1],
+    hair: HAIR_COLORS[0],
+    hairstyle: 'curto',
+    shirt: SHIRT_COLORS[0],
+    pants: PANTS_COLORS[0],
+  },
+  carColor: CAR_COLORS[0],
+};
+
+const STORAGE_KEY = 'playground-avatar';
+
+const loadAvatar = (): AvatarConfig => {
+  if (typeof window === 'undefined') return DEFAULT_AVATAR;
+  try {
+    const raw = window.localStorage.getItem(STORAGE_KEY);
+    if (!raw) return DEFAULT_AVATAR;
+    const parsed = JSON.parse(raw) as Partial<AvatarConfig> & {
+      character?: Partial<CharacterStyle>;
+    };
+    return {
+      mode: parsed.mode === 'car' ? 'car' : 'character',
+      character: { ...DEFAULT_AVATAR.character, ...parsed.character },
+      carColor:
+        typeof parsed.carColor === 'string'
+          ? parsed.carColor
+          : DEFAULT_AVATAR.carColor,
+    };
+  } catch {
+    return DEFAULT_AVATAR;
+  }
+};
+
+// Physics/camera tuning per avatar mode
+const MODE_PARAMS = {
+  car: {
+    maxForward: 16,
+    maxReverse: 7,
+    acceleration: 24,
+    coastDrag: 1.4,
+    turnRate: 2.5,
+    turnNeedsSpeed: true,
+    cameraOffset: new THREE.Vector3(0, 13, 14),
+  },
+  character: {
+    maxForward: 9,
+    maxReverse: 4,
+    acceleration: 30,
+    coastDrag: 6,
+    turnRate: 3,
+    turnNeedsSpeed: false,
+    cameraOffset: new THREE.Vector3(0, 10, 11),
+  },
+} as const;
 
 // Scratch objects reused across frames to avoid per-frame allocations
 const scratchQuat = new THREE.Quaternion();
@@ -54,14 +140,204 @@ const EXHIBIT_SPOTS = PROJECTS.map((_, i) => {
 
 type JoystickRef = MutableRefObject<{ x: number; y: number }>;
 
-const CarRig = ({
+// ---------------------------------------------------------------------------
+// Player models (shared between the world and the customizer preview)
+// ---------------------------------------------------------------------------
+
+const CAR_WHEELS = [
+  { x: -0.82, z: -0.85, front: true },
+  { x: 0.82, z: -0.85, front: true },
+  { x: -0.82, z: 0.9, front: false },
+  { x: 0.82, z: 0.9, front: false },
+];
+
+const CarModel = ({
+  color,
+  spinGroupsRef,
+  steerGroupsRef,
+}: {
+  color: string;
+  spinGroupsRef?: MutableRefObject<(THREE.Group | null)[]>;
+  steerGroupsRef?: MutableRefObject<(THREE.Group | null)[]>;
+}) => (
+  <group>
+    <mesh castShadow position={[0, 0.55, 0]}>
+      <boxGeometry args={[1.5, 0.5, 2.6]} />
+      <meshStandardMaterial color={color} roughness={0.55} />
+    </mesh>
+    <mesh castShadow position={[0, 1.0, 0.25]}>
+      <boxGeometry args={[1.2, 0.5, 1.2]} />
+      <meshStandardMaterial color="#f6f2e7" roughness={0.4} />
+    </mesh>
+    {[-0.45, 0.45].map((x) => (
+      <mesh key={`head-${x}`} position={[x, 0.6, -1.31]}>
+        <boxGeometry args={[0.22, 0.14, 0.06]} />
+        <meshStandardMaterial
+          color="#fff6cf"
+          emissive="#ffe9a8"
+          emissiveIntensity={1.4}
+        />
+      </mesh>
+    ))}
+    {[-0.5, 0.5].map((x) => (
+      <mesh key={`tail-${x}`} position={[x, 0.58, 1.31]}>
+        <boxGeometry args={[0.18, 0.12, 0.05]} />
+        <meshStandardMaterial
+          color="#ff8177"
+          emissive="#ff5a4d"
+          emissiveIntensity={0.9}
+        />
+      </mesh>
+    ))}
+    {CAR_WHEELS.map((wheel, i) => (
+      <group
+        key={i}
+        position={[wheel.x, 0.34, wheel.z]}
+        ref={(el) => {
+          if (steerGroupsRef && wheel.front) steerGroupsRef.current[i] = el;
+        }}
+      >
+        <group
+          ref={(el) => {
+            if (spinGroupsRef) spinGroupsRef.current[i] = el;
+          }}
+        >
+          <mesh castShadow rotation={[0, 0, Math.PI / 2]}>
+            <cylinderGeometry args={[0.34, 0.34, 0.28, 14]} />
+            <meshStandardMaterial color="#2a2622" roughness={0.9} />
+          </mesh>
+          <mesh rotation={[0, 0, Math.PI / 2]}>
+            <cylinderGeometry args={[0.16, 0.16, 0.3, 10]} />
+            <meshStandardMaterial color="#d9d2c0" roughness={0.6} />
+          </mesh>
+        </group>
+      </group>
+    ))}
+  </group>
+);
+
+type CharacterParts = Record<
+  'root' | 'leftLeg' | 'rightLeg' | 'leftArm' | 'rightArm',
+  THREE.Group | null
+>;
+
+const CharacterModel = ({
+  style,
+  partsRef,
+}: {
+  style: CharacterStyle;
+  partsRef?: MutableRefObject<CharacterParts>;
+}) => {
+  const setPart =
+    (key: keyof CharacterParts) => (el: THREE.Group | null) => {
+      if (partsRef) partsRef.current[key] = el;
+    };
+
+  return (
+    <group ref={setPart('root')}>
+      {/* Legs (pivot at the hip so they can swing) */}
+      {([-0.14, 0.14] as const).map((x, i) => (
+        <group
+          key={`leg-${x}`}
+          position={[x, 0.68, 0]}
+          ref={setPart(i === 0 ? 'leftLeg' : 'rightLeg')}
+        >
+          <mesh castShadow position={[0, -0.28, 0]}>
+            <boxGeometry args={[0.22, 0.56, 0.24]} />
+            <meshStandardMaterial color={style.pants} roughness={0.8} />
+          </mesh>
+          <mesh castShadow position={[0, -0.6, 0.05]}>
+            <boxGeometry args={[0.24, 0.12, 0.34]} />
+            <meshStandardMaterial color="#232120" roughness={0.6} />
+          </mesh>
+        </group>
+      ))}
+
+      {/* Torso */}
+      <mesh castShadow position={[0, 0.96, 0]}>
+        <boxGeometry args={[0.56, 0.56, 0.32]} />
+        <meshStandardMaterial color={style.shirt} roughness={0.7} />
+      </mesh>
+
+      {/* Arms (pivot at the shoulder) */}
+      {([-0.37, 0.37] as const).map((x, i) => (
+        <group
+          key={`arm-${x}`}
+          position={[x, 1.16, 0]}
+          ref={setPart(i === 0 ? 'leftArm' : 'rightArm')}
+        >
+          <mesh castShadow position={[0, -0.26, 0]}>
+            <boxGeometry args={[0.16, 0.52, 0.2]} />
+            <meshStandardMaterial color={style.shirt} roughness={0.7} />
+          </mesh>
+          <mesh castShadow position={[0, -0.56, 0]}>
+            <boxGeometry args={[0.15, 0.14, 0.18]} />
+            <meshStandardMaterial color={style.skin} roughness={0.7} />
+          </mesh>
+        </group>
+      ))}
+
+      {/* Head */}
+      <mesh castShadow position={[0, 1.47, 0]}>
+        <boxGeometry args={[0.42, 0.42, 0.4]} />
+        <meshStandardMaterial color={style.skin} roughness={0.7} />
+      </mesh>
+      {([-0.09, 0.09] as const).map((x) => (
+        <mesh key={`eye-${x}`} position={[x, 1.5, 0.21]}>
+          <boxGeometry args={[0.05, 0.07, 0.02]} />
+          <meshStandardMaterial color="#232120" />
+        </mesh>
+      ))}
+
+      {/* Hairstyles */}
+      {style.hairstyle === 'curto' && (
+        <mesh castShadow position={[0, 1.7, -0.02]}>
+          <boxGeometry args={[0.46, 0.16, 0.44]} />
+          <meshStandardMaterial color={style.hair} roughness={0.85} />
+        </mesh>
+      )}
+      {style.hairstyle === 'coque' && (
+        <>
+          <mesh castShadow position={[0, 1.7, -0.02]}>
+            <boxGeometry args={[0.46, 0.14, 0.44]} />
+            <meshStandardMaterial color={style.hair} roughness={0.85} />
+          </mesh>
+          <mesh castShadow position={[0, 1.84, -0.14]}>
+            <sphereGeometry args={[0.11, 10, 8]} />
+            <meshStandardMaterial color={style.hair} roughness={0.85} />
+          </mesh>
+        </>
+      )}
+      {style.hairstyle === 'bone' && (
+        <>
+          <mesh castShadow position={[0, 1.7, 0]}>
+            <cylinderGeometry args={[0.24, 0.25, 0.14, 12]} />
+            <meshStandardMaterial color={style.shirt} roughness={0.7} />
+          </mesh>
+          <mesh castShadow position={[0, 1.66, 0.29]}>
+            <boxGeometry args={[0.3, 0.05, 0.24]} />
+            <meshStandardMaterial color={style.shirt} roughness={0.7} />
+          </mesh>
+        </>
+      )}
+    </group>
+  );
+};
+
+// ---------------------------------------------------------------------------
+// Player physics rig
+// ---------------------------------------------------------------------------
+
+const PlayerRig = ({
   enabled,
+  avatar,
   joystick,
   resetRef,
   onNear,
   onContactNear,
 }: {
   enabled: boolean;
+  avatar: AvatarConfig;
   joystick: JoystickRef;
   resetRef: MutableRefObject<() => void>;
   onNear: (index: number) => void;
@@ -70,10 +346,21 @@ const CarRig = ({
   const bodyRef = useRef<RapierRigidBody>(null);
   const keys = useRef<Record<string, boolean>>({});
   const spin = useRef(0);
-  const spinGroups = useRef<(THREE.Group | null)[]>([]);
-  const steerGroups = useRef<(THREE.Group | null)[]>([]);
+  const walkPhase = useRef(0);
+  const spinGroupsRef = useRef<(THREE.Group | null)[]>([]);
+  const steerGroupsRef = useRef<(THREE.Group | null)[]>([]);
+  const partsRef = useRef<CharacterParts>({
+    root: null,
+    leftLeg: null,
+    rightLeg: null,
+    leftArm: null,
+    rightArm: null,
+  });
   const nearIndex = useRef(-1);
   const contactNear = useRef(false);
+
+  const mode = avatar.mode;
+  const params = MODE_PARAMS[mode];
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => (keys.current[e.code] = true);
@@ -131,14 +418,14 @@ const CarRig = ({
       velocity.x * scratchForward.x + velocity.z * scratchForward.z;
 
     if (throttle !== 0) {
-      forwardSpeed += throttle * ACCELERATION * delta;
+      forwardSpeed += throttle * params.acceleration * delta;
     } else {
-      forwardSpeed *= Math.max(0, 1 - COAST_DRAG * delta);
+      forwardSpeed *= Math.max(0, 1 - params.coastDrag * delta);
     }
     forwardSpeed = THREE.MathUtils.clamp(
       forwardSpeed,
-      -MAX_REVERSE_SPEED,
-      MAX_FORWARD_SPEED,
+      -params.maxReverse,
+      params.maxForward,
     );
 
     body.setLinvel(
@@ -150,34 +437,59 @@ const CarRig = ({
       true,
     );
 
-    const grip = THREE.MathUtils.clamp(Math.abs(forwardSpeed) / 5, 0, 1);
-    const reverseDir = forwardSpeed < -0.4 ? -1 : 1;
-    body.setAngvel({ x: 0, y: steer * 2.5 * grip * reverseDir, z: 0 }, true);
+    const grip = params.turnNeedsSpeed
+      ? THREE.MathUtils.clamp(Math.abs(forwardSpeed) / 5, 0, 1)
+      : 1;
+    const reverseDir =
+      params.turnNeedsSpeed && forwardSpeed < -0.4 ? -1 : 1;
+    body.setAngvel(
+      { x: 0, y: steer * params.turnRate * grip * reverseDir, z: 0 },
+      true,
+    );
 
-    // Wheels: spin with travel, front pair follows the steering input
-    spin.current += (forwardSpeed * delta) / WHEEL_RADIUS;
-    for (const wheel of spinGroups.current) {
-      if (wheel) wheel.rotation.x = spin.current;
-    }
-    const steerLerp = 1 - Math.exp(-10 * delta);
-    for (const front of steerGroups.current) {
-      if (front) {
-        front.rotation.y = THREE.MathUtils.lerp(
-          front.rotation.y,
-          steer * 0.42,
-          steerLerp,
-        );
+    const speedFactor = Math.min(Math.abs(forwardSpeed) / params.maxForward, 1);
+
+    if (mode === 'car') {
+      // Wheels: spin with travel, front pair follows the steering input
+      spin.current += (forwardSpeed * delta) / WHEEL_RADIUS;
+      for (const wheel of spinGroupsRef.current) {
+        if (wheel) wheel.rotation.x = spin.current;
+      }
+      const steerLerp = 1 - Math.exp(-10 * delta);
+      for (const front of steerGroupsRef.current) {
+        if (front) {
+          front.rotation.y = THREE.MathUtils.lerp(
+            front.rotation.y,
+            steer * 0.42,
+            steerLerp,
+          );
+        }
+      }
+    } else {
+      // Character: swing limbs while walking, with a light bob and lean
+      walkPhase.current += forwardSpeed * delta * 3.2;
+      const swing = Math.sin(walkPhase.current) * 0.6 * speedFactor;
+      const p = partsRef.current;
+      if (p.leftLeg) p.leftLeg.rotation.x = swing;
+      if (p.rightLeg) p.rightLeg.rotation.x = -swing;
+      if (p.leftArm) p.leftArm.rotation.x = -swing * 0.75;
+      if (p.rightArm) p.rightArm.rotation.x = swing * 0.75;
+      if (p.root) {
+        p.root.position.y =
+          Math.abs(Math.sin(walkPhase.current)) * 0.05 * speedFactor;
+        p.root.rotation.x =
+          0.08 * speedFactor * (forwardSpeed >= 0 ? 1 : -1);
       }
     }
 
     const p = body.translation();
     if (p.y < -6) reset();
 
-    // Bruno-Simon-style camera: fixed world angle, pans with the car
+    // Bruno-Simon-style camera: fixed world angle, pans with the player
     scratchCamPos.set(
-      p.x + CAMERA_OFFSET.x,
-      CAMERA_OFFSET.y,
-      p.z + CAMERA_OFFSET.z,
+      p.x + params.cameraOffset.x,
+      params.cameraOffset.y,
+      p.z + params.cameraOffset.z,
     );
     state.camera.position.lerp(scratchCamPos, 1 - Math.exp(-5 * delta));
     scratchLook.set(p.x, 0.6, p.z);
@@ -210,13 +522,6 @@ const CarRig = ({
     }
   });
 
-  const wheels = [
-    { x: -0.82, z: -0.85, front: true },
-    { x: 0.82, z: -0.85, front: true },
-    { x: -0.82, z: 0.9, front: false },
-    { x: 0.82, z: 0.9, front: false },
-  ];
-
   return (
     <RigidBody
       ref={bodyRef}
@@ -225,62 +530,28 @@ const CarRig = ({
       enabledRotations={[false, true, false]}
       angularDamping={4}
     >
-      <CuboidCollider args={[0.82, 0.45, 1.3]} position={[0, 0.45, 0]} />
-      <mesh castShadow position={[0, 0.55, 0]}>
-        <boxGeometry args={[1.5, 0.5, 2.6]} />
-        <meshStandardMaterial color="#e0492e" roughness={0.55} />
-      </mesh>
-      <mesh castShadow position={[0, 1.0, 0.25]}>
-        <boxGeometry args={[1.2, 0.5, 1.2]} />
-        <meshStandardMaterial color="#f6f2e7" roughness={0.4} />
-      </mesh>
-      {[-0.45, 0.45].map((x) => (
-        <mesh key={`head-${x}`} position={[x, 0.6, -1.31]}>
-          <boxGeometry args={[0.22, 0.14, 0.06]} />
-          <meshStandardMaterial
-            color="#fff6cf"
-            emissive="#ffe9a8"
-            emissiveIntensity={1.4}
+      {mode === 'car' ? (
+        <>
+          <CuboidCollider args={[0.82, 0.45, 1.3]} position={[0, 0.45, 0]} />
+          <CarModel
+            color={avatar.carColor}
+            spinGroupsRef={spinGroupsRef}
+            steerGroupsRef={steerGroupsRef}
           />
-        </mesh>
-      ))}
-      {[-0.5, 0.5].map((x) => (
-        <mesh key={`tail-${x}`} position={[x, 0.58, 1.31]}>
-          <boxGeometry args={[0.18, 0.12, 0.05]} />
-          <meshStandardMaterial
-            color="#ff8177"
-            emissive="#ff5a4d"
-            emissiveIntensity={0.9}
-          />
-        </mesh>
-      ))}
-      {wheels.map((wheel, i) => (
-        <group
-          key={i}
-          position={[wheel.x, 0.34, wheel.z]}
-          ref={(el) => {
-            if (wheel.front) steerGroups.current[i] = el;
-          }}
-        >
-          <group
-            ref={(el) => {
-              spinGroups.current[i] = el;
-            }}
-          >
-            <mesh castShadow rotation={[0, 0, Math.PI / 2]}>
-              <cylinderGeometry args={[0.34, 0.34, 0.28, 14]} />
-              <meshStandardMaterial color="#2a2622" roughness={0.9} />
-            </mesh>
-            <mesh rotation={[0, 0, Math.PI / 2]}>
-              <cylinderGeometry args={[0.16, 0.16, 0.3, 10]} />
-              <meshStandardMaterial color="#d9d2c0" roughness={0.6} />
-            </mesh>
-          </group>
-        </group>
-      ))}
+        </>
+      ) : (
+        <>
+          <CuboidCollider args={[0.32, 0.85, 0.32]} position={[0, 0.85, 0]} />
+          <CharacterModel style={avatar.character} partsRef={partsRef} />
+        </>
+      )}
     </RigidBody>
   );
 };
+
+// ---------------------------------------------------------------------------
+// World pieces
+// ---------------------------------------------------------------------------
 
 const Exhibit = ({
   project,
@@ -597,7 +868,7 @@ const GroundMarks = () => (
       anchorX="center"
       anchorY="middle"
     >
-      R para resetar · H para buzinar
+      R para resetar · H para fazer barulho
     </Text>
 
     {/* Zone labels */}
@@ -642,12 +913,14 @@ const GroundMarks = () => (
 
 const PlaygroundScene = ({
   playing,
+  avatar,
   joystick,
   resetRef,
   onNear,
   onContactNear,
 }: {
   playing: boolean;
+  avatar: AvatarConfig;
   joystick: JoystickRef;
   resetRef: MutableRefObject<() => void>;
   onNear: (index: number) => void;
@@ -711,8 +984,9 @@ const PlaygroundScene = ({
           <Exhibit key={project.title} project={project} index={i} />
         ))}
 
-        <CarRig
+        <PlayerRig
           enabled={playing}
+          avatar={avatar}
           joystick={joystick}
           resetRef={resetRef}
           onNear={onNear}
@@ -722,6 +996,74 @@ const PlaygroundScene = ({
     </Suspense>
   </>
 );
+
+// ---------------------------------------------------------------------------
+// Customizer UI
+// ---------------------------------------------------------------------------
+
+const SpinPreview = ({ children }: { children: ReactNode }) => {
+  const group = useRef<THREE.Group>(null);
+  useFrame((_, delta) => {
+    if (group.current) group.current.rotation.y += delta * 0.9;
+  });
+  return <group ref={group}>{children}</group>;
+};
+
+const AvatarPreview = ({ avatar }: { avatar: AvatarConfig }) => (
+  <Canvas camera={{ position: [0, 0.35, 3.2], fov: 38 }} dpr={[1, 1.5]}>
+    <ambientLight intensity={0.75} />
+    <directionalLight position={[3, 5, 4]} intensity={1.3} color="#fff4e0" />
+    <SpinPreview>
+      {avatar.mode === 'car' ? (
+        <group position={[0, -0.62, 0]} scale={0.85}>
+          <CarModel color={avatar.carColor} />
+        </group>
+      ) : (
+        <group position={[0, -0.92, 0]}>
+          <CharacterModel style={avatar.character} />
+        </group>
+      )}
+    </SpinPreview>
+  </Canvas>
+);
+
+const Swatches = ({
+  label,
+  colors,
+  value,
+  onChange,
+}: {
+  label: string;
+  colors: readonly string[];
+  value: string;
+  onChange: (color: string) => void;
+}) => (
+  <div className="flex items-center justify-between gap-3">
+    <span className="w-14 shrink-0 text-left text-xs text-stone-soft">
+      {label}
+    </span>
+    <div className="flex flex-wrap justify-end gap-1.5">
+      {colors.map((color) => (
+        <button
+          key={color}
+          type="button"
+          onClick={() => onChange(color)}
+          aria-label={`${label}: ${color}`}
+          className={`h-6 w-6 rounded-full transition-transform ${
+            value === color
+              ? 'scale-110 ring-2 ring-ink ring-offset-2 ring-offset-cream'
+              : 'ring-1 ring-ink/15 hover:scale-105'
+          }`}
+          style={{ backgroundColor: color }}
+        />
+      ))}
+    </div>
+  </div>
+);
+
+// ---------------------------------------------------------------------------
+// Touch joystick
+// ---------------------------------------------------------------------------
 
 const JOY_RADIUS = 44;
 
@@ -779,10 +1121,15 @@ const Joystick = ({ inputRef }: { inputRef: JoystickRef }) => {
   );
 };
 
+// ---------------------------------------------------------------------------
+// Page
+// ---------------------------------------------------------------------------
+
 const PlaygroundPage = () => {
   const [playing, setPlaying] = useState(false);
   const [near, setNear] = useState(-1);
   const [contactNear, setContactNear] = useState(false);
+  const [avatar, setAvatar] = useState<AvatarConfig>(loadAvatar);
   const { active } = useProgress();
   const joystick = useRef({ x: 0, y: 0 });
   const resetRef = useRef<() => void>(() => {});
@@ -798,6 +1145,20 @@ const PlaygroundPage = () => {
     document.title = 'john amorim — playground 3d';
   }, []);
 
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(avatar));
+    } catch {
+      // storage may be unavailable (private mode); the choice just won't persist
+    }
+  }, [avatar]);
+
+  const setCharacter = (patch: Partial<CharacterStyle>) =>
+    setAvatar((prev) => ({
+      ...prev,
+      character: { ...prev.character, ...patch },
+    }));
+
   const honk = useCallback(() => {
     const Ctor =
       window.AudioContext ??
@@ -808,20 +1169,31 @@ const PlaygroundPage = () => {
     const ctx = audioCtx.current;
     if (ctx.state === 'suspended') void ctx.resume();
     const now = ctx.currentTime;
-    for (const freq of [392, 494]) {
+    const tones =
+      avatar.mode === 'car'
+        ? [
+            { freq: 392, type: 'square' as const, start: 0, dur: 0.3 },
+            { freq: 494, type: 'square' as const, start: 0, dur: 0.3 },
+          ]
+        : [
+            { freq: 784, type: 'sine' as const, start: 0, dur: 0.12 },
+            { freq: 1046, type: 'sine' as const, start: 0.15, dur: 0.16 },
+          ];
+    for (const tone of tones) {
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
-      osc.type = 'square';
-      osc.frequency.value = freq;
-      gain.gain.setValueAtTime(0, now);
-      gain.gain.linearRampToValueAtTime(0.06, now + 0.02);
-      gain.gain.setValueAtTime(0.06, now + 0.18);
-      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.3);
+      osc.type = tone.type;
+      osc.frequency.value = tone.freq;
+      const t0 = now + tone.start;
+      gain.gain.setValueAtTime(0, t0);
+      gain.gain.linearRampToValueAtTime(0.07, t0 + 0.02);
+      gain.gain.setValueAtTime(0.07, t0 + Math.max(0.03, tone.dur - 0.06));
+      gain.gain.exponentialRampToValueAtTime(0.0001, t0 + tone.dur);
       osc.connect(gain).connect(ctx.destination);
-      osc.start(now);
-      osc.stop(now + 0.32);
+      osc.start(t0);
+      osc.stop(t0 + tone.dur + 0.02);
     }
-  }, []);
+  }, [avatar.mode]);
 
   useEffect(() => {
     if (!playing) return;
@@ -835,12 +1207,14 @@ const PlaygroundPage = () => {
   }, [playing, honk]);
 
   const nearProject = near >= 0 ? PROJECTS[near] : null;
+  const noiseLabel = avatar.mode === 'car' ? 'buzinar' : 'assobiar';
 
   return (
     <div className="fixed inset-0 touch-none overflow-hidden bg-[#eef0e4] font-grotesk text-ink">
       <Canvas shadows camera={{ position: [0, 16, 30], fov: 45 }} dpr={[1, 1.5]}>
         <PlaygroundScene
           playing={playing}
+          avatar={avatar}
           joystick={joystick}
           resetRef={resetRef}
           onNear={setNear}
@@ -852,8 +1226,8 @@ const PlaygroundPage = () => {
       {playing && (
         <div className="pointer-events-none absolute left-1/2 top-5 -translate-x-1/2 rounded-full bg-ink/70 px-4 py-1.5 text-center text-xs text-cream">
           {isTouch
-            ? 'use o joystick para dirigir'
-            : 'WASD ou setas para dirigir · R para resetar · H para buzinar'}
+            ? 'use o joystick para se mover'
+            : `WASD ou setas para mover · R para resetar · H para ${noiseLabel}`}
         </div>
       )}
 
@@ -869,7 +1243,7 @@ const PlaygroundPage = () => {
           <button
             onClick={() => setPlaying(false)}
             className="absolute right-5 top-5 flex h-10 w-10 items-center justify-center rounded-full bg-ink/70 text-cream transition-opacity hover:opacity-80"
-            aria-label="Pausar exploração"
+            aria-label="Pausar e personalizar"
           >
             ✕
           </button>
@@ -936,7 +1310,7 @@ const PlaygroundPage = () => {
               onClick={honk}
               className="h-16 w-16 select-none rounded-full border-2 border-ink/30 bg-cream/80 text-xs font-medium backdrop-blur active:bg-ink active:text-cream"
             >
-              buzina
+              {avatar.mode === 'car' ? 'buzina' : 'assobio'}
             </button>
             <button
               onClick={() => resetRef.current()}
@@ -948,29 +1322,120 @@ const PlaygroundPage = () => {
         </>
       )}
 
-      {/* Start screen */}
+      {/* Start screen with avatar customizer */}
       {!playing && (
         <div className="absolute inset-0 flex items-center justify-center bg-ink/40 p-5 backdrop-blur-sm">
-          <div className="w-full max-w-md rounded-2xl bg-cream p-8 text-center shadow-2xl">
+          <div className="max-h-[92svh] w-full max-w-md overflow-y-auto rounded-2xl bg-cream p-6 text-center shadow-2xl sm:p-8">
             <p className="text-xs uppercase tracking-wide text-stone-soft">
               playground 3d
             </p>
-            <h1 className="mt-2 text-3xl font-medium tracking-tight">
-              Dirija pelo meu portfólio
+            <h1 className="mt-2 text-2xl font-medium tracking-tight sm:text-3xl">
+              Explore meu portfólio
             </h1>
-            <p className="mt-3 text-sm leading-relaxed text-stone-soft">
-              {isTouch
-                ? 'Use o joystick para dirigir o carrinho. Visite os totens dos projetos, derrube os pinos de boliche e o muro de tijolos.'
-                : 'Use WASD (ou setas) para dirigir o carrinho. Visite os totens dos projetos, derrube os pinos de boliche e o muro de tijolos.'}
+            <p className="mt-2 text-sm leading-relaxed text-stone-soft">
+              Monte um personagem do seu jeito — ou escolha o carrinho — e saia
+              explorando: visite os totens dos projetos, derrube os pinos de
+              boliche e o muro de tijolos.
             </p>
+
+            {/* Mode toggle */}
+            <div className="mt-4 flex rounded-full border border-ink/15 bg-cream-soft p-1 text-sm">
+              <button
+                onClick={() =>
+                  setAvatar((prev) => ({ ...prev, mode: 'character' }))
+                }
+                className={`flex-1 rounded-full py-1.5 transition-colors ${
+                  avatar.mode === 'character'
+                    ? 'bg-ink text-cream'
+                    : 'hover:bg-ink/5'
+                }`}
+              >
+                personagem
+              </button>
+              <button
+                onClick={() => setAvatar((prev) => ({ ...prev, mode: 'car' }))}
+                className={`flex-1 rounded-full py-1.5 transition-colors ${
+                  avatar.mode === 'car' ? 'bg-ink text-cream' : 'hover:bg-ink/5'
+                }`}
+              >
+                carrinho
+              </button>
+            </div>
+
+            {/* Live preview */}
+            <div className="mt-3 h-40 overflow-hidden rounded-xl bg-cream-soft/70">
+              <AvatarPreview avatar={avatar} />
+            </div>
+
+            {/* Options */}
+            {avatar.mode === 'character' ? (
+              <div className="mt-3 space-y-2.5">
+                <Swatches
+                  label="pele"
+                  colors={SKIN_TONES}
+                  value={avatar.character.skin}
+                  onChange={(skin) => setCharacter({ skin })}
+                />
+                <Swatches
+                  label="cabelo"
+                  colors={HAIR_COLORS}
+                  value={avatar.character.hair}
+                  onChange={(hair) => setCharacter({ hair })}
+                />
+                <div className="flex items-center justify-between gap-3">
+                  <span className="w-14 shrink-0 text-left text-xs text-stone-soft">
+                    estilo
+                  </span>
+                  <div className="flex flex-wrap justify-end gap-1.5">
+                    {HAIRSTYLES.map((style) => (
+                      <button
+                        key={style.id}
+                        onClick={() => setCharacter({ hairstyle: style.id })}
+                        className={`rounded-full px-2.5 py-1 text-xs transition-colors ${
+                          avatar.character.hairstyle === style.id
+                            ? 'bg-ink text-cream'
+                            : 'bg-cream-soft hover:bg-ink/10'
+                        }`}
+                      >
+                        {style.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <Swatches
+                  label="camisa"
+                  colors={SHIRT_COLORS}
+                  value={avatar.character.shirt}
+                  onChange={(shirt) => setCharacter({ shirt })}
+                />
+                <Swatches
+                  label="calça"
+                  colors={PANTS_COLORS}
+                  value={avatar.character.pants}
+                  onChange={(pants) => setCharacter({ pants })}
+                />
+              </div>
+            ) : (
+              <div className="mt-3">
+                <Swatches
+                  label="cor"
+                  colors={CAR_COLORS}
+                  value={avatar.carColor}
+                  onChange={(carColor) =>
+                    setAvatar((prev) => ({ ...prev, carColor }))
+                  }
+                />
+              </div>
+            )}
+
             <button
               onClick={() => setPlaying(true)}
               disabled={active}
-              className="mt-6 w-full rounded-full bg-ink px-6 py-3 font-medium text-cream transition-opacity hover:opacity-80 disabled:opacity-50"
+              className="mt-5 w-full rounded-full bg-ink px-6 py-3 font-medium text-cream transition-opacity hover:opacity-80 disabled:opacity-50"
             >
-              {active ? 'carregando mundo…' : 'Começar a dirigir →'}
+              {active ? 'carregando mundo…' : 'Começar a explorar →'}
             </button>
-            <div className="mt-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs text-stone-soft">
+            <div className="mt-5 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs text-stone-soft">
               <a
                 href="/"
                 className="underline-offset-4 hover:text-ink hover:underline"
