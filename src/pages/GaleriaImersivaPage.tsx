@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
+import { preloaderDone } from '@/components/loader/loaderGate';
 import CustomCursor from '@/components/galeria-imersiva/CustomCursor';
 import FixedHeader from '@/components/galeria-imersiva/FixedHeader';
 import IntroOverlay from '@/components/galeria-imersiva/IntroOverlay';
@@ -31,6 +32,22 @@ const GaleriaImersivaPage = () => {
   });
   const [introMounted, setIntroMounted] = useState(introVisible);
 
+  // O overlay de instruções e a coreografia só começam depois que o véu do
+  // Preloader sai — senão a demonstração roda escondida e o timer de
+  // auto-dismiss consome o tempo de leitura do usuário.
+  const [preloaderGone, setPreloaderGone] = useState(false);
+  const introChoreoRef = useRef<gsap.core.Timeline | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    preloaderDone.then(() => {
+      if (!cancelled) setPreloaderGone(true);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   const dismissIntro = useCallback(() => {
     try {
       sessionStorage.setItem(INTRO_STORAGE_KEY, '1');
@@ -54,8 +71,6 @@ const GaleriaImersivaPage = () => {
       '(prefers-reduced-motion: reduce)',
     ).matches;
 
-    let intro: gsap.core.Timeline | null = null;
-
     const app = new GalleryApp({
       canvas,
       container,
@@ -64,7 +79,8 @@ const GaleriaImersivaPage = () => {
       reducedMotion,
       // A primeira interação interrompe a coreografia e dispensa o overlay.
       onUserInteract: () => {
-        intro?.kill();
+        introChoreoRef.current?.kill();
+        introChoreoRef.current = null;
         dismissIntro();
       },
       // Clique (tap sem arraste) em um tile abre a página do case.
@@ -74,24 +90,41 @@ const GaleriaImersivaPage = () => {
     });
     appRef.current = app;
 
-    // Coreografia inicial: três impulsos com pausas, timing guiado pelo vídeo.
-    if (!reducedMotion) {
-      intro = gsap.timeline({ delay: 0.4 });
-      intro
-        // Primeiro deslocamento diagonal (0,4s–1,5s)
-        .to(app.target, { x: '+=0.85', y: '+=1.7', duration: 1.1, ease: 'power2.out' }, 0)
-        // Segundo impulso, mais amplo (2,5s–3,6s)
-        .to(app.target, { x: '-=1.4', y: '+=2.35', duration: 1.1, ease: 'power3.inOut' }, 2.1)
-        // Terceiro movimento combinando os dois eixos (4,8s–6,5s)
-        .to(app.target, { x: '+=2.15', y: '-=2.75', duration: 1.7, ease: 'power2.inOut' }, 4.4);
-    }
-
     return () => {
-      intro?.kill();
+      introChoreoRef.current?.kill();
+      introChoreoRef.current = null;
       app.destroy();
       appRef.current = null;
     };
   }, [dismissIntro]);
+
+  // Coreografia inicial: três impulsos com pausas, timing guiado pelo vídeo.
+  // Disparada apenas quando o véu do Preloader já saiu de cena.
+  useEffect(() => {
+    if (!preloaderGone) return;
+    const app = appRef.current;
+    if (!app) return;
+
+    const reducedMotion = window.matchMedia(
+      '(prefers-reduced-motion: reduce)',
+    ).matches;
+    if (reducedMotion) return;
+
+    const intro = gsap.timeline({ delay: 0.4 });
+    intro
+      // Primeiro deslocamento diagonal (0,4s–1,5s)
+      .to(app.target, { x: '+=0.85', y: '+=1.7', duration: 1.1, ease: 'power2.out' }, 0)
+      // Segundo impulso, mais amplo (2,5s–3,6s)
+      .to(app.target, { x: '-=1.4', y: '+=2.35', duration: 1.1, ease: 'power3.inOut' }, 2.1)
+      // Terceiro movimento combinando os dois eixos (4,8s–6,5s)
+      .to(app.target, { x: '+=2.15', y: '-=2.75', duration: 1.7, ease: 'power2.inOut' }, 4.4);
+    introChoreoRef.current = intro;
+
+    return () => {
+      intro.kill();
+      if (introChoreoRef.current === intro) introChoreoRef.current = null;
+    };
+  }, [preloaderGone]);
 
   return (
     <div className="fixed inset-0 overflow-hidden bg-white">
@@ -115,7 +148,7 @@ const GaleriaImersivaPage = () => {
         ))}
       </ul>
 
-      {introMounted && (
+      {preloaderGone && introMounted && (
         <IntroOverlay visible={introVisible} onDismiss={dismissIntro} />
       )}
 

@@ -139,6 +139,35 @@ const DECORATIONS = (() => {
   });
 })();
 
+/** Círculos de colisão no plano XZ — totem central, expositores e decorações. */
+const COLLIDERS: { x: number; z: number; r: number }[] = [
+  { x: 0, z: 0, r: 1.15 },
+  ...EXHIBIT_POSITIONS.map(({ position }) => ({
+    x: position.x,
+    z: position.z,
+    r: 1.5,
+  })),
+  ...DECORATIONS.map((d) => ({
+    x: d.x,
+    z: d.z,
+    r: (d.type === 'tree' ? 0.38 : 0.55) * d.scale,
+  })),
+];
+
+/** Empurra a posição para fora de qualquer círculo de colisão. */
+const collideWithWorld = (p: THREE.Vector3) => {
+  for (const c of COLLIDERS) {
+    const dx = p.x - c.x;
+    const dz = p.z - c.z;
+    const d2 = dx * dx + dz * dz;
+    if (d2 < c.r * c.r && d2 > 1e-8) {
+      const d = Math.sqrt(d2);
+      p.x = c.x + (dx / d) * c.r;
+      p.z = c.z + (dz / d) * c.r;
+    }
+  }
+};
+
 const Decorations = () => {
   return (
     <>
@@ -239,6 +268,9 @@ const Player = ({
       camera.position.z *= WORLD_RADIUS / dist;
     }
 
+    // Colisão com totem, expositores e decorações — o mundo é sólido.
+    collideWithWorld(camera.position);
+
     // Proximity to exhibits
     let nearest = -1;
     let best = NEAR_DISTANCE * NEAR_DISTANCE;
@@ -278,9 +310,9 @@ const WorldScene = ({
       <hemisphereLight args={['#eaf2ff', '#8fa77e', 0.9]} />
       <directionalLight position={[30, 40, -10]} intensity={1.6} color="#fff4e0" />
 
-      {/* Ground */}
+      {/* Ground — raio maior que o alcance do fog, para a borda nunca aparecer */}
       <mesh rotation-x={-Math.PI / 2} position={[0, 0, 0]}>
-        <circleGeometry args={[70, 64]} />
+        <circleGeometry args={[160, 64]} />
         <meshStandardMaterial color="#a9bd93" />
       </mesh>
 
@@ -301,6 +333,11 @@ const WorldScene = ({
 const WorldPage = () => {
   const [playing, setPlaying] = useState(false);
   const [near, setNear] = useState(-1);
+  // Após sair do pointer lock (ESC), o navegador exige ~1,25s antes de um
+  // novo lock — sem esta trégua o clique seguinte falha com SecurityError
+  // e o botão parece não responder.
+  const [lockCooldown, setLockCooldown] = useState(false);
+  const cooldownTimer = useRef<number | undefined>(undefined);
   const { active } = useProgress();
   const controls = useRef<ComponentRef<typeof PointerLockControls>>(null);
   const lookDelta = useRef({ dx: 0, dy: 0 });
@@ -313,14 +350,13 @@ const WorldPage = () => {
 
   useEffect(() => {
     document.title = 'john amorim — mundo 3d';
+    return () => window.clearTimeout(cooldownTimer.current);
   }, []);
 
+  // No desktop o lock é disparado pelo próprio PointerLockControls via
+  // `selector` no botão — chamar lock() aqui duplicaria o pedido no clique.
   const enter = () => {
-    if (isTouch) {
-      setPlaying(true);
-    } else {
-      controls.current?.lock();
-    }
+    if (isTouch) setPlaying(true);
   };
 
   const nearProject = near >= 0 ? PROJECTS[near] : null;
@@ -352,8 +388,19 @@ const WorldPage = () => {
         {!isTouch && (
           <PointerLockControls
             ref={controls}
+            // Sem selector, o drei registra o lock em `document` — qualquer
+            // clique na página (inclusive nos links) capturava o mouse.
+            selector="#mundo-entrar"
             onLock={() => setPlaying(true)}
-            onUnlock={() => setPlaying(false)}
+            onUnlock={() => {
+              setPlaying(false);
+              setLockCooldown(true);
+              window.clearTimeout(cooldownTimer.current);
+              cooldownTimer.current = window.setTimeout(
+                () => setLockCooldown(false),
+                1500,
+              );
+            }}
           />
         )}
       </Canvas>
@@ -427,11 +474,16 @@ const WorldPage = () => {
                 : 'Use WASD (ou setas) para andar e o mouse para olhar ao redor. Aproxime-se dos totens para conhecer cada projeto.'}
             </p>
             <button
+              id="mundo-entrar"
               onClick={enter}
-              disabled={active}
+              disabled={active || lockCooldown}
               className="mt-6 w-full rounded-full bg-ink px-6 py-3 font-medium text-cream transition-opacity hover:opacity-80 disabled:opacity-50"
             >
-              {active ? 'carregando mundo…' : 'Entrar no mundo →'}
+              {active
+                ? 'carregando mundo…'
+                : lockCooldown
+                  ? 'um instante…'
+                  : 'Entrar no mundo →'}
             </button>
             <div className="mt-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs text-stone-soft">
               <a href="/" className="underline-offset-4 hover:text-ink hover:underline">

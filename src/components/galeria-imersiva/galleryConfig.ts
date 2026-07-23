@@ -3,21 +3,19 @@
  * Ajuste estes valores para calibrar a experiência com o vídeo de referência.
  */
 export const galleryConfig = {
-  /** Texto do logotipo no canto superior esquerdo (facilmente substituível). */
-  brandText: 'JOHN AMORIM®',
-  menuText: 'MENU',
-  exitText: 'EXIT',
-
   /** Colunas visíveis por breakpoint (controla o "zoom" base da parede). */
   columnsDesktop: 4.3,
   columnsTablet: 3.1,
   columnsMobile: 2.5,
 
-  /** Célula virtual do grid, em unidades de mundo (1 célula ≈ 1 coluna). */
+  /** Célula virtual do grid, em unidades de mundo (1 célula ≈ 1 coluna).
+   *  cellHeight menor porque as capas são todas landscape (tiles mais baixos),
+   *  o que reduz o respiro vertical entre as fileiras. */
   cellWidth: 1.0,
-  cellHeight: 1.06,
-  /** Largura do tile dentro da célula — o restante vira o gap branco. */
-  tileWidth: 0.865,
+  cellHeight: 0.68,
+  /** Largura do tile dentro da célula — o restante vira o gap branco.
+   *  Mais próxima de cellWidth = menos espaçamento horizontal. */
+  tileWidth: 0.9,
 
   /** Curvatura da parede (deslocamento Z por distância² ao centro). */
   baseCurvature: 0.02,
@@ -53,11 +51,11 @@ export const galleryConfig = {
   /** Deslocamento máximo (px) para um toque contar como clique no tile. */
   clickMaxDistance: 8,
 
-  /** Cursor personalizado. */
-  cursorSize: 30,
-  cursorHoverSize: 46,
-  cursorDragSize: 22,
-  cursorColor: 'rgba(196, 32, 32, 0.85)',
+  /** Cursor personalizado — anel em mix-blend-difference (branco adaptativo). */
+  cursorSize: 26,
+  cursorHoverSize: 72,
+  cursorDragSize: 44,
+  cursorColor: '#ffffff',
 
   /** Performance. */
   maxPixelRatioDesktop: 2,

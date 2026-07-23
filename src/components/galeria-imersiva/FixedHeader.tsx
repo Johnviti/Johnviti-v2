@@ -1,37 +1,48 @@
-import { galleryConfig } from './galleryConfig';
+import { useCallback, useRef, useState } from 'react';
+import { Menu } from 'lucide-react';
+import GalleryMenu from './GalleryMenu';
+import Logo from '@/components/Logo';
 
 /**
- * Interface mínima fixa sobre a galeria: marca, MENU e EXIT.
- * Sem fundo sólido, sem sombras — apenas tipografia pequena sobre o branco.
+ * Interface mínima fixa sobre a galeria: logo (canto superior esquerdo) e
+ * MENU (canto superior direito). Sem fundo sólido, sem sombras. O MENU abre
+ * o overlay em tela cheia (GalleryMenu).
  */
 export default function FixedHeader() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+
+  // Devolve o foco ao botão ao fechar — senão ele volta para o <body> e as
+  // setas do teclado deixam de controlar a galeria.
+  const closeMenu = useCallback(() => {
+    setMenuOpen(false);
+    menuButtonRef.current?.focus();
+  }, []);
+
   return (
-    <header className="pointer-events-none fixed inset-0 z-40 select-none text-ink">
-      {/* Marca — canto superior esquerdo */}
-      <div className="absolute left-6 top-6 text-[12px] font-medium tracking-[0.22em] md:left-8 md:top-7">
-        {galleryConfig.brandText}
-      </div>
+    <>
+      {/* mix-blend-difference: logo e ícone se adaptam ao que passa por trás
+          (pretos sobre áreas claras, claros sobre capas escuras). */}
+      <header className="pointer-events-none fixed inset-0 z-40 select-none text-white mix-blend-difference">
+        {/* Logo — canto superior esquerdo */}
+        <div className="absolute left-6 top-6 md:left-8 md:top-7">
+          <Logo className="h-8 w-auto" />
+        </div>
 
-      {/* MENU — canto superior direito */}
-      <button
-        type="button"
-        className="pointer-events-auto absolute right-6 top-6 flex items-center gap-2.5 text-[10px] tracking-[0.28em] text-ink/60 transition-colors duration-300 hover:text-ink md:right-8 md:top-7"
-        aria-label="Abrir menu"
-      >
-        <span
-          aria-hidden
-          className="block h-2.5 w-2.5 rounded-full border border-ink/50"
-        />
-        {galleryConfig.menuText}
-      </button>
+        {/* MENU — canto superior direito */}
+        <button
+          ref={menuButtonRef}
+          type="button"
+          onClick={() => setMenuOpen(true)}
+          aria-expanded={menuOpen}
+          aria-label="Abrir menu"
+          className="pointer-events-auto absolute right-6 top-5 text-white transition-opacity duration-300 hover:opacity-60 md:right-8 md:top-6"
+        >
+          <Menu className="size-6" strokeWidth={1.5} aria-hidden />
+        </button>
+      </header>
 
-      {/* EXIT — canto inferior esquerdo */}
-      <a
-        href="/"
-        className="pointer-events-auto absolute bottom-6 left-6 text-[10px] tracking-[0.28em] text-ink/50 transition-colors duration-300 hover:text-ink md:bottom-7 md:left-8"
-      >
-        {galleryConfig.exitText}
-      </a>
-    </header>
+      <GalleryMenu open={menuOpen} onClose={closeMenu} />
+    </>
   );
 }

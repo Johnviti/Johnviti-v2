@@ -7,13 +7,22 @@ type Props = {
 };
 
 /**
- * Cursor circular vermelho com atraso suave, estados de hover/arraste e
- * leve estiramento na direção da velocidade da galeria.
+ * Cursor personalizado moderno da galeria.
+ *
+ * - Ponto sólido preciso que acompanha o ponteiro + anel que arrasta com um
+ *   leve atraso elástico (efeito "trailing ring").
+ * - `mix-blend-difference`: branco que se inverte contra o fundo, ficando
+ *   sempre legível sobre as capas (pretos sobre claro, claros sobre escuro).
+ * - Hover em um tile: o anel cresce e mostra uma seta ("abrir"); o ponto some.
+ * - Arraste: o anel encolhe e ganha um preenchimento sutil (estado "pegar").
+ * - Estiramento sutil do anel na direção da velocidade da parede.
+ *
  * Oculto automaticamente em dispositivos touch.
  */
 export default function CustomCursor({ appRef }: Props) {
   const ringRef = useRef<HTMLDivElement>(null);
   const dotRef = useRef<HTMLDivElement>(null);
+  const labelRef = useRef<HTMLDivElement>(null);
   // SPA sem SSR — seguro calcular de forma preguiçosa a partir do matchMedia.
   const [enabled] = useState(() => window.matchMedia('(pointer: fine)').matches);
 
@@ -21,12 +30,15 @@ export default function CustomCursor({ appRef }: Props) {
     if (!enabled) return;
     const ring = ringRef.current;
     const dot = dotRef.current;
-    if (!ring || !dot) return;
+    const label = labelRef.current;
+    if (!ring || !dot || !label) return;
 
     const cfg = galleryConfig;
     const mouse = { x: -100, y: -100 };
-    const pos = { x: -100, y: -100 };
+    const ringPos = { x: -100, y: -100 };
+    const dotPos = { x: -100, y: -100 };
     let size = cfg.cursorSize;
+    let hover = 0; // 0 → 1, transição suave do estado de hover
     let visible = false;
     let raf = 0;
 
@@ -47,9 +59,11 @@ export default function CustomCursor({ appRef }: Props) {
       const dt60 = Math.min((now - last) / (1000 / 60), 3);
       last = now;
 
-      // Posição interpolada — pequeno atraso elástico atrás do ponteiro.
-      pos.x += (mouse.x - pos.x) * 0.32 * dt60;
-      pos.y += (mouse.y - pos.y) * 0.32 * dt60;
+      // Ponto quase preciso; anel arrasta mais devagar (trailing).
+      dotPos.x += (mouse.x - dotPos.x) * 0.6 * dt60;
+      dotPos.y += (mouse.y - dotPos.y) * 0.6 * dt60;
+      ringPos.x += (mouse.x - ringPos.x) * 0.18 * dt60;
+      ringPos.y += (mouse.y - ringPos.y) * 0.18 * dt60;
 
       const state = appRef.current?.state;
       const dragging = state?.dragging ?? false;
@@ -60,25 +74,44 @@ export default function CustomCursor({ appRef }: Props) {
         : hovering
           ? cfg.cursorHoverSize
           : cfg.cursorSize;
-      size += (targetSize - size) * 0.22 * dt60;
+      size += (targetSize - size) * 0.2 * dt60;
+      hover += ((hovering ? 1 : 0) - hover) * 0.2 * dt60;
 
-      // Estiramento sutil na direção do movimento da galeria.
+      // Estiramento sutil do anel na direção do movimento da parede.
       const vx = state?.vx ?? 0;
       const vy = state?.vy ?? 0;
       const speed = Math.hypot(vx, vy);
-      const stretch = Math.min(speed * 6, 0.22);
+      const stretch = Math.min(speed * 6, 0.18);
       const angle = Math.atan2(-vy, vx);
 
-      ring.style.transform =
-        `translate3d(${pos.x - size / 2}px, ${pos.y - size / 2}px, 0) ` +
-        `rotate(${angle}rad) scale(${1 + stretch}, ${1 - stretch * 0.6})`;
+      // Anel
       ring.style.width = `${size}px`;
       ring.style.height = `${size}px`;
-      ring.style.opacity = visible ? (dragging ? '1' : hovering ? '0.95' : '0.75') : '0';
-      ring.style.borderWidth = dragging || hovering ? '1.5px' : '1px';
+      ring.style.transform =
+        `translate3d(${ringPos.x - size / 2}px, ${ringPos.y - size / 2}px, 0) ` +
+        `rotate(${angle}rad) scale(${1 + stretch}, ${1 - stretch * 0.6})`;
+      ring.style.opacity = visible
+        ? dragging
+          ? '1'
+          : hovering
+            ? '1'
+            : '0.72'
+        : '0';
+      ring.style.borderWidth = dragging ? '1.5px' : '1.25px';
+      ring.style.backgroundColor = dragging
+        ? 'rgba(255,255,255,0.16)'
+        : `rgba(255,255,255,${0.12 * hover})`;
 
-      dot.style.transform = `translate3d(${pos.x - 2}px, ${pos.y - 2}px, 0)`;
-      dot.style.opacity = visible && dragging ? '0.9' : '0';
+      // Seta ("abrir") — surge no hover, sempre na vertical, centrada no anel.
+      label.style.transform =
+        `translate3d(${ringPos.x - 12}px, ${ringPos.y - 12}px, 0) ` +
+        `scale(${0.6 + 0.4 * hover})`;
+      label.style.opacity = visible ? `${hover}` : '0';
+
+      // Ponto preciso — some no hover (a seta assume) e no arraste.
+      dot.style.transform = `translate3d(${dotPos.x - 3}px, ${dotPos.y - 3}px, 0)`;
+      dot.style.opacity =
+        visible && !hovering && !dragging ? '1' : `${Math.max(0, 0.9 - hover)}`;
 
       raf = requestAnimationFrame(tick);
     };
@@ -93,26 +126,41 @@ export default function CustomCursor({ appRef }: Props) {
 
   if (!enabled) return null;
 
+  const color = galleryConfig.cursorColor;
+
   return (
-    <>
+    <div className="pointer-events-none fixed inset-0 z-50 mix-blend-difference">
+      {/* Anel que arrasta */}
       <div
         ref={ringRef}
         aria-hidden
-        className="pointer-events-none fixed left-0 top-0 z-50 rounded-full border transition-none"
+        className="absolute left-0 top-0 rounded-full border"
         style={{
-          borderColor: galleryConfig.cursorColor,
+          borderColor: color,
           width: galleryConfig.cursorSize,
           height: galleryConfig.cursorSize,
           opacity: 0,
-          willChange: 'transform',
+          willChange: 'transform, width, height',
         }}
       />
+
+      {/* Seta "abrir" (hover) */}
+      <div
+        ref={labelRef}
+        aria-hidden
+        className="absolute left-0 top-0 flex h-6 w-6 items-center justify-center text-[15px] font-medium leading-none"
+        style={{ color, opacity: 0, willChange: 'transform, opacity' }}
+      >
+        ↗
+      </div>
+
+      {/* Ponto preciso */}
       <div
         ref={dotRef}
         aria-hidden
-        className="pointer-events-none fixed left-0 top-0 z-50 h-1 w-1 rounded-full"
-        style={{ backgroundColor: galleryConfig.cursorColor, opacity: 0 }}
+        className="absolute left-0 top-0 h-1.5 w-1.5 rounded-full"
+        style={{ backgroundColor: color, opacity: 0, willChange: 'transform' }}
       />
-    </>
+    </div>
   );
 }

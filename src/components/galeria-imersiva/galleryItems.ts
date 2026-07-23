@@ -1,25 +1,20 @@
 /**
- * Dados das imagens da galeria.
+ * Dados das imagens da galeria — alimentados pelos projetos reais
+ * (capas em `public/projetos/<slug>/capa.webp`, ver `@/data/projects`).
  *
- * PARA SUBSTITUIR AS IMAGENS: troque os arquivos em /public/galeria-imersiva
- * (ou aponte `src` para qualquer URL) e ajuste `alt`. O campo `shape`
- * controla a proporção do tile:
- *  - 'square'    → 1:1
- *  - 'portrait'  → 3:4 (mais alto)
- *  - 'landscape' → 4:3 (mais largo)
- *
- * O grid repete em blocos de GRID_COLS × GRID_ROWS itens; a ordem do array
- * define a posição (linha a linha, de cima para baixo).
+ * Cada tile respeita a PROPORÇÃO REAL da capa (`aspect` = largura / altura);
+ * a maioria é 16:9. O grid repete em blocos de GRID_COLS × GRID_ROWS itens;
+ * a ordem do array define a posição (linha a linha). Cada tile abre
+ * `/case/<slug>` do projeto correspondente.
  */
-import { caseStudies } from '@/data/cases';
-
-export type GalleryItemShape = 'square' | 'portrait' | 'landscape';
+import { projects } from '@/data/projects';
 
 export type GalleryItem = {
   id: string;
   src: string;
   alt: string;
-  shape: GalleryItemShape;
+  /** Proporção real da capa (largura / altura). */
+  aspect: number;
   /** Case aberto ao clicar no tile (página /case/:slug). */
   caseSlug: string;
 };
@@ -27,46 +22,23 @@ export type GalleryItem = {
 export const GRID_COLS = 8;
 export const GRID_ROWS = 8;
 
-/** Quantidade de arquivos de imagem distintos em /public/galeria-imersiva. */
-const IMAGE_FILES = 48;
-
-/** Padrão de formas em sequência — mosaico irregular mas organizado. */
-const SHAPE_PATTERN: GalleryItemShape[] = [
-  'square', 'portrait', 'square', 'landscape', 'square', 'square', 'portrait', 'square',
-  'portrait', 'square', 'square', 'square', 'landscape', 'portrait', 'square', 'square',
-  'square', 'square', 'portrait', 'square', 'square', 'landscape', 'square', 'portrait',
-  'landscape', 'square', 'square', 'portrait', 'square', 'square', 'square', 'square',
-  'square', 'portrait', 'landscape', 'square', 'portrait', 'square', 'square', 'landscape',
-  'square', 'square', 'square', 'portrait', 'square', 'square', 'landscape', 'square',
-];
-
-const ALT_THEMES = [
-  'fotografia editorial de moda',
-  'arte abstrata em cores intensas',
-  'detalhe arquitetônico em contraste',
-  'retrato conceitual em estúdio',
-  'paisagem cinematográfica',
-  'textura e materiais em close',
-  'fotografia urbana noturna',
-  'composição gráfica experimental',
-];
+/** Quantidade de projetos distintos disponíveis. */
+const PROJECT_COUNT = projects.length;
 
 export const galleryItems: GalleryItem[] = Array.from(
   { length: GRID_COLS * GRID_ROWS },
   (_, i) => {
-    const shape = SHAPE_PATTERN[i % SHAPE_PATTERN.length];
-    // Os arquivos se repetem após IMAGE_FILES tiles com deslocamento de 3
-    // colunas por bloco, para que a repetição fique diagonal e imperceptível.
-    const block = Math.floor(i / IMAGE_FILES);
-    const fileIndex = (((i % IMAGE_FILES) + block * 3) % IMAGE_FILES) + 1;
-    const grayscale = fileIndex % 4 === 2;
+    // Os projetos se repetem após PROJECT_COUNT tiles com deslocamento de 3
+    // por bloco, para que a repetição fique diagonal e imperceptível.
+    const block = Math.floor(i / PROJECT_COUNT);
+    const projectIndex = ((i % PROJECT_COUNT) + block * 3) % PROJECT_COUNT;
+    const project = projects[projectIndex];
     return {
       id: `item-${i + 1}`,
-      src: `/galeria-imersiva/img-${String(fileIndex).padStart(2, '0')}.jpg`,
-      alt: `${ALT_THEMES[i % ALT_THEMES.length]}${grayscale ? ', em preto e branco' : ''}`,
-      shape,
-      // Enquanto as imagens são placeholders, os cases se distribuem em ciclo.
-      caseSlug: caseStudies[i % caseStudies.length].slug,
+      src: project.cover,
+      alt: `Capa do projeto ${project.name}`,
+      aspect: project.aspect,
+      caseSlug: project.slug,
     };
   },
 );

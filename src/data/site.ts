@@ -6,6 +6,16 @@ import card05 from '@/assets/card-05.png';
 
 export const CONTACT_EMAIL = 'observatorio@sistemafiea.com.br';
 
+/**
+ * Caixa de entrada que recebe as mensagens do formulário de contato.
+ * O destino real é definido pela chave do Web3Forms (ver `.env.example`);
+ * este valor é usado no fallback `mailto:` quando o envio falha.
+ */
+export const CONTACT_INBOX = 'johnviti21@gmail.com';
+
+/** Currículo em PDF — o arquivo vive em `public/cv.pdf`. */
+export const CV_URL = '/cv.pdf';
+
 export const SOCIALS = [
   { label: 'GitHub', href: 'https://github.com/Johnviti' },
   { label: 'LinkedIn', href: 'https://www.linkedin.com/in/john-amorim-648480225/' },
@@ -62,14 +72,12 @@ export const PROJECTS = [
 ];
 
 export const VERSIONS = [
-  { label: 'clássica', path: '/' },
+  { label: 'galeria imersiva', path: '/' },
   { label: 'minimal', path: '/minimal' },
-  { label: 'galeria 3d', path: '/galeria' },
   { label: 'mundo 3d', path: '/mundo' },
   { label: 'playground 3d', path: '/playground' },
-  { label: 'órbita', path: '/orbita' },
-  { label: 'mosaico', path: '/mosaico' },
-  { label: 'galeria imersiva', path: '/galeria-imersiva' },
+  // Rota desativada — reative junto com a de App.tsx e routeLabels.ts.
+  // { label: 'cinética', path: '/cinetica' },
 ];
 
 export const SERVICES = [

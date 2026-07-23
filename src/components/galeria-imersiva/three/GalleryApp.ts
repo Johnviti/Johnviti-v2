@@ -153,11 +153,11 @@ export class GalleryApp {
     this.postScene.add(quad);
   }
 
-  private tileSize(shape: GalleryItem['shape']): [number, number] {
+  /** Tamanho do tile a partir da proporção real da capa (largura / altura). */
+  private tileSize(aspect: GalleryItem['aspect']): [number, number] {
     const w = this.cfg.tileWidth;
-    if (shape === 'portrait') return [w, w * 1.075];
-    if (shape === 'landscape') return [w, w * 0.78];
-    return [w, w];
+    const ratio = aspect > 0 ? aspect : 16 / 9;
+    return [w, w / ratio];
   }
 
   private buildTiles() {
@@ -165,7 +165,7 @@ export class GalleryApp {
     for (let row = 0; row < GRID_ROWS; row++) {
       for (let col = 0; col < GRID_COLS; col++) {
         const item = items[(row * GRID_COLS + col) % items.length];
-        const [tw, th] = this.tileSize(item.shape);
+        const [tw, th] = this.tileSize(item.aspect);
 
         const material = new THREE.ShaderMaterial({
           vertexShader: tileVertexShader,

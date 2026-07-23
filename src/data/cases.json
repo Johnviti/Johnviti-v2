@@ -1,0 +1,597 @@
+{
+  "placeholderShowcase": {
+    "bento": [
+      "/cases/figma/bento-1.png",
+      "/cases/figma/bento-2.png",
+      "/cases/figma/bento-3.png",
+      "/cases/figma/bento-4.png",
+      "/cases/figma/bento-5.png",
+      "/cases/figma/bento-6.png",
+      "/cases/figma/bento-7.png"
+    ],
+    "grid": [
+      "/cases/figma/grid-1.jpg",
+      "/cases/figma/grid-2.jpg",
+      "/cases/figma/grid-3.jpg",
+      "/cases/figma/grid-4.jpg"
+    ],
+    "full": "/cases/figma/full.png",
+    "mockups": [
+      "/cases/figma/mockup-1.jpg",
+      "/cases/figma/mockup-2.jpg"
+    ],
+    "testimonialImage": "/cases/figma/testimonial.png",
+    "avatar": "/cases/figma/avatar.png"
+  },
+  "cases": [
+    {
+      "slug": "acordo-mercosul-uniao-europeia",
+      "title": "Acordo Mercosul – União Europeia",
+      "client": "Observatório da Indústria — FIEA",
+      "category": "Especial de dados",
+      "year": "2024",
+      "services": [
+        "UX/UI",
+        "Visualização de dados",
+        "Front-end"
+      ],
+      "industries": [
+        "Indústria",
+        "Comércio exterior"
+      ],
+      "location": "Maceió, BR",
+      "growthStage": "Institucional",
+      "cover": "/projetos/acordo-mercosul-uniao-europeia/capa.webp",
+      "intro": "Um especial de dados que traduz os impactos do acordo comercial entre o Mercosul e a União Europeia para a indústria alagoana.",
+      "challenge": "Explicar um acordo complexo e cheio de números para um público amplo, sem perder o rigor técnico.",
+      "approach": "Estruturei a narrativa em blocos visuais — setores afetados, oportunidades e riscos — com gráficos que guiam a leitura de cima para baixo.",
+      "captionOne": "Cada seção abre com um dado-âncora e desdobra o contexto logo abaixo.",
+      "captionTwo": "Gráficos e mapas assumem o protagonismo; o texto conduz, não compete.",
+      "websiteNote": "Um especial navegável que transforma um acordo internacional em leitura clara para o setor produtivo.",
+      "testimonial": {
+        "quote": "O especial deu forma visual a um tema árido e virou material de referência nas nossas conversas com o setor.",
+        "author": "Diretoria de Comunicação",
+        "role": "FIEA"
+      }
+    },
+    {
+      "slug": "app-tempo-previsto",
+      "title": "App Tempo Previsto",
+      "client": "Produto próprio",
+      "category": "Aplicativo mobile",
+      "year": "2023",
+      "services": [
+        "UX/UI",
+        "Product design",
+        "Front-end"
+      ],
+      "industries": [
+        "Clima",
+        "Mobile"
+      ],
+      "location": "Remoto, BR",
+      "growthStage": "MVP",
+      "cover": "/projetos/app-tempo-previsto/capa.webp",
+      "intro": "Um app de previsão do tempo focado em clareza: a informação certa, no momento certo, sem ruído.",
+      "challenge": "Apps de clima acumulam dados e poluem a tela; faltava hierarquia e leitura rápida.",
+      "approach": "Desenhei uma tela inicial que responde 'como está agora e o que vem a seguir' em segundos, com detalhes sob demanda.",
+      "captionOne": "A previsão imediata ocupa o topo; a linha do tempo se aprofunda conforme o scroll.",
+      "captionTwo": "Ícones e tipografia grandes garantem leitura de relance, mesmo em movimento.",
+      "websiteNote": "Um app de clima que prioriza a decisão do usuário — sair com guarda-chuva ou não — acima de tudo.",
+      "testimonial": {
+        "quote": "Finalmente um app de tempo que eu abro e entendo na hora.",
+        "author": "Usuário beta",
+        "role": "Tempo Previsto"
+      }
+    },
+    {
+      "slug": "boletim-economico-visao-alagoas",
+      "title": "Boletim Econômico Visão Alagoas",
+      "client": "Observatório da Indústria — FIEA",
+      "category": "Publicação de dados",
+      "year": "2024",
+      "services": [
+        "UX/UI",
+        "Visualização de dados",
+        "Front-end"
+      ],
+      "industries": [
+        "Economia",
+        "Institucional"
+      ],
+      "location": "Maceió, BR",
+      "growthStage": "Institucional",
+      "cover": "/projetos/boletim-economico-visao-alagoas/capa.webp",
+      "intro": "A versão digital do boletim econômico do estado, que troca o PDF estático por indicadores vivos e navegáveis.",
+      "challenge": "Migrar um relatório denso para a web sem perder profundidade nem afastar o leitor.",
+      "approach": "Quebrei o boletim em seções com indicadores-chave em destaque e gráficos interativos por tema.",
+      "captionOne": "Cada indicador traz o número, a variação e o contexto na mesma leitura.",
+      "captionTwo": "As séries históricas ganham gráficos que respondem ao toque.",
+      "websiteNote": "Um boletim econômico que deixou de ser arquivo para virar painel de consulta contínua.",
+      "testimonial": {
+        "quote": "O boletim ganhou vida na web e passou a ser consultado o mês inteiro, não só no lançamento.",
+        "author": "Núcleo de Economia",
+        "role": "FIEA"
+      }
+    },
+    {
+      "slug": "combate-ao-desmatamento-em-alagoas-desmatamento-e-fogo-map-biomas",
+      "title": "Combate ao Desmatamento em Alagoas",
+      "client": "Observatório da Indústria — FIEA",
+      "category": "Especial de dados",
+      "year": "2024",
+      "services": [
+        "UX/UI",
+        "Visualização de dados",
+        "Front-end"
+      ],
+      "industries": [
+        "Meio ambiente",
+        "Dados públicos"
+      ],
+      "location": "Maceió, BR",
+      "growthStage": "Institucional",
+      "cover": "/projetos/combate-ao-desmatamento-em-alagoas-desmatamento-e-fogo-map-biomas/capa.webp",
+      "intro": "Um especial que cruza dados do MapBiomas sobre desmatamento e fogo em Alagoas em uma leitura territorial clara.",
+      "challenge": "Tornar tangível um tema ambiental abstrato, com muitos dados geográficos e temporais.",
+      "approach": "Mapas e séries temporais contam a evolução do desmatamento por região, com filtros por período.",
+      "captionOne": "O mapa é o centro da narrativa; os números confirmam o que os olhos veem.",
+      "captionTwo": "A linha do tempo revela avanços e retrocessos ano a ano.",
+      "websiteNote": "Dados do MapBiomas transformados em uma história territorial sobre desmatamento e fogo.",
+      "testimonial": {
+        "quote": "Conseguimos mostrar o problema no mapa, e isso mudou o peso da conversa.",
+        "author": "Núcleo de Sustentabilidade",
+        "role": "FIEA"
+      }
+    },
+    {
+      "slug": "conectandoofuturo-avancandocom-esgnaindustria",
+      "title": "Conectando o Futuro: ESG na Indústria",
+      "client": "Observatório da Indústria — FIEA",
+      "category": "Landing page",
+      "year": "2024",
+      "services": [
+        "UX/UI",
+        "Front-end",
+        "Motion"
+      ],
+      "industries": [
+        "ESG",
+        "Indústria"
+      ],
+      "location": "Maceió, BR",
+      "growthStage": "Institucional",
+      "cover": "/projetos/conectandoofuturo-avancandocom-esgnaindustria/capa.webp",
+      "intro": "Uma landing page que apresenta a agenda ESG da indústria alagoana e convida ao engajamento.",
+      "challenge": "Comunicar um tema institucional denso (ESG) de forma inspiradora e acessível.",
+      "approach": "Estruturei a página em pilares — ambiental, social e governança — com um percurso visual que conduz à ação.",
+      "captionOne": "Cada pilar ESG ganha seu próprio bloco visual e chamada.",
+      "captionTwo": "Animações sutis reforçam a ideia de avanço e futuro.",
+      "websiteNote": "Uma landing page que traduz a estratégia ESG da indústria em uma narrativa de futuro.",
+      "testimonial": {
+        "quote": "A página deu à nossa agenda ESG a cara moderna que ela precisava.",
+        "author": "Núcleo ESG",
+        "role": "FIEA"
+      }
+    },
+    {
+      "slug": "ecommerce-pai-eterno",
+      "title": "E-commerce Pai Eterno",
+      "client": "Pai Eterno",
+      "category": "Loja virtual",
+      "year": "2023",
+      "services": [
+        "UX/UI",
+        "Front-end",
+        "Pesquisa",
+        "Acessibilidade"
+      ],
+      "industries": [
+        "Varejo",
+        "Religioso"
+      ],
+      "location": "Remoto, BR",
+      "growthStage": "PME",
+      "cover": "/projetos/ecommerce-pai-eterno/capa.webp",
+      "intro": "Uma loja virtual devocional pensada para um público amplo e pouco habituado a comprar online.",
+      "challenge": "Cada decisão partiu de uma pergunta: minha avó conseguiria comprar sozinha?",
+      "approach": "Reduzi a jornada ao essencial, com passos claros, tipografia generosa e a identidade da marca em azul e dourado.",
+      "captionOne": "Uma decisão por tela, com o botão principal sempre à vista.",
+      "captionTwo": "O dourado aparece só em momentos de significado — selos e confirmação.",
+      "websiteNote": "Uma loja devocional em que solenidade e simplicidade caminham juntas.",
+      "testimonial": {
+        "quote": "Clientes de todas as idades passaram a comprar sozinhos, sem pedir ajuda.",
+        "author": "Gerência de e-commerce",
+        "role": "Pai Eterno"
+      }
+    },
+    {
+      "slug": "economia-do-mar-em-alagoas",
+      "title": "Economia do Mar em Alagoas",
+      "client": "Observatório da Indústria — FIEA",
+      "category": "Especial de dados",
+      "year": "2024",
+      "services": [
+        "UX/UI",
+        "Visualização de dados",
+        "Front-end"
+      ],
+      "industries": [
+        "Economia azul",
+        "Institucional"
+      ],
+      "location": "Maceió, BR",
+      "growthStage": "Institucional",
+      "cover": "/projetos/economia-do-mar-em-alagoas/capa.webp",
+      "intro": "Um especial sobre o potencial da economia do mar para Alagoas, dos portos ao turismo.",
+      "challenge": "Reunir setores dispersos — pesca, portos, turismo e energia — em uma narrativa única.",
+      "approach": "Organizei o conteúdo por cadeia produtiva, com dados e imagens que dão escala ao potencial marítimo.",
+      "captionOne": "Cada setor da economia azul ganha seu recorte de dados.",
+      "captionTwo": "Fotografia e números se alternam para dar concretude ao tema.",
+      "websiteNote": "Um panorama navegável do potencial econômico do mar alagoano.",
+      "testimonial": {
+        "quote": "O especial pautou conversas sobre um tema que estava subaproveitado.",
+        "author": "Núcleo de Economia",
+        "role": "FIEA"
+      }
+    },
+    {
+      "slug": "meu-primeiro-portfolio",
+      "title": "Meu Primeiro Portfólio",
+      "client": "Projeto pessoal",
+      "category": "Portfólio",
+      "year": "2022",
+      "services": [
+        "Design",
+        "Front-end"
+      ],
+      "industries": [
+        "Pessoal",
+        "Web"
+      ],
+      "location": "Remoto, BR",
+      "growthStage": "Pessoal",
+      "cover": "/projetos/meu-primeiro-portfolio/capa.webp",
+      "intro": "O portfólio que marcou meus primeiros passos como designer e desenvolvedor front-end.",
+      "challenge": "Traduzir minha identidade em um site quando eu ainda estava aprendendo o ofício.",
+      "approach": "Apostei em um layout limpo e em experimentos de interface que viraram meu campo de treino.",
+      "captionOne": "Cada seção foi uma desculpa para aprender algo novo de CSS.",
+      "captionTwo": "Simplicidade por necessidade — e por gosto.",
+      "websiteNote": "O ponto de partida: um portfólio que documenta o começo da jornada.",
+      "testimonial": {
+        "quote": "Foi aqui que descobri que queria viver de construir interfaces.",
+        "author": "John Amorim",
+        "role": "Autor"
+      }
+    },
+    {
+      "slug": "miau-dote",
+      "title": "MiauDote",
+      "client": "Projeto próprio",
+      "category": "App / Produto",
+      "year": "2023",
+      "services": [
+        "UX/UI",
+        "Product design",
+        "Branding"
+      ],
+      "industries": [
+        "Pets",
+        "Social"
+      ],
+      "location": "Remoto, BR",
+      "growthStage": "Conceito",
+      "cover": "/projetos/miau-dote/capa.webp",
+      "intro": "Um app que aproxima gatos que precisam de lar de pessoas dispostas a adotar.",
+      "challenge": "Tornar a adoção responsável simples e afetiva, sem burocracia que desanime.",
+      "approach": "Desenhei um fluxo leve de descoberta e contato, com o perfil de cada bichano no centro da experiência.",
+      "captionOne": "Cada perfil traz história, temperamento e o essencial para decidir.",
+      "captionTwo": "Um tom visual afetivo convida ao próximo passo: conhecer o gato.",
+      "websiteNote": "Adoção de gatos com menos fricção e mais afeto, do descobrir ao adotar.",
+      "testimonial": {
+        "quote": "Um jeito fofo e sério ao mesmo tempo de resolver um problema real.",
+        "author": "Voluntária",
+        "role": "Protetora animal"
+      }
+    },
+    {
+      "slug": "minha-primeira-landing-page",
+      "title": "Minha Primeira Landing Page",
+      "client": "Projeto pessoal",
+      "category": "Landing page",
+      "year": "2022",
+      "services": [
+        "Design",
+        "Front-end"
+      ],
+      "industries": [
+        "Pessoal",
+        "Web"
+      ],
+      "location": "Remoto, BR",
+      "growthStage": "Pessoal",
+      "cover": "/projetos/minha-primeira-landing-page/capa.webp",
+      "intro": "O exercício que me ensinou a construir uma landing page do zero, do layout ao deploy.",
+      "challenge": "Sair do tutorial e entregar algo publicado, responsivo e funcional.",
+      "approach": "Foquei em uma estrutura clássica de conversão e em acertar espaçamento, ritmo e responsividade.",
+      "captionOne": "Uma dobra que apresenta, uma que convence, uma que convida.",
+      "captionTwo": "Cada ajuste de margem foi uma aula prática.",
+      "websiteNote": "A primeira landing page publicada — pequena no escopo, grande no aprendizado.",
+      "testimonial": {
+        "quote": "Simples, mas foi onde os fundamentos finalmente fizeram sentido.",
+        "author": "John Amorim",
+        "role": "Autor"
+      }
+    },
+    {
+      "slug": "paineis-gerencias",
+      "title": "Painéis Gerenciais",
+      "client": "Sistema corporativo",
+      "category": "Sistema interno",
+      "year": "2024",
+      "services": [
+        "Product design",
+        "Design system",
+        "Front-end"
+      ],
+      "industries": [
+        "Corporativo",
+        "Software"
+      ],
+      "location": "Remoto, BR",
+      "growthStage": "Enterprise",
+      "cover": "/projetos/paineis-gerencias/capa.webp",
+      "intro": "A reconstrução do acesso a painéis de gestão a partir de um design system enxuto.",
+      "challenge": "Telas herdadas por anos, sem hierarquia nem consistência entre módulos.",
+      "approach": "Defini tokens e componentes-base antes das telas; cada painel passou a se montar como Lego.",
+      "captionOne": "Tudo que é clicável é azul; nada que não seja, é.",
+      "captionTwo": "Estados de sessão e permissão ficam visíveis, mas discretos.",
+      "websiteNote": "Um sistema interno coerente, em que cada novo módulo nasce pronto.",
+      "testimonial": {
+        "quote": "Os times pararam de reaprender cada tela.",
+        "author": "Liderança de Produto",
+        "role": "Sistema interno"
+      }
+    },
+    {
+      "slug": "pape-ia",
+      "title": "PapeIA",
+      "client": "Projeto próprio",
+      "category": "Produto / IA",
+      "year": "2024",
+      "services": [
+        "UX/UI",
+        "Product design",
+        "IA"
+      ],
+      "industries": [
+        "Produtividade",
+        "IA"
+      ],
+      "location": "Remoto, BR",
+      "growthStage": "MVP",
+      "cover": "/projetos/pape-ia/capa.webp",
+      "intro": "Uma ferramenta que usa IA para transformar documentos densos em resumos e respostas claras.",
+      "challenge": "Domar a complexidade da IA em uma interface que qualquer pessoa usa sem manual.",
+      "approach": "Desenhei uma conversa guiada em torno do documento, com ações sugeridas em vez de campos vazios.",
+      "captionOne": "O documento fica à esquerda; a IA responde à direita, sempre no contexto.",
+      "captionTwo": "Ações sugeridas reduzem o medo da 'folha em branco' do prompt.",
+      "websiteNote": "IA aplicada a documentos, com uma interface que guia em vez de intimidar.",
+      "testimonial": {
+        "quote": "Economizo horas de leitura por semana com poucos cliques.",
+        "author": "Usuário beta",
+        "role": "PapeIA"
+      }
+    },
+    {
+      "slug": "plataforma-integradade-gestaodas-unidades",
+      "title": "Plataforma Integrada de Gestão das Unidades",
+      "client": "Sistema corporativo",
+      "category": "Plataforma de gestão",
+      "year": "2024",
+      "services": [
+        "Product design",
+        "UX/UI",
+        "Front-end"
+      ],
+      "industries": [
+        "Gestão",
+        "Software"
+      ],
+      "location": "Maceió, BR",
+      "growthStage": "Enterprise",
+      "cover": "/projetos/plataforma-integradade-gestaodas-unidades/capa.webp",
+      "intro": "Uma plataforma que unifica a gestão de múltiplas unidades em um só lugar.",
+      "challenge": "Dados e rotinas espalhados por unidades, cada uma com o seu próprio jeito.",
+      "approach": "Centralizei indicadores e processos em uma visão comum, com aprofundamento por unidade.",
+      "captionOne": "A visão geral mostra a rede; o clique aprofunda em cada unidade.",
+      "captionTwo": "Padrões compartilhados garantem que toda unidade fale a mesma língua.",
+      "websiteNote": "Gestão integrada que troca planilhas dispersas por uma visão única.",
+      "testimonial": {
+        "quote": "Passamos a enxergar todas as unidades com o mesmo padrão.",
+        "author": "Gestão de Operações",
+        "role": "Cliente"
+      }
+    },
+    {
+      "slug": "plataformade-intervencoes-pedagogicas-inteligentes",
+      "title": "Plataforma de Intervenções Pedagógicas Inteligentes",
+      "client": "Secretaria de Educação",
+      "category": "Dashboard analítico",
+      "year": "2024",
+      "services": [
+        "UX/UI",
+        "Visualização de dados",
+        "Front-end"
+      ],
+      "industries": [
+        "Educação",
+        "Gestão pública"
+      ],
+      "location": "Alagoas, BR",
+      "growthStage": "Enterprise",
+      "cover": "/projetos/plataformade-intervencoes-pedagogicas-inteligentes/capa.webp",
+      "intro": "Um painel que ajuda gestores a responder, em segundos, quais escolas precisam de atenção agora.",
+      "challenge": "Dados educacionais espalhados em planilhas e sistemas isolados.",
+      "approach": "Consolidei tudo em semáforos de risco com uma semântica de cor consistente do primeiro ao último gráfico.",
+      "captionOne": "As escolas em risco sobem para o topo; a prioridade fica evidente.",
+      "captionTwo": "Cada estado tem ícone e rótulo além da cor — leitura para todos.",
+      "websiteNote": "Intervenções pedagógicas guiadas por dados, priorizando quem mais precisa.",
+      "testimonial": {
+        "quote": "Olhamos para a rede inteira e sabemos onde agir primeiro.",
+        "author": "Coordenação pedagógica",
+        "role": "Secretaria de Educação"
+      }
+    },
+    {
+      "slug": "the-be-social",
+      "title": "The Be Social",
+      "client": "The Be Social",
+      "category": "Site / Branding",
+      "year": "2023",
+      "services": [
+        "Web design",
+        "Branding",
+        "Front-end"
+      ],
+      "industries": [
+        "Marketing",
+        "Social media"
+      ],
+      "location": "Remoto, BR",
+      "growthStage": "Agência",
+      "cover": "/projetos/the-be-social/capa.webp",
+      "intro": "O site de uma agência de social media que precisava parecer tão criativa quanto o trabalho que entrega.",
+      "challenge": "Traduzir energia e criatividade sem cair no clichê de agência.",
+      "approach": "Apostei em um layout ousado, ritmo dinâmico e cases em destaque para provar o valor logo de cara.",
+      "captionOne": "Os cases abrem a conversa; o discurso vem depois.",
+      "captionTwo": "Movimento e contraste dão o tom criativo da marca.",
+      "websiteNote": "Um site de agência que mostra, antes de contar, do que ela é capaz.",
+      "testimonial": {
+        "quote": "O site finalmente tem a nossa cara — e converte.",
+        "author": "Sócia-fundadora",
+        "role": "The Be Social"
+      }
+    },
+    {
+      "slug": "panorama-das-matrizes-eletrica-e-energetica",
+      "title": "Panorama das Matrizes Elétrica e Energética",
+      "client": "Observatório da Indústria — FIEA",
+      "category": "Especial de dados",
+      "year": "2024",
+      "services": [
+        "UX/UI",
+        "Visualização de dados",
+        "Front-end"
+      ],
+      "industries": [
+        "Energia",
+        "Institucional"
+      ],
+      "location": "Maceió, BR",
+      "growthStage": "Institucional",
+      "cover": "/projetos/panorama-das-matrizes-eletrica-e-energetica/capa.webp",
+      "intro": "Um panorama visual das matrizes elétrica e energética, das fontes ao consumo.",
+      "challenge": "Diferenciar matriz elétrica de energética para um público não técnico.",
+      "approach": "Usei gráficos comparativos e uma narrativa que separa as duas matrizes antes de cruzá-las.",
+      "captionOne": "Cada fonte de energia ganha peso visual proporcional ao seu papel.",
+      "captionTwo": "Comparações lado a lado tornam as diferenças imediatas.",
+      "websiteNote": "As matrizes energéticas do estado explicadas com clareza visual.",
+      "testimonial": {
+        "quote": "Ficou fácil explicar a diferença entre as matrizes para qualquer público.",
+        "author": "Núcleo de Energia",
+        "role": "FIEA"
+      }
+    },
+    {
+      "slug": "panorama-de-desenvolvimento-dos-municipios",
+      "title": "Panorama de Desenvolvimento dos Municípios",
+      "client": "Observatório da Indústria — FIEA",
+      "category": "Plataforma de dados",
+      "year": "2024",
+      "services": [
+        "UX/UI",
+        "Visualização de dados",
+        "Front-end"
+      ],
+      "industries": [
+        "Dados públicos",
+        "Institucional"
+      ],
+      "location": "Maceió, BR",
+      "growthStage": "Institucional",
+      "cover": "/projetos/panorama-de-desenvolvimento-dos-municipios/capa.webp",
+      "intro": "Uma plataforma para comparar indicadores de desenvolvimento entre os municípios alagoanos.",
+      "challenge": "Permitir comparar 102 municípios sem sobrecarregar a interface.",
+      "approach": "Combinei mapa, ranking e ficha por município, com filtros que respondem na hora.",
+      "captionOne": "O mapa dá o panorama; a ficha aprofunda cada município.",
+      "captionTwo": "Rankings tornam as comparações imediatas e justas.",
+      "websiteNote": "Indicadores municipais comparáveis em mapa, ranking e ficha.",
+      "testimonial": {
+        "quote": "Virou consulta obrigatória quando o assunto é município.",
+        "author": "Núcleo de Estudos",
+        "role": "FIEA"
+      }
+    },
+    {
+      "slug": "plataforma-do-obervatorio-interna",
+      "title": "Plataforma do Observatório",
+      "client": "Observatório da Indústria — FIEA",
+      "category": "Plataforma institucional",
+      "year": "2024",
+      "services": [
+        "Product design",
+        "UX/UI",
+        "Front-end"
+      ],
+      "industries": [
+        "Indústria",
+        "Institucional"
+      ],
+      "location": "Maceió, BR",
+      "growthStage": "Institucional",
+      "cover": "/projetos/plataforma-do-obervatorio-interna/capa.webp",
+      "intro": "A área interna do Observatório da Indústria, onde os dados deixam de ser PDF e viram vitrine viva.",
+      "challenge": "Equilibrar a sobriedade institucional com uma linguagem que comunique tecnologia.",
+      "approach": "Interface escura de base azul em que gráficos e indicadores são os protagonistas.",
+      "captionOne": "A cor saturada é reservada aos dados; a estrutura fica silenciosa.",
+      "captionTwo": "Um grid editorial aproxima a leitura de uma publicação.",
+      "websiteNote": "O núcleo do Observatório: dados estratégicos apresentados como vitrine viva.",
+      "testimonial": {
+        "quote": "A plataforma deu à instituição uma vitrine de dados à altura do que produzimos.",
+        "author": "Diretoria",
+        "role": "FIEA"
+      }
+    },
+    {
+      "slug": "radar-tarifario-global",
+      "title": "Radar Tarifário Global",
+      "client": "Observatório da Indústria — FIEA",
+      "category": "Especial de dados",
+      "year": "2024",
+      "services": [
+        "UX/UI",
+        "Visualização de dados",
+        "Front-end"
+      ],
+      "industries": [
+        "Comércio exterior",
+        "Institucional"
+      ],
+      "location": "Maceió, BR",
+      "growthStage": "Institucional",
+      "cover": "/projetos/radar-tarifario-global/capa.webp",
+      "intro": "Um radar que acompanha mudanças tarifárias pelo mundo e seus reflexos para a indústria.",
+      "challenge": "Transformar um fluxo constante de mudanças tarifárias em algo legível e atual.",
+      "approach": "Organizei o conteúdo por país e setor, com destaques do que mudou e por quê.",
+      "captionOne": "O que mudou aparece primeiro; o detalhe vem no aprofundamento.",
+      "captionTwo": "Filtros por país e setor deixam cada usuário no seu recorte.",
+      "websiteNote": "Um radar sempre atual das tarifas globais que afetam o setor produtivo.",
+      "testimonial": {
+        "quote": "Acompanhar tarifa virou rotina, não caça ao dado.",
+        "author": "Núcleo de Comércio Exterior",
+        "role": "FIEA"
+      }
+    }
+  ]
+}

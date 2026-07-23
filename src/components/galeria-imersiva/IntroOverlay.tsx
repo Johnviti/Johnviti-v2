@@ -49,11 +49,12 @@ export default function IntroOverlay({ visible, onDismiss }: Props) {
       '(prefers-reduced-motion: reduce)',
     ).matches;
 
-    let entrance: gsap.core.Tween | null = null;
-    let loop: gsap.core.Timeline | null = null;
+    // gsap.context + revert(): kill() deixaria estilos inline (opacity 0,
+    // transforms) que quebram a remontagem do StrictMode.
+    const ctx = gsap.context(() => {
+      if (reducedMotion) return;
 
-    if (!reducedMotion) {
-      entrance = gsap.from(content, {
+      gsap.from(content, {
         autoAlpha: 0,
         y: 10,
         duration: 0.8,
@@ -61,14 +62,14 @@ export default function IntroOverlay({ visible, onDismiss }: Props) {
       });
 
       // Um "arraste": pressiona (encolhe), desloca ponto e grade juntos, solta.
-      loop = gsap.timeline({
+      const loop = gsap.timeline({
         repeat: -1,
         repeatDelay: 0.6,
         delay: 0.5,
         defaults: { ease: 'power2.inOut' },
       });
       const drag = (dx: number, dy: number) => {
-        loop!
+        loop
           .to(dot, { scale: 0.72, duration: 0.22, ease: 'power2.out' }, '+=0.3')
           .to([grid, dot], { x: `+=${dx}`, y: `+=${dy}`, duration: 1 }, '<0.12')
           .to(dot, { scale: 1, duration: 0.28, ease: 'power2.out' }, '>-0.05');
@@ -78,14 +79,13 @@ export default function IntroOverlay({ visible, onDismiss }: Props) {
       drag(-46, 20);
       drag(22, -42);
       drag(24, 22);
-    }
+    });
 
     // Se o usuário não interagir, o overlay sai sozinho.
     const timer = window.setTimeout(onDismiss, reducedMotion ? 6000 : 9500);
 
     return () => {
-      entrance?.kill();
-      loop?.kill();
+      ctx.revert();
       window.clearTimeout(timer);
     };
   }, [onDismiss]);

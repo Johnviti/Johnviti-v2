@@ -12,6 +12,12 @@ dist
 dist-ssr
 *.local
 
+# Variáveis de ambiente — nunca versionar. O .env.example (com placeholders)
+# é a única variante que entra no repositório.
+.env
+.env.*
+!.env.example
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

@@ -1,0 +1,16 @@
+<svg width="400" height="320" viewBox="0 0 400 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="320" y="80" width="80" height="80" fill="#69FF91"/>
+<path d="M320 80H400L320 0V80Z" fill="#69FF91"/>
+<rect x="240" width="80" height="80" fill="#69FF91"/>
+<rect x="80" y="240" width="80" height="80" fill="#69FF91"/>
+<path d="M160 240H240V320H160V240Z" fill="#69FF91"/>
+<path d="M320 240H400L320 320V240Z" fill="#69FF91"/>
+<rect y="160" width="80" height="80" fill="#69FF91"/>
+<rect x="160" y="80" width="80" height="80" fill="#69FF91"/>
+<rect x="160" width="80" height="80" fill="#69FF91"/>
+<rect x="80" width="80" height="80" fill="#69FF91"/>
+<rect x="160" y="160" width="80" height="80" fill="#69FF91"/>
+<rect x="320" y="160" width="80" height="80" fill="#69FF91"/>
+<path d="M240 160H320L240 240V160Z" fill="#69FF91"/>
+<path d="M80 240H0L80 320V240Z" fill="#69FF91"/>
+</svg>
