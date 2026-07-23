@@ -16,7 +16,7 @@ const MinimalPage = () => {
   }, []);
 
   useEffect(() => {
-    document.title = 'john amorim — minimal';
+    document.title = 'John Amorim';
   }, []);
 
   return (

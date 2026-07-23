@@ -282,12 +282,12 @@
       "location": "Remoto, BR",
       "growthStage": "Conceito",
       "cover": "/projetos/miau-dote/capa.webp",
-      "intro": "Um app que aproxima gatos que precisam de lar de pessoas dispostas a adotar.",
+      "intro": "Um app que aproxima pets que precisam de lar de pessoas dispostas a adotar — ou a doar com responsabilidade.",
       "challenge": "Tornar a adoção responsável simples e afetiva, sem burocracia que desanime.",
-      "approach": "Desenhei um fluxo leve de descoberta e contato, com o perfil de cada bichano no centro da experiência.",
-      "captionOne": "Cada perfil traz história, temperamento e o essencial para decidir.",
-      "captionTwo": "Um tom visual afetivo convida ao próximo passo: conhecer o gato.",
-      "websiteNote": "Adoção de gatos com menos fricção e mais afeto, do descobrir ao adotar.",
+      "approach": "Desenhei um fluxo leve de descoberta e contato, com perfil do animal e localização no centro da experiência.",
+      "captionOne": "Adotar ou doar: duas portas claras já na primeira tela.",
+      "captionTwo": "Cada perfil traz temperamento, localização e o status de disponibilidade.",
+      "websiteNote": "Adoção de pets com menos fricção e mais afeto, do descobrir ao lar.",
       "testimonial": {
         "quote": "Um jeito fofo e sério ao mesmo tempo de resolver um problema real.",
         "author": "Voluntária",
@@ -365,20 +365,20 @@
         "IA"
       ],
       "industries": [
-        "Produtividade",
+        "Atendimento",
         "IA"
       ],
       "location": "Remoto, BR",
       "growthStage": "MVP",
       "cover": "/projetos/pape-ia/capa.webp",
-      "intro": "Uma ferramenta que usa IA para transformar documentos densos em resumos e respostas claras.",
-      "challenge": "Domar a complexidade da IA em uma interface que qualquer pessoa usa sem manual.",
-      "approach": "Desenhei uma conversa guiada em torno do documento, com ações sugeridas em vez de campos vazios.",
-      "captionOne": "O documento fica à esquerda; a IA responde à direita, sempre no contexto.",
-      "captionTwo": "Ações sugeridas reduzem o medo da 'folha em branco' do prompt.",
-      "websiteNote": "IA aplicada a documentos, com uma interface que guia em vez de intimidar.",
+      "intro": "Uma plataforma de atendimento com IA que unifica canais, agentes e conversas em um só fluxo.",
+      "challenge": "Dar poder à automação sem esconder o humano — e sem transformar a tela em um cockpit intimidador.",
+      "approach": "Desenhei um inbox com agentes de IA lado a lado: pausar, responder e etiquetar no mesmo ritmo da conversa.",
+      "captionOne": "Canais, tags e status ficam à esquerda; a conversa ocupa o centro.",
+      "captionTwo": "O agente pode ser pausado a qualquer momento — o humano retoma o controle em um clique.",
+      "websiteNote": "Atendimento e relacionamento com inteligência artificial, sem perder o toque humano.",
       "testimonial": {
-        "quote": "Economizo horas de leitura por semana com poucos cliques.",
+        "quote": "Os agentes resolvem o repetitivo; a equipe fica só no que importa.",
         "author": "Usuário beta",
         "role": "PapeIA"
       }

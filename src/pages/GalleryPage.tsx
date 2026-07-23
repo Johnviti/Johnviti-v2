@@ -137,7 +137,7 @@ const GalleryPage = () => {
   const project = PROJECTS[index];
 
   useEffect(() => {
-    document.title = 'john amorim — galeria 3d';
+    document.title = 'John Amorim';
   }, []);
 
   useEffect(() => {

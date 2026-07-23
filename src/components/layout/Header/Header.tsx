@@ -7,8 +7,8 @@ import {
 } from "framer-motion";
 import { useState } from "react";
 import { Button } from "@/components/ui/Button";
+import Logo from "@/components/Logo";
 import type { HeaderProps } from "./Header.types";
-import LogoIcon from "@/assets/logo-john-amorim.svg";
 
 export const Header = ({ isVisible = true }: HeaderProps) => {
   const { scrollY } = useScroll();
@@ -86,7 +86,7 @@ export const Header = ({ isVisible = true }: HeaderProps) => {
           animate={{ scale: isScrolled ? 0.88 : 1 }}
           transition={{ duration: 0.25, ease: "easeOut" }}
         >
-          <img src={LogoIcon} alt="John Amorim" className="h-8 w-auto" />
+          <Logo className="h-8 w-auto text-white" />
         </motion.div>
 
         {/* AÇÃO À DIREITA */}

@@ -349,7 +349,7 @@ const WorldPage = () => {
   );
 
   useEffect(() => {
-    document.title = 'john amorim — mundo 3d';
+    document.title = 'John Amorim';
     return () => window.clearTimeout(cooldownTimer.current);
   }, []);
 

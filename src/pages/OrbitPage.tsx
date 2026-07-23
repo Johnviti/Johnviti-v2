@@ -160,7 +160,7 @@ const OrbitPage = () => {
   const project = PROJECTS[selected];
 
   useEffect(() => {
-    document.title = 'john amorim — órbita';
+    document.title = 'John Amorim';
     return () => {
       document.body.style.cursor = 'auto';
     };

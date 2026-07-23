@@ -21,7 +21,7 @@ const OryzoPage = () => {
   useReveal(rootRef);
 
   useEffect(() => {
-    document.title = 'CORKZO — a design study';
+    document.title = 'John Amorim';
   }, []);
 
   return (

@@ -70,9 +70,10 @@ export default function OryzoFooter() {
               <a href="/galeria-imersiva" className="transition-colors hover:text-oryzo-orange">
                 Galeria imersiva
               </a>
-              <a href="/playground" className="transition-colors hover:text-oryzo-orange">
+              {/* Rota desativada — reative junto com App.tsx */}
+              {/* <a href="/playground" className="transition-colors hover:text-oryzo-orange">
                 Playground 3D
-              </a>
+              </a> */}
               <a href="/cinetica" className="transition-colors hover:text-oryzo-orange">
                 Cinética
               </a>

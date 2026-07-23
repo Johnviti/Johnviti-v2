@@ -78,7 +78,7 @@ const MosaicPage = () => {
   );
 
   useEffect(() => {
-    document.title = 'john amorim — mosaico';
+    document.title = 'John Amorim';
   }, []);
 
   useEffect(() => {

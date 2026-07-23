@@ -1,14 +1,14 @@
 import { lazy, Suspense } from 'react';
 import Preloader from '@/components/loader/Preloader';
-import PageTransition from '@/components/loader/PageTransition';
 
 const MinimalPage = lazy(() => import('@/pages/MinimalPage'));
-const WorldPage = lazy(() => import('@/pages/WorldPage'));
-const PlaygroundPage = lazy(() => import('@/pages/PlaygroundPage'));
+// Rotas desativadas — reative junto com VERSIONS (data/site.ts).
+// const WorldPage = lazy(() => import('@/pages/WorldPage'));
+// const PlaygroundPage = lazy(() => import('@/pages/PlaygroundPage'));
 const GaleriaImersivaPage = lazy(() => import('@/pages/GaleriaImersivaPage'));
 const CasePage = lazy(() => import('@/pages/CasePage'));
-const OryzoPage = lazy(() => import('@/pages/OryzoPage'));
-// Rota desativada — reative aqui, em VERSIONS (data/site.ts) e em routeLabels.ts.
+// const OryzoPage = lazy(() => import('@/pages/OryzoPage'));
+// Rota desativada — reative aqui e em VERSIONS (data/site.ts).
 // const CineticaPage = lazy(() => import('@/pages/CineticaPage'));
 
 const PageLoader = () => (
@@ -17,19 +17,31 @@ const PageLoader = () => (
   </div>
 );
 
+/** Extrai o slug de `/case/:slug` ou `/dev/case/:slug`. */
+const matchCaseSlug = (path: string, prefix: '/case/' | '/dev/case/') =>
+  path.startsWith(prefix) ? path.slice(prefix.length) || null : null;
+
 function App() {
   const path = window.location.pathname.replace(/\/+$/, '') || '/';
-  const caseSlug = path.startsWith('/case/') ? path.slice('/case/'.length) : null;
+  const caseSlug = matchCaseSlug(path, '/case/');
+  /* Preview com placeholders — só existe em `npm run dev` (import.meta.env.DEV). */
+  const devCaseSlug = import.meta.env.DEV
+    ? matchCaseSlug(path, '/dev/case/')
+    : null;
 
   const page =
     path === '/minimal' ? (
       <MinimalPage />
-    ) : path === '/mundo' ? (
-      <WorldPage />
-    ) : path === '/playground' ? (
-      <PlaygroundPage />
-    ) : path === '/oryzo' ? (
-      <OryzoPage />
+    ) : // path === '/mundo' ? (
+    //   <WorldPage />
+    // ) : path === '/playground' ? (
+    //   <PlaygroundPage />
+    // ) :
+    // path === '/oryzo' ? (
+    //   <OryzoPage />
+    // ) :
+    devCaseSlug ? (
+      <CasePage slug={devCaseSlug} previewShowcase />
     ) : caseSlug ? (
       <CasePage slug={caseSlug} />
     ) : (
@@ -45,7 +57,6 @@ function App() {
   return (
     <>
       <Preloader />
-      <PageTransition />
       <Suspense fallback={<PageLoader />}>{page}</Suspense>
     </>
   );

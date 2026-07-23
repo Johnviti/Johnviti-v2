@@ -1142,7 +1142,7 @@ const PlaygroundPage = () => {
   );
 
   useEffect(() => {
-    document.title = 'john amorim — playground 3d';
+    document.title = 'John Amorim';
   }, []);
 
   useEffect(() => {

@@ -59,7 +59,7 @@ const GaleriaImersivaPage = () => {
   }, []);
 
   useEffect(() => {
-    document.title = 'john amorim — galeria imersiva';
+    document.title = 'John Amorim';
   }, []);
 
   useEffect(() => {

@@ -46,6 +46,23 @@
     text-rendering: optimizeLegibility;
   }
 
+  @media (pointer: fine) {
+    html,
+    body,
+    body * {
+      cursor: url('/cursors/pixel-arrow.png') 2 2, auto;
+    }
+
+    a,
+    button,
+    [role='button'],
+    summary,
+    label[for],
+    select {
+      cursor: url('/cursors/pixel-hand.png') 4 3, pointer;
+    }
+  }
+
   ::selection {
     background-color: var(--color-ink);
     color: var(--color-cream);

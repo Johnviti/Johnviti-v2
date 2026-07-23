@@ -3,11 +3,11 @@ import casesData from '@/data/cases.json';
 /**
  * Case studies — um por projeto (mesmo `slug` dos tiles da galeria).
  *
- * TODO O CONTEÚDO vive em `cases.json`. As imagens de vitrine (bento, grade,
- * mockups, depoimento) usam o `placeholderShowcase` (copiado do Figma)
- * enquanto cada projeto não recebe as suas — a capa (`cover`) já é a imagem
- * real de cada projeto. Para trocar as demais por projeto, adicione um campo
- * `showcase` (parcial) ao case; ele sobrescreve o placeholder campo a campo.
+ * O conteúdo textual vive em `cases.json`. A capa (`cover`) é a imagem real
+ * de cada projeto. A vitrine (bento, grade, mockups, depoimento) ainda usa
+ * `placeholderShowcase` e só aparece na rota local `/dev/case/:slug`.
+ * Na rota pública `/case/:slug`, essas seções mostram "Em desenvolvimento".
+ * Para publicar a vitrine de um projeto, adicione `showcase` ao case no JSON.
  */
 export type Testimonial = {
   quote: string;

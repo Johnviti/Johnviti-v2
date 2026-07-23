@@ -13,11 +13,10 @@ type Props = {
  *
  * Desce como uma cortina sobre a parede de imagens e reúne o que a navegação
  * por arraste não alcança: os cases pelo nome, as outras versões do site,
- * contato e currículo. Fecha no Escape e no botão; a navegação em si fica
- * com o PageTransition, que intercepta os links e desenha a cortina.
+ * contato e currículo. Fecha no Escape e no botão.
  */
 
-/** Mesma curva do PageTransition — a cortina do menu "pertence" ao sistema. */
+/** Curva da cortina do menu. */
 const PANEL_EASE = 'cubic-bezier(0.76, 0, 0.24, 1)';
 
 export default function GalleryMenu({ open, onClose }: Props) {

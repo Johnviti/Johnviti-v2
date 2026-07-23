@@ -1,7 +1,8 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { motion, MotionConfig, type Variants } from 'framer-motion';
-import { ArrowLeft, MapPin } from 'lucide-react';
-import logoMark from '@/assets/logo-john-amorim.svg';
+import { MapPin, Menu } from 'lucide-react';
+import Logo from '@/components/Logo';
+import GalleryMenu from '@/components/galeria-imersiva/GalleryMenu';
 import { CONTACT_EMAIL } from '@/data/site';
 import { getCaseBySlug, getRelatedCases, getShowcase } from '@/data/cases';
 
@@ -142,15 +143,29 @@ const BrowserMockup = ({
   </div>
 );
 
-type Props = { slug: string };
+type Props = {
+  slug: string;
+  /** Mostra a vitrine completa com placeholders (só para preview local). */
+  previewShowcase?: boolean;
+};
 
-const CasePage = ({ slug }: Props) => {
+const caseDocumentTitle = (title: string) =>
+  `John Amorim - ${title.charAt(0).toUpperCase()}${title.slice(1).toLowerCase()}`;
+
+const CasePage = ({ slug, previewShowcase = false }: Props) => {
   const study = getCaseBySlug(slug);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+
+  const closeMenu = useCallback(() => {
+    setMenuOpen(false);
+    menuButtonRef.current?.focus();
+  }, []);
 
   useEffect(() => {
     document.title = study
-      ? `john amorim — case ${study.title.toLowerCase()}`
-      : 'john amorim — case não encontrado';
+      ? caseDocumentTitle(study.title)
+      : 'John Amorim - Case não encontrado';
     window.scrollTo(0, 0);
   }, [study]);
 
@@ -170,7 +185,7 @@ const CasePage = ({ slug }: Props) => {
     );
   }
 
-  const show = getShowcase(study);
+  const show = previewShowcase ? getShowcase(study) : null;
   const related = getRelatedCases(study.slug, 2);
   const host = `${study.slug.replace(/-/g, '')}.com.br`;
   const narrative: [string, string][] = [
@@ -190,30 +205,29 @@ const CasePage = ({ slug }: Props) => {
           transition={{ duration: 0.6, ease: EASE }}
           className="fixed inset-x-0 top-0 z-40 flex items-center justify-between px-6 py-5 text-white mix-blend-difference md:px-10"
         >
-          {/* Logo — wordmark vetorial */}
+          {/* Logo — monograma JA */}
           <a
             href="/"
             aria-label="John Amorim — voltar ao início"
             className="transition-opacity duration-300 hover:opacity-70"
           >
-            <img
-              src={logoMark}
-              alt="John Amorim"
-              className="h-6 w-auto md:h-7"
-            />
+            <Logo className="h-6 w-auto md:h-7" />
           </a>
 
-          {/* Voltar à galeria — seta em badge que desliza no hover */}
-          <a
-            href="/"
-            className="group flex items-center gap-2.5 text-[11px] font-medium uppercase tracking-[0.24em] transition-opacity duration-300 hover:opacity-100 md:gap-3"
+          {/* Menu — mesmo ícone da tela inicial */}
+          <button
+            ref={menuButtonRef}
+            type="button"
+            onClick={() => setMenuOpen(true)}
+            aria-expanded={menuOpen}
+            aria-label="Abrir menu"
+            className="transition-opacity duration-300 hover:opacity-60"
           >
-            <span className="flex size-7 items-center justify-center rounded-full border border-current transition-transform duration-300 ease-out group-hover:-translate-x-1 md:size-8">
-              <ArrowLeft className="size-3.5" aria-hidden />
-            </span>
-            <span>Galeria</span>
-          </a>
+            <Menu className="size-6" strokeWidth={1.5} aria-hidden />
+          </button>
         </motion.header>
+
+        <GalleryMenu open={menuOpen} onClose={closeMenu} />
 
         {/* -------------------------------------------------------- Hero */}
         <section className="pt-12 md:pt-20">
@@ -229,7 +243,7 @@ const CasePage = ({ slug }: Props) => {
                   <img
                     src={study.cover}
                     alt={`Apresentação do projeto ${study.title}`}
-                    className="aspect-[16/10] w-full object-cover md:aspect-[21/9]"
+                    className="aspect-[16/9] w-full object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent" />
                 </div>
@@ -277,167 +291,187 @@ const CasePage = ({ slug }: Props) => {
           </StaggerGroup>
         </section>
 
-        {/* ------------------------------------------------- Mosaico bento */}
-        <section className="px-4 md:px-8">
-          <div className="mx-auto max-w-[1760px] space-y-4">
-            <StaggerGroup className="grid grid-cols-2 gap-4 md:grid-cols-8">
-              <motion.img
-                variants={item}
-                src={show.bento[0]}
-                alt="Detalhe do projeto"
-                loading="lazy"
-                className="col-span-2 h-[220px] w-full rounded-2xl object-cover sm:h-[340px] md:col-span-4 lg:h-[520px]"
-              />
-              <motion.img
-                variants={item}
-                src={show.bento[1]}
-                alt="Detalhe do projeto"
-                loading="lazy"
-                className="col-span-1 h-[220px] w-full rounded-2xl object-cover sm:h-[340px] md:col-span-2 lg:h-[520px]"
-              />
-              <motion.img
-                variants={item}
-                src={show.bento[2]}
-                alt="Detalhe do projeto"
-                loading="lazy"
-                className="col-span-1 h-[220px] w-full rounded-2xl object-cover sm:h-[340px] md:col-span-2 lg:h-[520px]"
-              />
-            </StaggerGroup>
-            <StaggerGroup className="grid grid-cols-2 gap-4 md:grid-cols-8">
-              <motion.img
-                variants={item}
-                src={show.bento[3]}
-                alt="Detalhe do projeto"
-                loading="lazy"
-                className="col-span-1 h-[180px] w-full rounded-2xl object-cover sm:h-[280px] md:col-span-1 lg:h-[440px]"
-              />
-              <motion.img
-                variants={item}
-                src={show.bento[4]}
-                alt="Detalhe do projeto"
-                loading="lazy"
-                className="col-span-1 h-[180px] w-full rounded-2xl object-cover sm:h-[280px] md:col-span-2 lg:h-[440px]"
-              />
-              <motion.img
-                variants={item}
-                src={show.bento[5]}
-                alt="Detalhe do projeto"
-                loading="lazy"
-                className="col-span-2 h-[180px] w-full rounded-2xl object-cover sm:h-[280px] md:col-span-3 lg:h-[440px]"
-              />
-              <motion.img
-                variants={item}
-                src={show.bento[6]}
-                alt="Detalhe do projeto"
-                loading="lazy"
-                className="col-span-2 h-[180px] w-full rounded-2xl object-cover sm:h-[280px] md:col-span-2 lg:h-[440px]"
-              />
-            </StaggerGroup>
-          </div>
-        </section>
+        {previewShowcase && show ? (
+          <>
+            {/* ------------------------------------------------- Mosaico bento */}
+            <section className="px-4 md:px-8">
+              <div className="mx-auto max-w-[1760px] space-y-4">
+                <StaggerGroup className="grid grid-cols-2 gap-4 md:grid-cols-8">
+                  <motion.img
+                    variants={item}
+                    src={show.bento[0]}
+                    alt="Detalhe do projeto"
+                    loading="lazy"
+                    className="col-span-2 h-[220px] w-full rounded-2xl object-cover sm:h-[340px] md:col-span-4 lg:h-[520px]"
+                  />
+                  <motion.img
+                    variants={item}
+                    src={show.bento[1]}
+                    alt="Detalhe do projeto"
+                    loading="lazy"
+                    className="col-span-1 h-[220px] w-full rounded-2xl object-cover sm:h-[340px] md:col-span-2 lg:h-[520px]"
+                  />
+                  <motion.img
+                    variants={item}
+                    src={show.bento[2]}
+                    alt="Detalhe do projeto"
+                    loading="lazy"
+                    className="col-span-1 h-[220px] w-full rounded-2xl object-cover sm:h-[340px] md:col-span-2 lg:h-[520px]"
+                  />
+                </StaggerGroup>
+                <StaggerGroup className="grid grid-cols-2 gap-4 md:grid-cols-8">
+                  <motion.img
+                    variants={item}
+                    src={show.bento[3]}
+                    alt="Detalhe do projeto"
+                    loading="lazy"
+                    className="col-span-1 h-[180px] w-full rounded-2xl object-cover sm:h-[280px] md:col-span-1 lg:h-[440px]"
+                  />
+                  <motion.img
+                    variants={item}
+                    src={show.bento[4]}
+                    alt="Detalhe do projeto"
+                    loading="lazy"
+                    className="col-span-1 h-[180px] w-full rounded-2xl object-cover sm:h-[280px] md:col-span-2 lg:h-[440px]"
+                  />
+                  <motion.img
+                    variants={item}
+                    src={show.bento[5]}
+                    alt="Detalhe do projeto"
+                    loading="lazy"
+                    className="col-span-2 h-[180px] w-full rounded-2xl object-cover sm:h-[280px] md:col-span-3 lg:h-[440px]"
+                  />
+                  <motion.img
+                    variants={item}
+                    src={show.bento[6]}
+                    alt="Detalhe do projeto"
+                    loading="lazy"
+                    className="col-span-2 h-[180px] w-full rounded-2xl object-cover sm:h-[280px] md:col-span-2 lg:h-[440px]"
+                  />
+                </StaggerGroup>
+              </div>
+            </section>
 
-        {/* ---------------------------------------------------- Legenda 1 */}
-        <Caption>{study.captionOne}</Caption>
+            {/* ---------------------------------------------------- Legenda 1 */}
+            <Caption>{study.captionOne}</Caption>
 
-        {/* -------------------------------------------------- Grade 2×2 */}
-        <section className="px-4 md:px-8">
-          <StaggerGroup className="mx-auto grid max-w-[1760px] grid-cols-1 gap-4 sm:grid-cols-2">
-            {show.grid.map((src, i) => (
-              <motion.img
-                key={src}
-                variants={item}
-                src={src}
-                alt={`Tela ${i + 1} do projeto`}
-                loading="lazy"
-                className="aspect-[16/10] w-full rounded-2xl object-cover"
-              />
-            ))}
-          </StaggerGroup>
-        </section>
+            {/* -------------------------------------------------- Grade 2×2 */}
+            <section className="px-4 md:px-8">
+              <StaggerGroup className="mx-auto grid max-w-[1760px] grid-cols-1 gap-4 sm:grid-cols-2">
+                {show.grid.map((src, i) => (
+                  <motion.img
+                    key={src}
+                    variants={item}
+                    src={src}
+                    alt={`Tela ${i + 1} do projeto`}
+                    loading="lazy"
+                    className="aspect-[16/10] w-full rounded-2xl object-cover"
+                  />
+                ))}
+              </StaggerGroup>
+            </section>
 
-        {/* ------------------------------------------------ Imagem full-width */}
-        <section className="px-4 pt-4 md:px-8">
-          <Reveal className="mx-auto max-w-[1760px]">
-            <img
-              src={show.full}
-              alt={`Visão ampla do projeto ${study.title}`}
-              loading="lazy"
-              className="aspect-[16/9] w-full rounded-2xl object-cover"
-            />
-          </Reveal>
-        </section>
-
-        {/* ------------------------------------------- Nota "Website" */}
-        <section className="px-6 py-16 md:px-20 md:py-20">
-          <Reveal className="mx-auto max-w-[1760px]">
-            <p className="text-sm font-medium text-ink/40">Website</p>
-            <p className="mt-8 max-w-[1024px] text-[clamp(1.25rem,2.5vw,1.5rem)] font-medium leading-[1.3] text-ink">
-              {study.websiteNote}
-            </p>
-          </Reveal>
-        </section>
-
-        {/* -------------------------------------------- Mockup navegador 1 */}
-        <section className="px-4 md:px-8">
-          <Reveal className="mx-auto max-w-[1760px]">
-            <BrowserMockup
-              url={host}
-              image={show.mockups[0]}
-              alt={`Site do projeto ${study.title}`}
-            />
-          </Reveal>
-        </section>
-
-        {/* ---------------------------------------------------- Legenda 2 */}
-        <Caption>{study.captionTwo}</Caption>
-
-        {/* -------------------------------------------- Mockup navegador 2 */}
-        <section className="px-4 md:px-8">
-          <Reveal className="mx-auto max-w-[1760px]">
-            <BrowserMockup
-              url={host}
-              image={show.mockups[1]}
-              alt={`Interface do projeto ${study.title}`}
-            />
-          </Reveal>
-        </section>
-
-        {/* -------------------------------------------------- Depoimento */}
-        <section className="px-4 py-16 md:px-8 md:py-24">
-          <Reveal className="mx-auto max-w-[1760px]">
-            <div className="rounded-2xl bg-ink/[0.03] p-5 sm:p-10 md:p-16">
-              <div className="mx-auto max-w-[1080px]">
+            {/* ------------------------------------------------ Imagem full-width */}
+            <section className="px-4 pt-4 md:px-8">
+              <Reveal className="mx-auto max-w-[1760px]">
                 <img
-                  src={show.testimonialImage}
-                  alt="Contexto do depoimento"
+                  src={show.full}
+                  alt={`Visão ampla do projeto ${study.title}`}
                   loading="lazy"
-                  className="aspect-[16/9] w-full rounded-xl object-cover"
+                  className="aspect-[16/9] w-full rounded-2xl object-cover"
                 />
-                <div className="mt-4 rounded-xl border border-ink/15 p-8 md:p-10">
-                  <p className="text-[clamp(1.4rem,3vw,2rem)] font-medium italic leading-snug tracking-tight text-ink">
-                    “{study.testimonial.quote}”
-                  </p>
-                  <div className="mt-8 flex items-center gap-3">
+              </Reveal>
+            </section>
+
+            {/* ------------------------------------------- Nota "Website" */}
+            <section className="px-6 py-16 md:px-20 md:py-20">
+              <Reveal className="mx-auto max-w-[1760px]">
+                <p className="text-sm font-medium text-ink/40">Website</p>
+                <p className="mt-8 max-w-[1024px] text-[clamp(1.25rem,2.5vw,1.5rem)] font-medium leading-[1.3] text-ink">
+                  {study.websiteNote}
+                </p>
+              </Reveal>
+            </section>
+
+            {/* -------------------------------------------- Mockup navegador 1 */}
+            <section className="px-4 md:px-8">
+              <Reveal className="mx-auto max-w-[1760px]">
+                <BrowserMockup
+                  url={host}
+                  image={show.mockups[0]}
+                  alt={`Site do projeto ${study.title}`}
+                />
+              </Reveal>
+            </section>
+
+            {/* ---------------------------------------------------- Legenda 2 */}
+            <Caption>{study.captionTwo}</Caption>
+
+            {/* -------------------------------------------- Mockup navegador 2 */}
+            <section className="px-4 md:px-8">
+              <Reveal className="mx-auto max-w-[1760px]">
+                <BrowserMockup
+                  url={host}
+                  image={show.mockups[1]}
+                  alt={`Interface do projeto ${study.title}`}
+                />
+              </Reveal>
+            </section>
+
+            {/* -------------------------------------------------- Depoimento */}
+            <section className="px-4 py-16 md:px-8 md:py-24">
+              <Reveal className="mx-auto max-w-[1760px]">
+                <div className="rounded-2xl bg-ink/[0.03] p-5 sm:p-10 md:p-16">
+                  <div className="mx-auto max-w-[1080px]">
                     <img
-                      src={show.avatar}
-                      alt={`Foto de ${study.testimonial.author}`}
+                      src={show.testimonialImage}
+                      alt="Contexto do depoimento"
                       loading="lazy"
-                      className="size-12 rounded-full object-cover"
+                      className="aspect-[16/9] w-full rounded-xl object-cover"
                     />
-                    <div>
-                      <p className="text-sm font-medium">
-                        {study.testimonial.author}
+                    <div className="mt-4 rounded-xl border border-ink/15 p-8 md:p-10">
+                      <p className="text-[clamp(1.4rem,3vw,2rem)] font-medium italic leading-snug tracking-tight text-ink">
+                        “{study.testimonial.quote}”
                       </p>
-                      <p className="text-[13px] text-stone-soft">
-                        {study.testimonial.role}
-                      </p>
+                      <div className="mt-8 flex items-center gap-3">
+                        <img
+                          src={show.avatar}
+                          alt={`Foto de ${study.testimonial.author}`}
+                          loading="lazy"
+                          className="size-12 rounded-full object-cover"
+                        />
+                        <div>
+                          <p className="text-sm font-medium">
+                            {study.testimonial.author}
+                          </p>
+                          <p className="text-[13px] text-stone-soft">
+                            {study.testimonial.role}
+                          </p>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          </Reveal>
-        </section>
+              </Reveal>
+            </section>
+          </>
+        ) : (
+          <section className="px-4 pb-8 md:px-8">
+            <Reveal className="mx-auto flex max-w-[1760px] flex-col items-center justify-center gap-3 rounded-3xl bg-cream-soft px-6 py-24 text-center md:py-32">
+              <p className="text-[11px] font-medium uppercase tracking-[0.28em] text-stone-soft">
+                Case study
+              </p>
+              <h2 className="text-[clamp(1.6rem,4vw,2.25rem)] font-medium tracking-tight text-ink">
+                Em desenvolvimento
+              </h2>
+              <p className="max-w-md text-[15px] leading-relaxed text-charcoal">
+                A vitrine visual deste projeto ainda está sendo montada. A capa
+                e o contexto acima já contam a história — o restante chega em
+                breve.
+              </p>
+            </Reveal>
+          </section>
+        )}
 
         {/* -------------------------------------------------------- CTA final */}
         <section className="px-4 md:px-8">

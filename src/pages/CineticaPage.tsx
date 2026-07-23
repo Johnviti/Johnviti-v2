@@ -95,7 +95,7 @@ const CineticaPage = () => {
   const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
-    document.title = 'john amorim — cinética';
+    document.title = 'John Amorim';
   }, []);
 
   useEffect(() => {
