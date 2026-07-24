@@ -12,8 +12,12 @@ import card05 from '@/assets/card-05.png';
  */
 export const SITE_URL = 'https://john-amorim-portfolio.vercel.app';
 
-/** Imagem padrão de compartilhamento (Open Graph / Twitter). */
-export const OG_IMAGE = '/cases/card-05.png';
+/**
+ * Imagem de compartilhamento da raiz do site (Open Graph / Twitter): um print
+ * da galeria imersiva. Arquivo em `public/og-home.webp` (ideal 1200×630).
+ * As páginas de case sobrescrevem com a própria capa.
+ */
+export const OG_IMAGE = '/og-home.webp';
 
 export const CONTACT_EMAIL = 'johnviti21@hotmail.com';
 
