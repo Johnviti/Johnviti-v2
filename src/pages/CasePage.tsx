@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { motion, MotionConfig, type Variants } from 'framer-motion';
-import { MapPin, Menu, ArrowUp, Share2, Check } from 'lucide-react';
+import { MapPin, Menu, ArrowUp } from 'lucide-react';
 import Logo from '@/components/Logo';
 import GalleryMenu from '@/components/galeria-imersiva/GalleryMenu';
 import { ContactLink } from '@/components/loader/ContactTransition';
@@ -182,7 +182,6 @@ const CasePage = ({ slug, previewShowcase = false }: Props) => {
   const { t, lang } = useI18n();
   const study = getCaseBySlug(slug, lang);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [shared, setShared] = useState(false);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
 
   const closeMenu = useCallback(() => {
@@ -228,23 +227,6 @@ const CasePage = ({ slug, previewShowcase = false }: Props) => {
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const shareCase = async () => {
-    const url = window.location.href;
-    const shareTitle = study ? `${study.title} — John Amorim` : document.title;
-    try {
-      // Share nativo (mobile/PWA); no desktop cai no copiar-link.
-      if (navigator.share) {
-        await navigator.share({ title: shareTitle, url });
-        return;
-      }
-      await navigator.clipboard.writeText(url);
-      setShared(true);
-      window.setTimeout(() => setShared(false), 2000);
-    } catch {
-      // Compartilhamento cancelado pelo usuário — nada a fazer.
-    }
   };
 
   return (
@@ -586,28 +568,12 @@ const CasePage = ({ slug, previewShowcase = false }: Props) => {
           </ContactLink>
         </IconTooltip>
 
-        {/* -------------------------------- Compartilhar · Voltar ao topo */}
+        {/* -------------------------------- WhatsApp · Voltar ao topo */}
         <div className="fixed bottom-4 right-4 z-40 flex flex-col items-center gap-3 md:bottom-6 md:right-6">
-          <WhatsAppButton />
-          <IconTooltip
-            label={shared ? t('case.shareCopied') : t('case.share')}
-            side="top"
-            align="right"
-          >
-            <button
-              type="button"
-              onClick={shareCase}
-              aria-label={shared ? t('case.shareCopied') : t('case.share')}
-              className="inline-flex size-12 items-center justify-center rounded-full border border-ink/20 bg-surface text-ink shadow-lg transition-colors hover:border-ink hover:bg-ink hover:text-cream"
-            >
-              {shared ? (
-                <Check className="size-5" strokeWidth={1.75} aria-hidden />
-              ) : (
-                <Share2 className="size-5" strokeWidth={1.75} aria-hidden />
-              )}
-            </button>
-          </IconTooltip>
-          <IconTooltip label={t('nav.backToTop')} side="top">
+          <WhatsAppButton
+            message={`Olá John! Vi o case "${study.title}" no seu portfólio e gostaria de conversar sobre um projeto.`}
+          />
+          <IconTooltip label={t('nav.backToTop')} side="top" align="right">
             <button
               type="button"
               onClick={scrollToTop}

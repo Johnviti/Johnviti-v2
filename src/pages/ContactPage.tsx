@@ -10,7 +10,7 @@ import WhatsAppButton from '@/components/ui/WhatsAppButton';
 import LanguageToggle from '@/components/ui/LanguageToggle';
 import SkipLink from '@/components/ui/SkipLink';
 import ThemeToggle from '@/components/ui/ThemeToggle';
-import { CONTACT_EMAIL, CONTACT_INBOX, SOCIALS } from '@/data/site';
+import { CONTACT_EMAIL, CONTACT_INBOX, CV_URL, SOCIALS } from '@/data/site';
 import { useDocumentMeta } from '@/lib/useDocumentMeta';
 import { useI18n, type Lang } from '@/lib/i18n';
 
@@ -472,7 +472,7 @@ const ContactPage = () => {
             initial="hidden"
             whileInView="show"
             viewport={{ once: true, margin: '-80px' }}
-            className="grid gap-12 sm:grid-cols-2 lg:grid-cols-3"
+            className="grid gap-12 sm:grid-cols-2 lg:grid-cols-4"
           >
             <motion.div variants={fadeUp}>
               <p className={labelClass}>{t('contact.writeMe').toUpperCase()}</p>
@@ -482,6 +482,9 @@ const ContactPage = () => {
               >
                 {CONTACT_EMAIL}
               </a>
+              <p className="mt-4 text-[13px] text-stone-soft">
+                © {new Date().getFullYear()} John Amorim
+              </p>
             </motion.div>
 
             <motion.div variants={fadeUp}>
@@ -511,21 +514,39 @@ const ContactPage = () => {
                 ))}
               </ul>
             </motion.div>
+
+            <motion.div variants={fadeUp}>
+              <p className={labelClass}>{t('contact.siteLinks').toUpperCase()}</p>
+              <ul className="mt-4 space-y-2">
+                <li>
+                  <RouteTransitionLink
+                    href="/"
+                    className="text-[17px] underline-offset-4 transition-opacity duration-300 hover:opacity-55 hover:underline"
+                  >
+                    {t('nav.gallery')}
+                  </RouteTransitionLink>
+                </li>
+                <li>
+                  <a
+                    href="/minimal"
+                    className="text-[17px] underline-offset-4 transition-opacity duration-300 hover:opacity-55 hover:underline"
+                  >
+                    {t('contact.simpleVersion')}
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href={CV_URL}
+                    download
+                    className="text-[17px] underline-offset-4 transition-opacity duration-300 hover:opacity-55 hover:underline"
+                  >
+                    {t('nav.resume')}
+                  </a>
+                </li>
+              </ul>
+            </motion.div>
           </motion.div>
         </section>
-
-        {/* ------------------------------------------------------- Rodapé */}
-        <footer className="border-t border-ink/10">
-          <div className="flex flex-col gap-4 px-6 py-10 text-[13px] text-stone-soft md:flex-row md:items-center md:justify-between md:px-10">
-            <span>© {new Date().getFullYear()} John Amorim</span>
-            <RouteTransitionLink
-              href="/"
-              className="tracking-[0.2em] transition-colors hover:text-ink"
-            >
-              ← {t('nav.backToGallery').toUpperCase()}
-            </RouteTransitionLink>
-          </div>
-        </footer>
       </div>
     </MotionConfig>
   );

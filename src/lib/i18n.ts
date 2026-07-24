@@ -40,9 +40,6 @@ export const dictionary = {
   'nav.backToTop': { pt: 'Voltar ao início', en: 'Back to top' },
   'nav.skip': { pt: 'Pular para o conteúdo', en: 'Skip to content' },
   'nav.whatsapp': { pt: 'Falar no WhatsApp', en: 'Chat on WhatsApp' },
-  'case.share': { pt: 'Compartilhar', en: 'Share' },
-  'case.shareCopied': { pt: 'Link copiado', en: 'Link copied' },
-
   /* -------------------------------------------------- tema / idioma */
   'theme.toLight': { pt: 'Ativar modo claro', en: 'Switch to light mode' },
   'theme.toDark': { pt: 'Ativar modo escuro', en: 'Switch to dark mode' },
@@ -137,6 +134,8 @@ export const dictionary = {
     en: 'Working remotely with teams in any time zone.',
   },
   'contact.followMe': { pt: 'Me acompanhe', en: 'Follow me' },
+  'contact.siteLinks': { pt: 'No site', en: 'On the site' },
+  'contact.simpleVersion': { pt: 'Versão minimalista', en: 'Minimalist version' },
 } as const;
 
 export type MessageKey = keyof typeof dictionary;

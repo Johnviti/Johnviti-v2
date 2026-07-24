@@ -181,8 +181,9 @@ const runWipePulse = (
       '-=0.05',
     )
     .call(() => callCover(onCovered))
-    .to(logo, { opacity: 0, scale: 0.94, duration: 0.2, ease: 'power2.in' }, '+=0.08')
-    .to(veil, { yPercent: -100, duration: 0.4, ease: 'power3.inOut' }, '-=0.05');
+    // Revelação no mesmo sentido da cobertura: a tela branca (com a logo) sobe
+    // inteira e sai pelo topo — sem fade parado no lugar.
+    .to(veil, { yPercent: -100, duration: 0.72, ease: 'power4.inOut' }, '+=0.12');
 };
 
 const runPixelCascade = (

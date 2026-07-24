@@ -9,16 +9,27 @@ import { useI18n } from '@/lib/i18n';
  * o posicionamento (fixed) quando usado solto; sem ela, encaixa em uma coluna
  * de botões flutuantes existente.
  */
-const WHATSAPP_URL =
-  'https://wa.me/5582987199870?text=' +
-  encodeURIComponent('Olá John! Vim pelo seu portfólio e gostaria de conversar.');
+/** Número no formato internacional (55 + DDD 82 + nº). */
+const WHATSAPP_NUMBER = '5582987199870';
 
-export default function WhatsAppButton({ className }: { className?: string }) {
+/** Mensagem inicial padrão (usada quando nenhuma é passada). */
+const DEFAULT_MESSAGE =
+  'Olá John! Vim pelo seu portfólio e gostaria de conversar sobre um projeto.';
+
+export default function WhatsAppButton({
+  className,
+  message = DEFAULT_MESSAGE,
+}: {
+  className?: string;
+  /** Mensagem já preenchida na conversa — permite contexto por página. */
+  message?: string;
+}) {
   const { t } = useI18n();
+  const href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
   return (
     <IconTooltip label={t('nav.whatsapp')} side="top" align="right" className={className}>
       <a
-        href={WHATSAPP_URL}
+        href={href}
         target="_blank"
         rel="noreferrer"
         aria-label={t('nav.whatsapp')}

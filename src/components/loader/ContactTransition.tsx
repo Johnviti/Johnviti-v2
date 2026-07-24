@@ -180,10 +180,16 @@ const runEnterRevealOnce = (): Promise<void> => {
     gsap.set(logo, { opacity: 1, scale: 1, transformOrigin: '50% 50%' });
     gsap.set(cells, { fill: LOGO_INK });
 
+    // O véu JS (z-200) já cobre a tela: retiramos o véu estático
+    // (`body::before`, z-199) ANTES do slide. Se ele ficar, mascara a subida e
+    // a revelação vira um corte/fade. Sem ele, o véu sobe e revela a página.
+    document.documentElement.classList.remove('ja-route-enter');
+
+    // Finalização no mesmo sentido da entrada: a tela branca (com a logo) sobe
+    // inteira e sai pelo topo — sem fade parado no lugar.
     gsap
       .timeline({ onComplete: cleanup })
-      .to(logo, { opacity: 0, scale: 0.94, duration: 0.2, ease: 'power2.in' }, 0.08)
-      .to(veil, { yPercent: -100, duration: 0.4, ease: 'power3.inOut' }, '-=0.05');
+      .to(veil, { yPercent: -100, duration: 0.72, ease: 'power4.inOut' }, 0.16);
   });
 
   return enterPromise;
