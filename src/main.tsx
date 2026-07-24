@@ -24,3 +24,8 @@ if (import.meta.env.PROD && 'serviceWorker' in navigator) {
     })
   })
 }
+
+// Web Vitals → GA4 (só em produção, para não sujar as métricas com dev).
+if (import.meta.env.PROD) {
+  import('@/lib/webVitals').then(({ reportWebVitals }) => reportWebVitals())
+}

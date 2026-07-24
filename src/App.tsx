@@ -14,6 +14,7 @@ const MinimalPage = lazy(() => import('@/pages/MinimalPage'));
 // const WorldPage = lazy(() => import('@/pages/WorldPage'));
 // const PlaygroundPage = lazy(() => import('@/pages/PlaygroundPage'));
 const GaleriaImersivaPage = lazy(() => import('@/pages/GaleriaImersivaPage'));
+const NotFoundPage = lazy(() => import('@/pages/NotFoundPage'));
 const CasePage = lazy(() => import('@/pages/CasePage'));
 const ContactPage = lazy(() => import('@/pages/ContactPage'));
 const PreloaderLabPage = lazy(() => import('@/pages/PreloaderLabPage'));
@@ -69,14 +70,15 @@ function App() {
     <CasePage slug={devCaseSlug} previewShowcase />
   ) : caseSlug ? (
     <CasePage slug={caseSlug} />
-  ) : (
+  ) : path === '/' || path === '/galeria-imersiva' ? (
+    // '/' e o alias antigo '/galeria-imersiva' abrem a galeria imersiva — a
+    // entrada principal do sistema.
     // Rotas desativadas — descomente para voltar a servi-las:
     //   path === '/cinetica' ? <CineticaPage /> :
-    //   path === '/galeria-imersiva' ? <GaleriaImersivaPage /> :
-    //
-    // '/', o alias antigo '/galeria-imersiva' e qualquer rota desconhecida
-    // caem na galeria imersiva — a entrada principal do sistema.
     <GaleriaImersivaPage />
+  ) : (
+    // Qualquer outra rota é 404 (própria + `404.html` do prerender).
+    <NotFoundPage />
   );
 
   const showPreloader =

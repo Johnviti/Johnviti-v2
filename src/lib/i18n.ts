@@ -40,6 +40,16 @@ export const dictionary = {
   'nav.backToTop': { pt: 'Voltar ao início', en: 'Back to top' },
   'nav.skip': { pt: 'Pular para o conteúdo', en: 'Skip to content' },
   'nav.whatsapp': { pt: 'Falar no WhatsApp', en: 'Chat on WhatsApp' },
+
+  /* -------------------------------------------------------------- 404 */
+  'nf.title': {
+    pt: 'Esta página se perdeu no caminho.',
+    en: 'This page wandered off.',
+  },
+  'nf.body': {
+    pt: 'O endereço não existe ou foi movido. Volte para a galeria e continue explorando os projetos.',
+    en: 'This address does not exist or was moved. Head back to the gallery and keep exploring the work.',
+  },
   /* -------------------------------------------------- tema / idioma */
   'theme.toLight': { pt: 'Ativar modo claro', en: 'Switch to light mode' },
   'theme.toDark': { pt: 'Ativar modo escuro', en: 'Switch to dark mode' },

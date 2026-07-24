@@ -86,38 +86,61 @@ const GaleriaImersivaPage = () => {
       '(prefers-reduced-motion: reduce)',
     ).matches;
 
-    const app = new GalleryApp({
-      canvas,
-      container,
-      items: galleryItems,
-      config: galleryConfig,
-      reducedMotion,
-      background: THEME_BACKGROUND[themeRef.current],
-      onHoverChange: (item) => {
-        if (introVisibleRef.current) {
-          setHoveredSlug(null);
-          return;
-        }
-        setHoveredSlug(item?.caseSlug ?? null);
-      },
-      // A primeira interação interrompe a coreografia e dispensa o overlay.
-      onUserInteract: () => {
-        introChoreoRef.current?.kill();
-        introChoreoRef.current = null;
-        dismissIntro();
-      },
-      // Clique (tap sem arraste) em um tile abre a página do case.
-      onItemClick: (item) => {
-        if (introVisibleRef.current) return;
-        window.location.href = `/case/${item.caseSlug}`;
-      },
-    });
-    appRef.current = app;
+    let app: GalleryApp | null = null;
+    let idleId = 0;
+
+    const start = () => {
+      app = new GalleryApp({
+        canvas,
+        container,
+        items: galleryItems,
+        config: galleryConfig,
+        reducedMotion,
+        background: THEME_BACKGROUND[themeRef.current],
+        onHoverChange: (item) => {
+          if (introVisibleRef.current) {
+            setHoveredSlug(null);
+            return;
+          }
+          setHoveredSlug(item?.caseSlug ?? null);
+        },
+        // A primeira interação interrompe a coreografia e dispensa o overlay.
+        onUserInteract: () => {
+          introChoreoRef.current?.kill();
+          introChoreoRef.current = null;
+          dismissIntro();
+        },
+        // Clique (tap sem arraste) em um tile abre a página do case.
+        onItemClick: (item) => {
+          if (introVisibleRef.current) return;
+          window.location.href = `/case/${item.caseSlug}`;
+        },
+      });
+      appRef.current = app;
+    };
+
+    // Em conexões lentas / Save-Data, adia a cena WebGL para depois do first
+    // paint (idle) — assim ela não compete com o carregamento inicial. Em
+    // conexões normais, monta na hora.
+    const conn = (
+      navigator as Navigator & {
+        connection?: { saveData?: boolean; effectiveType?: string };
+      }
+    ).connection;
+    const slow =
+      !!conn && (conn.saveData === true || /2g/.test(conn.effectiveType ?? ''));
+
+    if (slow && 'requestIdleCallback' in window) {
+      idleId = window.requestIdleCallback(start, { timeout: 1800 });
+    } else {
+      start();
+    }
 
     return () => {
+      if (idleId) window.cancelIdleCallback(idleId);
       introChoreoRef.current?.kill();
       introChoreoRef.current = null;
-      app.destroy();
+      app?.destroy();
       appRef.current = null;
     };
   }, [dismissIntro]);

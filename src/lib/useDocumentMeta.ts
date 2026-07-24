@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
-import { OG_IMAGE, SITE_URL } from '@/data/site';
+import { OG_IMAGE } from '@/data/site';
+import { toAbsoluteUrl } from '@/lib/seo';
 
 /**
  * Atualiza título, descrição e tags Open Graph/Twitter por rota.
@@ -19,10 +20,7 @@ type Meta = {
   image?: string;
 };
 
-const absolute = (url: string) =>
-  url.startsWith('http') ? url : `${SITE_URL}${url.startsWith('/') ? '' : '/'}${url}`;
-
-const setNamed = (attr: 'name' | 'property', key: string, content: string) => {
+const setNamed =(attr: 'name' | 'property', key: string, content: string) => {
   const selector = `meta[${attr}="${key}"]`;
   let el = document.head.querySelector<HTMLMetaElement>(selector);
   if (!el) {
@@ -45,8 +43,8 @@ const setCanonical = (href: string) => {
 
 export function useDocumentMeta({ title, description, path, image }: Meta) {
   useEffect(() => {
-    const url = absolute(path ?? window.location.pathname);
-    const img = absolute(image ?? OG_IMAGE);
+    const url = toAbsoluteUrl(path ?? window.location.pathname);
+    const img = toAbsoluteUrl(image ?? OG_IMAGE);
 
     document.title = title;
     setNamed('name', 'description', description);

@@ -84,7 +84,7 @@ export const PROJECTS = [
 
 export const VERSIONS = [
   { label: 'galeria imersiva', path: '/' },
-  { label: 'minimal', path: '/minimal' },
+  { label: 'Versão minimalista', path: '/minimal' },
   // Rotas desativadas — reative junto com App.tsx.
   // { label: 'mundo 3d', path: '/mundo' },
   // { label: 'playground 3d', path: '/playground' },
