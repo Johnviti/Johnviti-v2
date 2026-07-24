@@ -1,8 +1,9 @@
 import { useCallback, useRef, useState } from 'react';
-import { Menu } from 'lucide-react';
 import GalleryMenu from './GalleryMenu';
 import Logo from '@/components/Logo';
 import { ContactLink } from '@/components/loader/ContactTransition';
+import IconTooltip from '@/components/ui/IconTooltip';
+import MenuToggle from '@/components/ui/MenuToggle';
 import ThemeToggle from '@/components/ui/ThemeToggle';
 import { useI18n } from '@/lib/i18n';
 
@@ -23,6 +24,8 @@ export default function FixedHeader() {
     menuButtonRef.current?.focus();
   }, []);
 
+  const toggleMenu = useCallback(() => setMenuOpen((v) => !v), []);
+
   return (
     <>
       {/* mix-blend-difference: logo e ícones se adaptam ao que passa por trás
@@ -32,29 +35,55 @@ export default function FixedHeader() {
         <div className="absolute left-6 top-6 md:left-10 md:top-7">
           <Logo className="h-8 w-auto" />
         </div>
+      </header>
 
-        {/* Tema · MENU — canto superior direito */}
-        <div className="pointer-events-auto absolute right-6 top-5 flex items-center gap-4 md:right-10 md:top-6">
+      {/* Tema · MENU — canto superior direito. Fica acima do painel (z-[70])
+          para o toggle continuar visível como X e fechar o menu ao clicar. */}
+      <div className="pointer-events-auto fixed right-6 top-5 z-[70] flex items-center gap-4 text-white mix-blend-difference md:right-10 md:top-6">
+        {/* Tema some enquanto o menu está aberto — evita flutuar sobre o painel. */}
+        <div
+          className={`transition-opacity duration-300 ${
+            menuOpen ? 'pointer-events-none opacity-0' : 'opacity-100'
+          }`}
+        >
           <ThemeToggle />
+        </div>
+        <IconTooltip label={t(menuOpen ? 'nav.closeMenu' : 'nav.openMenu')}>
           <button
             ref={menuButtonRef}
             type="button"
-            onClick={() => setMenuOpen(true)}
+            onClick={toggleMenu}
             aria-expanded={menuOpen}
-            aria-label={t('nav.openMenu')}
-            className="text-white transition-opacity duration-300 hover:opacity-60"
+            aria-label={t(menuOpen ? 'nav.closeMenu' : 'nav.openMenu')}
+            className="group relative flex size-11 items-center justify-center rounded-full text-white"
           >
-            <Menu className="size-6" strokeWidth={1.5} aria-hidden />
+            {/* Fundo circular — surge no estado X, como o antigo botão de fechar. */}
+            <span
+              aria-hidden
+              className={`absolute inset-0 rounded-full transition-[background-color,opacity] duration-300 ${
+                menuOpen
+                  ? 'bg-white/[0.08] opacity-100 group-hover:bg-white/[0.14]'
+                  : 'bg-transparent opacity-0'
+              }`}
+            />
+            <MenuToggle
+              open={menuOpen}
+              className="relative size-6 transition-opacity duration-300 group-hover:opacity-60"
+            />
           </button>
-        </div>
-      </header>
+        </IconTooltip>
+      </div>
 
-      <ContactLink
-        className="fixed bottom-4 left-4 z-40 inline-flex items-center gap-1.5 rounded-full bg-ink px-3.5 py-2 text-[11px] font-medium text-cream shadow-lg transition-opacity hover:opacity-90 md:bottom-6 md:left-6"
+      <IconTooltip
+        label={t('case.ctaAction')}
+        side="top"
+        className="fixed bottom-4 left-4 z-40 max-w-[calc(100vw-5.5rem)] md:bottom-6 md:left-6 md:max-w-none"
       >
-        <span className="size-1.5 rounded-full bg-[#28ca41]" aria-hidden />
-        {t('case.floating')}
-      </ContactLink>
+        <ContactLink className="inline-flex max-w-full items-center gap-1.5 truncate rounded-full bg-ink px-3.5 py-2 text-[11px] font-medium text-cream shadow-lg transition-opacity hover:opacity-90">
+          <span className="size-1.5 shrink-0 rounded-full bg-[#28ca41]" aria-hidden />
+          <span className="truncate">{t('case.floating')}</span>
+        </ContactLink>
+      </IconTooltip>
 
       <GalleryMenu open={menuOpen} onClose={closeMenu} />
     </>

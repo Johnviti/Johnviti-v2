@@ -1,3 +1,4 @@
+import IconTooltip from '@/components/ui/IconTooltip';
 import { LANGUAGES, useI18n } from '@/lib/i18n';
 
 type Props = {
@@ -25,6 +26,7 @@ export default function LanguageToggle({ className = '', variant = 'bare' }: Pro
     <div className={`${wrapper} ${className}`} role="group" aria-label={t('lang.label')}>
       {LANGUAGES.map((option, index) => {
         const active = option.code === lang;
+        const label = `${t('lang.switchTo')} ${option.name}`;
         return (
           <span key={option.code} className="contents">
             {index > 0 && variant === 'bare' && (
@@ -32,23 +34,25 @@ export default function LanguageToggle({ className = '', variant = 'bare' }: Pro
                 /
               </span>
             )}
-            <button
-              type="button"
-              onClick={() => setLang(option.code)}
-              aria-label={`${t('lang.switchTo')} ${option.name}`}
-              aria-current={active || undefined}
-              className={
-                variant === 'pill'
-                  ? `rounded-full px-2.5 py-1 text-[11px] font-medium tracking-[0.12em] transition-colors duration-300 ${
-                      active ? 'bg-ink text-cream' : 'text-stone-soft hover:text-ink'
-                    }`
-                  : `text-[11px] font-medium tracking-[0.12em] transition-opacity duration-300 ${
-                      active ? 'opacity-100' : 'opacity-45 hover:opacity-80'
-                    }`
-              }
-            >
-              {option.label}
-            </button>
+            <IconTooltip label={label}>
+              <button
+                type="button"
+                onClick={() => setLang(option.code)}
+                aria-label={label}
+                aria-current={active || undefined}
+                className={
+                  variant === 'pill'
+                    ? `rounded-full px-2.5 py-1 text-[11px] font-medium tracking-[0.12em] transition-colors duration-300 ${
+                        active ? 'bg-ink text-cream' : 'text-stone-soft hover:text-ink'
+                      }`
+                    : `text-[11px] font-medium tracking-[0.12em] transition-opacity duration-300 ${
+                        active ? 'opacity-100' : 'opacity-45 hover:opacity-80'
+                      }`
+                }
+              >
+                {option.label}
+              </button>
+            </IconTooltip>
           </span>
         );
       })}

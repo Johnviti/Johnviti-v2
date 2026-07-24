@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { Github, Instagram, Linkedin, X, type LucideIcon } from 'lucide-react';
+import { Github, Instagram, Linkedin, type LucideIcon } from 'lucide-react';
 import {
   ContactLink,
   RouteTransitionLink,
@@ -36,7 +36,6 @@ const SOCIAL_ICON: Record<string, LucideIcon> = {
 
 export default function GalleryMenu({ open, onClose }: Props) {
   const panelRef = useRef<HTMLDivElement>(null);
-  const closeRef = useRef<HTMLButtonElement>(null);
 
   /* Escape fecha. */
   useEffect(() => {
@@ -53,7 +52,7 @@ export default function GalleryMenu({ open, onClose }: Props) {
   /* O foco entra no painel depois da animação de abertura. */
   useEffect(() => {
     if (!open) return;
-    const focusTimer = window.setTimeout(() => closeRef.current?.focus(), 260);
+    const focusTimer = window.setTimeout(() => panelRef.current?.focus(), 260);
     return () => window.clearTimeout(focusTimer);
   }, [open]);
 
@@ -98,25 +97,15 @@ export default function GalleryMenu({ open, onClose }: Props) {
         role="dialog"
         aria-modal="true"
         aria-label={t('nav.menu')}
-        className="absolute right-3 top-3 w-[min(90vw,20rem)] origin-top-right overflow-hidden rounded-[32px] bg-[#131311] px-7 pb-8 pt-6 text-[#f4f3ec] shadow-[0_30px_80px_-24px_rgba(0,0,0,0.6)] ring-1 ring-white/[0.06] transition-[opacity,transform] duration-500 md:right-5 md:top-5"
+        tabIndex={-1}
+        className="absolute right-3 top-1.5 w-[min(90vw,20rem)] origin-top-right overflow-hidden rounded-[32px] bg-[#131311] px-7 pb-8 pt-6 text-[#f4f3ec] shadow-[0_30px_80px_-24px_rgba(0,0,0,0.6)] ring-1 ring-white/[0.06] outline-none transition-[opacity,transform] duration-500 md:right-5 md:top-3"
         style={{
           transform: open ? 'scale(1) translateY(0)' : 'scale(0.94) translateY(-10px)',
           opacity: open ? 1 : 0,
           transitionTimingFunction: PANEL_EASE,
         }}
       >
-        {/* Fechar — círculo no canto superior direito */}
-        <button
-          ref={closeRef}
-          type="button"
-          onClick={onClose}
-          aria-label={t('nav.closeMenu')}
-          className="absolute right-6 top-6 flex size-11 items-center justify-center rounded-full bg-white/[0.06] text-white/70 transition-colors duration-300 hover:bg-white/[0.12] hover:text-white"
-        >
-          <X className="size-5" strokeWidth={1.75} aria-hidden />
-        </button>
-
-        {/* Destinos principais */}
+        {/* Destinos principais — o botão de fechar (X) vive no toggle do header. */}
         <nav className="pr-14 pt-4">
           <ul>
             {primaryLinks.map((link, i) => (

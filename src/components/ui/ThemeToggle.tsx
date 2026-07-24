@@ -1,4 +1,5 @@
 import { useId, type MouseEvent } from 'react';
+import IconTooltip from '@/components/ui/IconTooltip';
 import { useI18n } from '@/lib/i18n';
 import { useTheme } from '@/lib/theme';
 
@@ -22,6 +23,7 @@ export default function ThemeToggle({ className = '', size = 20 }: Props) {
   const dark = theme === 'dark';
   /* Ícone = próximo tema (não o atual). */
   const showMoon = !dark;
+  const actionLabel = t(dark ? 'theme.toLight' : 'theme.toDark');
 
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     const rect = event.currentTarget.getBoundingClientRect();
@@ -41,56 +43,58 @@ export default function ThemeToggle({ className = '', size = 20 }: Props) {
   ] as const;
 
   return (
-    <button
-      type="button"
-      onClick={handleClick}
-      aria-label={t(dark ? 'theme.toLight' : 'theme.toDark')}
-      aria-pressed={dark}
-      className={`inline-flex items-center justify-center transition-opacity duration-300 hover:opacity-60 ${className}`}
-    >
-      <svg
-        width={size}
-        height={size}
-        viewBox="0 0 24 24"
-        fill="none"
-        aria-hidden
-        className="overflow-visible"
+    <IconTooltip label={actionLabel}>
+      <button
+        type="button"
+        onClick={handleClick}
+        aria-label={actionLabel}
+        aria-pressed={dark}
+        className={`inline-flex items-center justify-center transition-opacity duration-300 hover:opacity-60 ${className}`}
       >
-        <mask id={maskId}>
-          <rect x="0" y="0" width="24" height="24" fill="white" />
-          <circle
-            cx={showMoon ? 17 : 26}
-            cy={showMoon ? 8 : 2}
-            r="9"
-            fill="black"
-            className="transition-[cx,cy] duration-500 ease-[cubic-bezier(0.65,0,0.35,1)]"
-          />
-        </mask>
-
-        <circle
-          cx="12"
-          cy="12"
-          r={showMoon ? 9 : 4.5}
-          fill="currentColor"
-          mask={`url(#${maskId})`}
-          className="transition-[r] duration-500 ease-[cubic-bezier(0.65,0,0.35,1)]"
-        />
-
-        <g
-          stroke="currentColor"
-          strokeWidth="1.25"
-          strokeLinecap="round"
-          className="origin-center transition-all duration-500 ease-[cubic-bezier(0.65,0,0.35,1)]"
-          style={{
-            opacity: showMoon ? 0 : 1,
-            transform: showMoon ? 'scale(0.5)' : 'scale(1)',
-          }}
+        <svg
+          width={size}
+          height={size}
+          viewBox="0 0 24 24"
+          fill="none"
+          aria-hidden
+          className="overflow-visible"
         >
-          {rays.map(([x1, y1, x2, y2]) => (
-            <line key={`${x1}-${y1}`} x1={x1} y1={y1} x2={x2} y2={y2} />
-          ))}
-        </g>
-      </svg>
-    </button>
+          <mask id={maskId}>
+            <rect x="0" y="0" width="24" height="24" fill="white" />
+            <circle
+              cx={showMoon ? 17 : 26}
+              cy={showMoon ? 8 : 2}
+              r="9"
+              fill="black"
+              className="transition-[cx,cy] duration-500 ease-[cubic-bezier(0.65,0,0.35,1)]"
+            />
+          </mask>
+
+          <circle
+            cx="12"
+            cy="12"
+            r={showMoon ? 9 : 4.5}
+            fill="currentColor"
+            mask={`url(#${maskId})`}
+            className="transition-[r] duration-500 ease-[cubic-bezier(0.65,0,0.35,1)]"
+          />
+
+          <g
+            stroke="currentColor"
+            strokeWidth="1.25"
+            strokeLinecap="round"
+            className="origin-center transition-all duration-500 ease-[cubic-bezier(0.65,0,0.35,1)]"
+            style={{
+              opacity: showMoon ? 0 : 1,
+              transform: showMoon ? 'scale(0.5)' : 'scale(1)',
+            }}
+          >
+            {rays.map(([x1, y1, x2, y2]) => (
+              <line key={`${x1}-${y1}`} x1={x1} y1={y1} x2={x2} y2={y2} />
+            ))}
+          </g>
+        </svg>
+      </button>
+    </IconTooltip>
   );
 }

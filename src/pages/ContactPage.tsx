@@ -4,6 +4,7 @@ import { Menu } from 'lucide-react';
 import Logo from '@/components/Logo';
 import GalleryMenu from '@/components/galeria-imersiva/GalleryMenu';
 import { RouteTransitionLink } from '@/components/loader/ContactTransition';
+import IconTooltip from '@/components/ui/IconTooltip';
 import LanguageToggle from '@/components/ui/LanguageToggle';
 import ThemeToggle from '@/components/ui/ThemeToggle';
 import { CONTACT_EMAIL, CONTACT_INBOX, SOCIALS } from '@/data/site';
@@ -185,16 +186,18 @@ const ContactPage = () => {
           <div className="flex items-center gap-4">
             <LanguageToggle />
             <ThemeToggle />
-            <button
-              ref={menuButtonRef}
-              type="button"
-              onClick={() => setMenuOpen(true)}
-              aria-expanded={menuOpen}
-              aria-label={t('nav.openMenu')}
-              className="transition-opacity duration-300 hover:opacity-60"
-            >
-              <Menu className="size-6" strokeWidth={1.5} aria-hidden />
-            </button>
+            <IconTooltip label={t('nav.openMenu')}>
+              <button
+                ref={menuButtonRef}
+                type="button"
+                onClick={() => setMenuOpen(true)}
+                aria-expanded={menuOpen}
+                aria-label={t('nav.openMenu')}
+                className="transition-opacity duration-300 hover:opacity-60"
+              >
+                <Menu className="size-6" strokeWidth={1.5} aria-hidden />
+              </button>
+            </IconTooltip>
           </div>
         </motion.header>
 

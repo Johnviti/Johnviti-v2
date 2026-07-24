@@ -27,6 +27,7 @@ export const dictionary = {
   /* ------------------------------------------------------------ navegação */
   'nav.menu': { pt: 'Menu', en: 'Menu' },
   'nav.openMenu': { pt: 'Abrir menu', en: 'Open menu' },
+  // tooltip do header usa o mesmo texto
   'nav.closeMenu': { pt: 'Fechar menu', en: 'Close menu' },
   'nav.close': { pt: 'Fechar', en: 'Close' },
   'nav.gallery': { pt: 'Galeria', en: 'Gallery' },

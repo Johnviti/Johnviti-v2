@@ -4,6 +4,7 @@ import { MapPin, Menu, ArrowUp } from 'lucide-react';
 import Logo from '@/components/Logo';
 import GalleryMenu from '@/components/galeria-imersiva/GalleryMenu';
 import { ContactLink } from '@/components/loader/ContactTransition';
+import IconTooltip from '@/components/ui/IconTooltip';
 import LanguageToggle from '@/components/ui/LanguageToggle';
 import ThemeToggle from '@/components/ui/ThemeToggle';
 import { getCaseBySlug, getRelatedCases, getShowcase } from '@/data/cases';
@@ -241,16 +242,18 @@ const CasePage = ({ slug, previewShowcase = false }: Props) => {
           <div className="flex items-center gap-4">
             <LanguageToggle />
             <ThemeToggle />
-            <button
-              ref={menuButtonRef}
-              type="button"
-              onClick={() => setMenuOpen(true)}
-              aria-expanded={menuOpen}
-              aria-label={t('nav.openMenu')}
-              className="transition-opacity duration-300 hover:opacity-60"
-            >
-              <Menu className="size-6" strokeWidth={1.5} aria-hidden />
-            </button>
+            <IconTooltip label={t('nav.openMenu')}>
+              <button
+                ref={menuButtonRef}
+                type="button"
+                onClick={() => setMenuOpen(true)}
+                aria-expanded={menuOpen}
+                aria-label={t('nav.openMenu')}
+                className="transition-opacity duration-300 hover:opacity-60"
+              >
+                <Menu className="size-6" strokeWidth={1.5} aria-hidden />
+              </button>
+            </IconTooltip>
           </div>
         </motion.header>
 
@@ -542,22 +545,32 @@ const CasePage = ({ slug, previewShowcase = false }: Props) => {
         </section>
 
         {/* -------------------------------- Pílula flutuante (contato) */}
-        <ContactLink
-          className="fixed bottom-4 left-4 z-40 inline-flex items-center gap-2 rounded-full bg-ink px-5 py-3 text-[13px] font-medium text-cream shadow-lg transition-opacity hover:opacity-90 md:bottom-6 md:left-6"
+        <IconTooltip
+          label={t('case.ctaAction')}
+          side="top"
+          className="fixed bottom-4 left-4 z-40 max-w-[calc(100vw-5.5rem)] md:bottom-6 md:left-6 md:max-w-none"
         >
-          <span className="size-2 rounded-full bg-[#28ca41]" />
-          {t('case.floating')}
-        </ContactLink>
+          <ContactLink className="inline-flex max-w-full items-center gap-2 truncate rounded-full bg-ink px-5 py-3 text-[13px] font-medium text-cream shadow-lg transition-opacity hover:opacity-90">
+            <span className="size-2 shrink-0 rounded-full bg-[#28ca41]" />
+            <span className="truncate">{t('case.floating')}</span>
+          </ContactLink>
+        </IconTooltip>
 
         {/* -------------------------------- Voltar ao topo */}
-        <button
-          type="button"
-          onClick={scrollToTop}
-          aria-label={t('nav.backToTop')}
-          className="fixed bottom-4 right-4 z-40 inline-flex size-12 items-center justify-center rounded-full border border-ink/20 bg-surface text-ink shadow-lg transition-colors hover:border-ink hover:bg-ink hover:text-cream md:bottom-6 md:right-6"
+        <IconTooltip
+          label={t('nav.backToTop')}
+          side="top"
+          className="fixed bottom-4 right-4 z-40 md:bottom-6 md:right-6"
         >
-          <ArrowUp className="size-5" strokeWidth={1.75} aria-hidden />
-        </button>
+          <button
+            type="button"
+            onClick={scrollToTop}
+            aria-label={t('nav.backToTop')}
+            className="inline-flex size-12 items-center justify-center rounded-full border border-ink/20 bg-surface text-ink shadow-lg transition-colors hover:border-ink hover:bg-ink hover:text-cream"
+          >
+            <ArrowUp className="size-5" strokeWidth={1.75} aria-hidden />
+          </button>
+        </IconTooltip>
       </div>
     </MotionConfig>
   );
