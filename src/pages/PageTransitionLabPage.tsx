@@ -54,7 +54,6 @@ const PageTransitionLabPage = () => {
   const [playing, setPlaying] = useState(false);
   const [panelOpen, setPanelOpen] = useState(true);
 
-  const meta = PAGE_TRANSITIONS.find((v) => v.id === variant)!;
   const page = MOCK_PAGES[pageIdx];
 
   const play = useCallback(() => {
