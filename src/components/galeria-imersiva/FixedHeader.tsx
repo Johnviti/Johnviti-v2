@@ -29,12 +29,12 @@ export default function FixedHeader() {
           (pretos sobre áreas claras, claros sobre capas escuras). */}
       <header className="pointer-events-none fixed inset-0 z-40 select-none text-white mix-blend-difference">
         {/* Logo — canto superior esquerdo */}
-        <div className="absolute left-6 top-6 md:left-8 md:top-7">
+        <div className="absolute left-6 top-6 md:left-10 md:top-7">
           <Logo className="h-8 w-auto" />
         </div>
 
         {/* Tema · MENU — canto superior direito */}
-        <div className="pointer-events-auto absolute right-6 top-5 flex items-center gap-4 md:right-8 md:top-6">
+        <div className="pointer-events-auto absolute right-6 top-5 flex items-center gap-4 md:right-10 md:top-6">
           <ThemeToggle />
           <button
             ref={menuButtonRef}

@@ -46,19 +46,22 @@ const item: Variants = {
 
 const VIEWPORT = { once: true, margin: '-80px' } as const;
 
-/** Gutter lateral alinhado ao header (`px-6` / `md:px-10`). */
+/** Gutter lateral do site (`px-6` / `md:px-10`) — header e conteúdo. */
 const PAGE_X = 'px-6 md:px-10';
 const PAGE_SHELL = 'mx-auto max-w-[1760px]';
 
-/** Rótulos de metadado / eyebrow — mesma escala em todo o case. */
+/** Eyebrow pequeno (Website, case study, etc.). */
 const LABEL =
   'text-[11px] font-medium uppercase tracking-[0.16em] text-stone-soft';
 
-/** Títulos de seção (Introdução, Desafio, Abordagem, etc.). */
+/**
+ * Títulos de seção — mesma escala para "Nome do projeto", "Introdução",
+ * "Desafio", "Abordagem", etc.
+ */
 const SECTION_TITLE =
   'text-[clamp(1.35rem,2.4vw,1.75rem)] font-medium tracking-tight text-ink';
 
-/** Corpo de texto padrão. */
+/** Corpo — também usado no nome do projeto e na localização. */
 const BODY = 'text-[15px] leading-relaxed text-charcoal md:text-[16px]';
 
 /* --------------------------------------------------- Blocos reutilizáveis */
@@ -115,7 +118,7 @@ const MetaColumn = ({
   children: React.ReactNode;
 }) => (
   <motion.div variants={item}>
-    <p className={LABEL}>{label}</p>
+    <p className={SECTION_TITLE}>{label}</p>
     <div className="mt-3 flex flex-wrap items-center gap-2">{children}</div>
   </motion.div>
 );
@@ -124,7 +127,7 @@ const MetaColumn = ({
 const Caption = ({ children }: { children: React.ReactNode }) => (
   <section className={`${PAGE_X} py-12 md:py-16`}>
     <Reveal className={PAGE_SHELL}>
-      <p className={`max-w-[512px] ${BODY} text-ink`}>{children}</p>
+      <p className={`max-w-[512px] ${BODY}`}>{children}</p>
     </Reveal>
   </section>
 );
@@ -274,12 +277,10 @@ const CasePage = ({ slug, previewShowcase = false }: Props) => {
           </div>
 
           <StaggerGroup
-            className={`${PAGE_SHELL} mt-12 grid gap-8 ${PAGE_X} sm:grid-cols-2 lg:grid-cols-[1.5fr_2fr_2fr_1fr_1fr]`}
+            className={`${PAGE_SHELL} mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-[1.5fr_2fr_2fr_1fr_1fr]`}
           >
             <MetaColumn label={t('case.projectName')}>
-              <h1 className="text-[clamp(1.05rem,1.8vw,1.25rem)] font-medium leading-snug tracking-tight text-ink">
-                {study.title}
-              </h1>
+              <h1 className={BODY}>{study.title}</h1>
             </MetaColumn>
             <MetaColumn label={t('case.whatWeDid')}>
               {study.services.map((service) => (
@@ -292,8 +293,8 @@ const CasePage = ({ slug, previewShowcase = false }: Props) => {
               ))}
             </MetaColumn>
             <MetaColumn label={t('case.location')}>
-              <span className="flex items-center gap-1.5 text-[15px] text-ink md:text-[16px]">
-                <MapPin className="size-4 shrink-0 text-stone-soft" aria-hidden />
+              <span className={`flex items-center gap-1.5 ${BODY}`}>
+                <MapPin className="size-4 shrink-0 opacity-60" aria-hidden />
                 {study.location}
               </span>
             </MetaColumn>
