@@ -4,6 +4,17 @@ import card03 from '@/assets/card-03.png';
 import card04 from '@/assets/card-04.png';
 import card05 from '@/assets/card-05.png';
 
+/**
+ * URL de produção do site — usada em canonical, Open Graph, JSON-LD e sitemap.
+ *
+ * Precisa bater com o valor em `public/robots.txt`, `public/sitemap.xml` e nas
+ * meta tags de `index.html` (arquivos estáticos, não leem JS).
+ */
+export const SITE_URL = 'https://john-amorim-portfolio.vercel.app';
+
+/** Imagem padrão de compartilhamento (Open Graph / Twitter). */
+export const OG_IMAGE = '/cases/card-05.png';
+
 export const CONTACT_EMAIL = 'johnviti21@hotmail.com';
 
 /**

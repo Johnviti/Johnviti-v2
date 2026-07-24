@@ -3,10 +3,67 @@
 
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/src/assets/icon.png" />
+  <link rel="icon" type="image/png" href="/icon.png" />
+  <link rel="apple-touch-icon" href="/icon.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XW483ERN1B"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-XW483ERN1B');
+  </script>
+
   <meta name="description"
     content="John Amorim — desenvolvedor que cria experiências digitais com um toque de encanto. Design de produto, desenvolvimento de software e dashboards." />
+
+  <!-- Canonical + cor da barra do navegador (segue o tema). Domínio em SITE_URL (src/data/site.ts). -->
+  <link rel="canonical" href="https://john-amorim-portfolio.vercel.app/" />
+  <meta name="theme-color" content="#fafaf5" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#0e0e0d" media="(prefers-color-scheme: dark)" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="John Amorim" />
+  <meta property="og:title" content="John Amorim — Design de produto & desenvolvimento" />
+  <meta property="og:description"
+    content="Experiências digitais com design de produto, desenvolvimento de software e dashboards. Explore os projetos na galeria imersiva." />
+  <meta property="og:url" content="https://john-amorim-portfolio.vercel.app/" />
+  <meta property="og:image" content="https://john-amorim-portfolio.vercel.app/cases/card-05.png" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="John Amorim — Design de produto & desenvolvimento" />
+  <meta name="twitter:description"
+    content="Experiências digitais com design de produto, desenvolvimento de software e dashboards." />
+  <meta name="twitter:image" content="https://john-amorim-portfolio.vercel.app/cases/card-05.png" />
+
+  <!-- Dados estruturados (perfil) -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "John Amorim",
+      "url": "https://john-amorim-portfolio.vercel.app",
+      "jobTitle": "Product Designer & Developer",
+      "email": "mailto:johnviti21@hotmail.com",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Maceió",
+        "addressRegion": "AL",
+        "addressCountry": "BR"
+      },
+      "sameAs": [
+        "https://github.com/Johnviti",
+        "https://www.linkedin.com/in/john-amorim-648480225/",
+        "https://www.instagram.com/johnviti/"
+      ]
+    }
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <title>John Amorim</title>

@@ -4,6 +4,8 @@ import { preloaderDone } from '@/components/loader/loaderGate';
 import FixedHeader from '@/components/galeria-imersiva/FixedHeader';
 import IntroOverlay from '@/components/galeria-imersiva/IntroOverlay';
 import ProjectCursor from '@/components/galeria-imersiva/ProjectCursor';
+import SkipLink from '@/components/ui/SkipLink';
+import { useDocumentMeta } from '@/lib/useDocumentMeta';
 import { galleryConfig } from '@/components/galeria-imersiva/galleryConfig';
 import { galleryItems } from '@/components/galeria-imersiva/galleryItems';
 import { GalleryApp } from '@/components/galeria-imersiva/three/GalleryApp';
@@ -68,9 +70,12 @@ const GaleriaImersivaPage = () => {
     window.setTimeout(() => setIntroMounted(false), 800);
   }, []);
 
-  useEffect(() => {
-    document.title = 'John Amorim';
-  }, []);
+  useDocumentMeta({
+    title: 'John Amorim — Design de produto & desenvolvimento',
+    description:
+      'Portfólio de John Amorim: experiências digitais com design de produto, desenvolvimento de software e dashboards. Explore os projetos na galeria imersiva.',
+    path: '/',
+  });
 
   useEffect(() => {
     const container = containerRef.current;
@@ -154,7 +159,9 @@ const GaleriaImersivaPage = () => {
 
   return (
     <div className="fixed inset-0 overflow-hidden bg-surface">
+      <SkipLink />
       <div
+        id="conteudo"
         ref={containerRef}
         role="application"
         aria-label="Galeria imersiva de imagens. Arraste com o mouse ou use as setas do teclado para explorar a parede de imagens em qualquer direção. Clique em uma imagem para abrir o case do projeto."

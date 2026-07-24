@@ -38,6 +38,10 @@ export const dictionary = {
   'nav.social': { pt: 'Redes', en: 'Social' },
   'nav.backToGallery': { pt: 'Voltar para a galeria', en: 'Back to the gallery' },
   'nav.backToTop': { pt: 'Voltar ao início', en: 'Back to top' },
+  'nav.skip': { pt: 'Pular para o conteúdo', en: 'Skip to content' },
+  'nav.whatsapp': { pt: 'Falar no WhatsApp', en: 'Chat on WhatsApp' },
+  'case.share': { pt: 'Compartilhar', en: 'Share' },
+  'case.shareCopied': { pt: 'Link copiado', en: 'Link copied' },
 
   /* -------------------------------------------------- tema / idioma */
   'theme.toLight': { pt: 'Ativar modo claro', en: 'Switch to light mode' },
@@ -81,12 +85,12 @@ export const dictionary = {
   /* ----------------------------------------------------------- contato */
   'contact.eyebrow': { pt: 'Contato', en: 'Contact' },
   'contact.title': {
-    pt: 'Oi! Conta tudo pra mim',
-    en: 'Hey! Tell me all the things',
+    pt: 'Tem uma ideia? Eu quero ouvir.',
+    en: 'Got an idea? I want to hear it.',
   },
   'contact.lead': {
-    pt: 'Conte sobre a ideia, o prazo e o que precisa existir no fim. Respondo em até dois dias úteis.',
-    en: 'Tell me about the idea, the deadline and what needs to exist at the end. I reply within two business days.',
+    pt: 'Descreva o contexto, o prazo e o resultado esperado. Respondo em até dois dias úteis.',
+    en: 'Describe the context, the timeline and the expected outcome. I reply within two business days.',
   },
   'contact.servicesLabel': { pt: 'No que posso ajudar?', en: 'What can I help with?' },
   'contact.budgetLabel': { pt: 'Orçamento previsto', en: 'Estimated budget' },
@@ -105,7 +109,7 @@ export const dictionary = {
     pt: 'conte um pouco sobre a ideia',
     en: 'tell me a bit about the idea',
   },
-  'contact.send': { pt: 'Enviar pedido', en: 'Send request' },
+  'contact.send': { pt: 'Enviar mensagem', en: 'Send message' },
   'contact.sending': { pt: 'Enviando…', en: 'Sending…' },
   'contact.sentTitle': { pt: 'Mensagem enviada.', en: 'Message sent.' },
   'contact.sentBody': {
@@ -116,10 +120,6 @@ export const dictionary = {
   'contact.errorFallback': {
     pt: 'Se preferir, escreva direto para',
     en: 'If you prefer, write directly to',
-  },
-  'contact.notConfigured': {
-    pt: 'O formulário ainda não foi configurado. Defina VITE_WEB3FORMS_ACCESS_KEY no arquivo .env — ou escreva direto para',
-    en: 'The form has not been configured yet. Set VITE_WEB3FORMS_ACCESS_KEY in the .env file — or write directly to',
   },
   'contact.reply': {
     pt: 'Respondo em até 2 dias úteis.',

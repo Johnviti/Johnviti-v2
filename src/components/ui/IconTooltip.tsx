@@ -7,6 +7,13 @@ type Props = {
   className?: string;
   /** Lado do popup em relação ao gatilho. */
   side?: 'top' | 'bottom';
+  /**
+   * Alinhamento horizontal do popup ao gatilho.
+   * `center` (padrão) estende para os dois lados; `right` ancora a borda
+   * direita do popup no gatilho (evita cortar em botões colados à direita da
+   * tela); `left` ancora a borda esquerda.
+   */
+  align?: 'center' | 'left' | 'right';
 };
 
 /**
@@ -18,6 +25,7 @@ export default function IconTooltip({
   children,
   className = '',
   side = 'bottom',
+  align = 'center',
 }: Props) {
   const anchorRef = useRef<HTMLSpanElement>(null);
   const [open, setOpen] = useState(false);
@@ -26,8 +34,14 @@ export default function IconTooltip({
   const place = () => {
     const box = anchorRef.current?.getBoundingClientRect();
     if (!box) return;
+    const x =
+      align === 'right'
+        ? box.right
+        : align === 'left'
+          ? box.left
+          : box.left + box.width / 2;
     setPos({
-      x: box.left + box.width / 2,
+      x,
       y: side === 'top' ? box.top - 10 : box.bottom + 10,
     });
   };
@@ -55,10 +69,14 @@ export default function IconTooltip({
         createPortal(
           <span
             role="tooltip"
-            className={`pointer-events-none fixed z-[120] -translate-x-1/2 whitespace-nowrap rounded-md bg-ink px-2.5 py-1.5 text-[11px] font-medium tracking-[0.04em] text-cream shadow-lg ${
-              side === 'top' ? '-translate-y-full' : ''
-            }`}
-            style={{ left: pos.x, top: pos.y }}
+            className="pointer-events-none fixed z-[120] whitespace-nowrap rounded-md bg-ink px-2.5 py-1.5 text-[11px] font-medium tracking-[0.04em] text-cream shadow-lg"
+            style={{
+              left: pos.x,
+              top: pos.y,
+              transform: `translate(${
+                align === 'right' ? '-100%' : align === 'left' ? '0' : '-50%'
+              }, ${side === 'top' ? '-100%' : '0'})`,
+            }}
           >
             {label}
           </span>,

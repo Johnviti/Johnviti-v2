@@ -1,13 +1,17 @@
-import { useCallback, useEffect, useId, useRef, useState } from 'react';
+import { useCallback, useId, useRef, useState } from 'react';
 import { motion, MotionConfig, type Variants } from 'framer-motion';
 import { Menu } from 'lucide-react';
 import Logo from '@/components/Logo';
 import GalleryMenu from '@/components/galeria-imersiva/GalleryMenu';
 import { RouteTransitionLink } from '@/components/loader/ContactTransition';
+import GrainOverlay from '@/components/ui/GrainOverlay';
 import IconTooltip from '@/components/ui/IconTooltip';
+import WhatsAppButton from '@/components/ui/WhatsAppButton';
 import LanguageToggle from '@/components/ui/LanguageToggle';
+import SkipLink from '@/components/ui/SkipLink';
 import ThemeToggle from '@/components/ui/ThemeToggle';
 import { CONTACT_EMAIL, CONTACT_INBOX, SOCIALS } from '@/data/site';
+import { useDocumentMeta } from '@/lib/useDocumentMeta';
 import { useI18n, type Lang } from '@/lib/i18n';
 
 /**
@@ -17,8 +21,8 @@ import { useI18n, type Lang } from '@/lib/i18n';
  * localização e redes fecham a página.
  *
  * O envio usa o mesmo Web3Forms do resto do site: a chave é pública por design
- * (ela só autoriza o envio para uma caixa já fixada). Sem chave configurada, o
- * formulário não finge funcionar — avisa e oferece o e-mail direto.
+ * (ela só autoriza o envio para uma caixa já fixada). Sem chave, o envio abre
+ * o cliente de e-mail com o conteúdo do formulário.
  */
 
 const ENDPOINT = 'https://api.web3forms.com/submit';
@@ -73,7 +77,6 @@ const ContactPage = () => {
   const [budget, setBudget] = useState<string | null>(null);
   const [status, setStatus] = useState<Status>({ kind: 'idle' });
 
-  const configured = Boolean(ACCESS_KEY);
   const sending = status.kind === 'sending';
 
   const closeMenu = useCallback(() => {
@@ -81,10 +84,11 @@ const ContactPage = () => {
     menuButtonRef.current?.focus();
   }, []);
 
-  useEffect(() => {
-    document.title =
-      lang === 'pt' ? 'John Amorim - Contato' : 'John Amorim - Contact';
-  }, [lang]);
+  useDocumentMeta({
+    title: lang === 'pt' ? 'John Amorim - Contato' : 'John Amorim - Contact',
+    description: t('contact.lead'),
+    path: '/contato',
+  });
 
   const toggleService = (id: string) =>
     setServices((current) =>
@@ -94,7 +98,6 @@ const ContactPage = () => {
   const handleSubmit = useCallback(
     async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
-      if (!ACCESS_KEY) return;
 
       const data = new FormData(event.currentTarget);
       // Honeypot: preenchido só por robô — descarta sem avisar o remetente.
@@ -110,6 +113,28 @@ const ContactPage = () => {
       const chosenBudget =
         BUDGETS.find((b) => b.id === budget)?.label.pt ?? t('contact.budgetSkip');
 
+      const name = String(data.get('name') ?? '');
+      const email = String(data.get('email') ?? '');
+      const company = String(data.get('company') ?? '') || '—';
+      const message = String(data.get('message') ?? '');
+
+      // Sem chave Web3Forms: abre o cliente de e-mail com o conteúdo do formulário.
+      if (!ACCESS_KEY) {
+        const body = [
+          `Nome: ${name}`,
+          `E-mail: ${email}`,
+          `Empresa: ${company}`,
+          `Serviços: ${chosenServices || '—'}`,
+          `Orçamento: ${chosenBudget}`,
+          '',
+          message,
+        ].join('\n');
+        window.location.href = `mailto:${CONTACT_INBOX}?subject=${encodeURIComponent(
+          `Contato pelo portfólio — ${name}`,
+        )}&body=${encodeURIComponent(body)}`;
+        return;
+      }
+
       setStatus({ kind: 'sending' });
       try {
         const response = await fetch(ENDPOINT, {
@@ -120,14 +145,14 @@ const ContactPage = () => {
           },
           body: JSON.stringify({
             access_key: ACCESS_KEY,
-            subject: `Contato pelo portfólio — ${data.get('name')}`,
+            subject: `Contato pelo portfólio — ${name}`,
             from_name: 'Portfólio John Amorim',
-            name: data.get('name'),
-            email: data.get('email'),
-            company: data.get('company') || '—',
+            name,
+            email,
+            company,
             services: chosenServices || '—',
             budget: chosenBudget,
-            message: data.get('message'),
+            message,
           }),
         });
         const result = (await response.json()) as {
@@ -155,8 +180,14 @@ const ContactPage = () => {
     [services, budget, t],
   );
 
+  // Campos "preenchidos": fundo cream-soft (acompanha o tema), cantos
+  // arredondados e um anel de foco visível — em vez do antigo underline.
   const fieldClass =
-    'mt-2 w-full border-b border-ink/20 bg-transparent pb-3 text-[17px] outline-none transition-colors placeholder:text-stone-soft/60 focus:border-ink disabled:opacity-50 md:text-[19px]';
+    'mt-3 w-full rounded-2xl border border-ink/10 bg-cream-soft px-5 py-4 text-[16px] outline-none transition-[border-color,box-shadow] placeholder:text-stone-soft/60 focus:border-ink/60 focus:ring-2 focus:ring-ink/15 disabled:opacity-50 md:text-[17px]';
+  // Rótulos dos campos e das seções — maiores e em negrito (referência).
+  const fieldLabelClass =
+    'block text-[16px] font-semibold tracking-tight text-ink md:text-[18px]';
+  // Eyebrow pequeno (usado no topo e nos blocos de contato do rodapé).
   const labelClass = 'text-[10px] tracking-[0.28em] text-stone-soft';
 
   const chipClass = (active: boolean) =>
@@ -169,6 +200,9 @@ const ContactPage = () => {
   return (
     <MotionConfig reducedMotion="user">
       <div className="min-h-svh bg-surface text-ink">
+        <SkipLink />
+        <GrainOverlay />
+        <WhatsAppButton className="fixed bottom-4 right-4 z-40 md:bottom-6 md:right-6" />
         {/* ------------------------------------------------------- Header */}
         <motion.header
           initial={{ opacity: 0, y: -12 }}
@@ -204,7 +238,11 @@ const ContactPage = () => {
         <GalleryMenu open={menuOpen} onClose={closeMenu} />
 
         {/* --------------------------------------------------------- Hero */}
-        <section className="px-6 pt-32 md:px-10 md:pt-44">
+        <section
+          id="conteudo"
+          tabIndex={-1}
+          className="px-6 pt-32 outline-none md:px-10 md:pt-44"
+        >
           <motion.div variants={stagger} initial="hidden" animate="show">
             <motion.p variants={fadeUp} className={labelClass}>
               {t('contact.eyebrow').toUpperCase()}
@@ -226,6 +264,16 @@ const ContactPage = () => {
 
         {/* ----------------------------------------------------- Formulário */}
         <section className="px-6 pb-24 pt-16 md:px-10 md:pb-32 md:pt-24">
+          {/* Anuncia o resultado do envio a leitores de tela sem mover o foco. */}
+          <p role="status" aria-live="polite" className="sr-only">
+            {status.kind === 'sending'
+              ? t('contact.sending')
+              : status.kind === 'sent'
+                ? `${t('contact.sentTitle')} ${t('contact.sentBody')}`
+                : status.kind === 'error'
+                  ? status.message
+                  : ''}
+          </p>
           {status.kind === 'sent' ? (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -261,8 +309,8 @@ const ContactPage = () => {
 
               {/* ------------------------------------------- Serviços */}
               <fieldset>
-                <legend className={labelClass}>
-                  {t('contact.servicesLabel').toUpperCase()}
+                <legend className={fieldLabelClass}>
+                  {t('contact.servicesLabel')}
                 </legend>
                 <div className="mt-5 flex flex-wrap gap-2.5">
                   {SERVICES.map((service) => {
@@ -284,8 +332,8 @@ const ContactPage = () => {
 
               {/* ------------------------------------------ Orçamento */}
               <fieldset className="mt-14">
-                <legend className={labelClass}>
-                  {t('contact.budgetLabel').toUpperCase()}
+                <legend className={fieldLabelClass}>
+                  {t('contact.budgetLabel')}
                 </legend>
                 <div className="mt-5 flex flex-wrap gap-2.5">
                   {BUDGETS.map((option) => {
@@ -316,8 +364,8 @@ const ContactPage = () => {
               {/* --------------------------------------------- Campos */}
               <div className="mt-14 grid gap-10 md:grid-cols-2 md:gap-x-16">
                 <div>
-                  <label className={labelClass} htmlFor={`${fieldId}-name`}>
-                    {t('contact.name').toUpperCase()}
+                  <label className={fieldLabelClass} htmlFor={`${fieldId}-name`}>
+                    {t('contact.name')}
                   </label>
                   <input
                     id={`${fieldId}-name`}
@@ -326,14 +374,14 @@ const ContactPage = () => {
                     required
                     maxLength={120}
                     autoComplete="name"
-                    disabled={sending || !configured}
+                    disabled={sending}
                     placeholder={t('contact.namePlaceholder')}
                     className={fieldClass}
                   />
                 </div>
                 <div>
-                  <label className={labelClass} htmlFor={`${fieldId}-email`}>
-                    {t('contact.email').toUpperCase()}
+                  <label className={fieldLabelClass} htmlFor={`${fieldId}-email`}>
+                    {t('contact.email')}
                   </label>
                   <input
                     id={`${fieldId}-email`}
@@ -342,14 +390,14 @@ const ContactPage = () => {
                     required
                     maxLength={200}
                     autoComplete="email"
-                    disabled={sending || !configured}
+                    disabled={sending}
                     placeholder={t('contact.emailPlaceholder')}
                     className={fieldClass}
                   />
                 </div>
                 <div>
-                  <label className={labelClass} htmlFor={`${fieldId}-company`}>
-                    {t('contact.company').toUpperCase()}
+                  <label className={fieldLabelClass} htmlFor={`${fieldId}-company`}>
+                    {t('contact.company')}
                   </label>
                   <input
                     id={`${fieldId}-company`}
@@ -357,14 +405,14 @@ const ContactPage = () => {
                     type="text"
                     maxLength={120}
                     autoComplete="organization"
-                    disabled={sending || !configured}
+                    disabled={sending}
                     placeholder={t('contact.companyPlaceholder')}
                     className={fieldClass}
                   />
                 </div>
                 <div className="md:col-span-2">
-                  <label className={labelClass} htmlFor={`${fieldId}-message`}>
-                    {t('contact.message').toUpperCase()}
+                  <label className={fieldLabelClass} htmlFor={`${fieldId}-message`}>
+                    {t('contact.message')}
                   </label>
                   <textarea
                     id={`${fieldId}-message`}
@@ -372,25 +420,12 @@ const ContactPage = () => {
                     required
                     rows={3}
                     maxLength={2000}
-                    disabled={sending || !configured}
+                    disabled={sending}
                     placeholder={t('contact.messagePlaceholder')}
                     className={`${fieldClass} resize-none`}
                   />
                 </div>
               </div>
-
-              {!configured && (
-                <p className="mt-10 max-w-[60ch] rounded-2xl bg-cream-soft p-5 text-[13px] leading-relaxed text-stone-soft">
-                  {t('contact.notConfigured')}{' '}
-                  <a
-                    href={`mailto:${CONTACT_INBOX}`}
-                    className="text-ink underline underline-offset-4"
-                  >
-                    {CONTACT_INBOX}
-                  </a>
-                  .
-                </p>
-              )}
 
               {status.kind === 'error' && (
                 <p
@@ -411,7 +446,7 @@ const ContactPage = () => {
               <div className="mt-14 flex flex-wrap items-center gap-6">
                 <button
                   type="submit"
-                  disabled={sending || !configured}
+                  disabled={sending}
                   className="group inline-flex items-center gap-4 rounded-full bg-ink px-8 py-5 text-[15px] font-medium text-cream transition-opacity duration-300 hover:opacity-85 disabled:cursor-not-allowed disabled:opacity-40 md:px-10 md:py-6 md:text-[16px]"
                 >
                   {sending ? t('contact.sending') : t('contact.send')}

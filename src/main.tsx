@@ -14,3 +14,13 @@ createRoot(document.getElementById('root')!).render(
     </ThemeProvider>
   </StrictMode>,
 )
+
+// PWA: registra o service worker só no build de produção (em dev o Vite serve
+// os módulos sem hash e o SW atrapalharia o HMR).
+if (import.meta.env.PROD && 'serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(() => {
+      // Registro falhou (contexto não seguro, por exemplo) — segue sem PWA.
+    })
+  })
+}

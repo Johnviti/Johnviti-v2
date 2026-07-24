@@ -13,8 +13,7 @@ type Props = {
  * na chave de acesso. A chave é pública por design — ela só autoriza o envio
  * para um destino já fixado — então pode viajar no bundle sem risco.
  *
- * Sem chave configurada, o formulário não finge funcionar: avisa e oferece o
- * e-mail direto como alternativa.
+ * Sem chave, o envio abre o cliente de e-mail com o conteúdo do formulário.
  */
 
 const ENDPOINT = 'https://api.web3forms.com/submit';
@@ -31,8 +30,6 @@ export default function ContactDialog({ open, onClose }: Props) {
   const formRef = useRef<HTMLFormElement>(null);
   const firstFieldRef = useRef<HTMLInputElement>(null);
   const fieldId = useId();
-
-  const configured = Boolean(ACCESS_KEY);
 
   /* Escape fecha; o foco entra no primeiro campo ao abrir. */
   useEffect(() => {
@@ -68,12 +65,25 @@ export default function ContactDialog({ open, onClose }: Props) {
   const handleSubmit = useCallback(
     async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
-      if (!ACCESS_KEY) return;
 
       const data = new FormData(event.currentTarget);
       // Honeypot: preenchido só por robô — descarta sem avisar o remetente.
       if (data.get('botcheck')) {
         setStatus({ kind: 'sent' });
+        return;
+      }
+
+      const name = String(data.get('name') ?? '');
+      const email = String(data.get('email') ?? '');
+      const message = String(data.get('message') ?? '');
+
+      if (!ACCESS_KEY) {
+        const body = [`Nome: ${name}`, `E-mail: ${email}`, '', message].join(
+          '\n',
+        );
+        window.location.href = `mailto:${CONTACT_INBOX}?subject=${encodeURIComponent(
+          `Contato pelo portfólio — ${name}`,
+        )}&body=${encodeURIComponent(body)}`;
         return;
       }
 
@@ -87,11 +97,11 @@ export default function ContactDialog({ open, onClose }: Props) {
           },
           body: JSON.stringify({
             access_key: ACCESS_KEY,
-            subject: `Contato pelo portfólio — ${data.get('name')}`,
+            subject: `Contato pelo portfólio — ${name}`,
             from_name: 'Portfólio John Amorim',
-            name: data.get('name'),
-            email: data.get('email'),
-            message: data.get('message'),
+            name,
+            email,
+            message,
           }),
         });
         const result = (await response.json()) as {
@@ -205,7 +215,7 @@ export default function ContactDialog({ open, onClose }: Props) {
                 required
                 maxLength={120}
                 autoComplete="name"
-                disabled={sending || !configured}
+                disabled={sending}
                 placeholder="como devo te chamar"
                 className={fieldClass}
               />
@@ -222,7 +232,7 @@ export default function ContactDialog({ open, onClose }: Props) {
                 required
                 maxLength={200}
                 autoComplete="email"
-                disabled={sending || !configured}
+                disabled={sending}
                 placeholder="para onde eu respondo"
                 className={fieldClass}
               />
@@ -238,29 +248,11 @@ export default function ContactDialog({ open, onClose }: Props) {
                 required
                 rows={4}
                 maxLength={2000}
-                disabled={sending || !configured}
+                disabled={sending}
                 placeholder="conte um pouco sobre a ideia"
                 className={`${fieldClass} resize-none`}
               />
             </div>
-
-            {!configured && (
-              <p className="mt-7 rounded-2xl bg-cream-soft p-4 text-[13px] leading-relaxed text-stone-soft">
-                O formulário ainda não foi configurado. Defina{' '}
-                <code className="font-mono text-ink">
-                  VITE_WEB3FORMS_ACCESS_KEY
-                </code>{' '}
-                no arquivo <code className="font-mono text-ink">.env</code> — ou
-                escreva direto para{' '}
-                <a
-                  href={`mailto:${CONTACT_INBOX}`}
-                  className="text-ink underline underline-offset-4"
-                >
-                  {CONTACT_INBOX}
-                </a>
-                .
-              </p>
-            )}
 
             {status.kind === 'error' && (
               <p
@@ -284,7 +276,7 @@ export default function ContactDialog({ open, onClose }: Props) {
               </p>
               <button
                 type="submit"
-                disabled={sending || !configured}
+                disabled={sending}
                 className="shrink-0 rounded-full bg-ink px-7 py-3 text-[13px] text-cream transition-opacity hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-40"
               >
                 {sending ? 'Enviando…' : 'Enviar mensagem'}
