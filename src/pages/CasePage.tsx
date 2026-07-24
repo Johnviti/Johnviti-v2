@@ -3,8 +3,12 @@ import { motion, MotionConfig, type Variants } from 'framer-motion';
 import { MapPin, Menu } from 'lucide-react';
 import Logo from '@/components/Logo';
 import GalleryMenu from '@/components/galeria-imersiva/GalleryMenu';
+import { ContactLink } from '@/components/loader/ContactTransition';
+import LanguageToggle from '@/components/ui/LanguageToggle';
+import ThemeToggle from '@/components/ui/ThemeToggle';
 import { CONTACT_EMAIL } from '@/data/site';
 import { getCaseBySlug, getRelatedCases, getShowcase } from '@/data/cases';
+import { useI18n } from '@/lib/i18n';
 
 /**
  * Página de case study — reprodução da estrutura do case study de agência
@@ -41,6 +45,21 @@ const item: Variants = {
 };
 
 const VIEWPORT = { once: true, margin: '-80px' } as const;
+
+/** Gutter lateral alinhado ao header (`px-6` / `md:px-10`). */
+const PAGE_X = 'px-6 md:px-10';
+const PAGE_SHELL = 'mx-auto max-w-[1760px]';
+
+/** Rótulos de metadado / eyebrow — mesma escala em todo o case. */
+const LABEL =
+  'text-[11px] font-medium uppercase tracking-[0.16em] text-stone-soft';
+
+/** Títulos de seção (Introdução, Desafio, Abordagem, etc.). */
+const SECTION_TITLE =
+  'text-[clamp(1.35rem,2.4vw,1.75rem)] font-medium tracking-tight text-ink';
+
+/** Corpo de texto padrão. */
+const BODY = 'text-[15px] leading-relaxed text-charcoal md:text-[16px]';
 
 /* --------------------------------------------------- Blocos reutilizáveis */
 
@@ -96,16 +115,16 @@ const MetaColumn = ({
   children: React.ReactNode;
 }) => (
   <motion.div variants={item}>
-    <p className="text-[13px] text-stone-soft">{label}</p>
+    <p className={LABEL}>{label}</p>
     <div className="mt-3 flex flex-wrap items-center gap-2">{children}</div>
   </motion.div>
 );
 
 /** Legenda curta (parágrafo estreito, estilo Figma). */
 const Caption = ({ children }: { children: React.ReactNode }) => (
-  <section className="px-6 py-12 md:px-20 md:py-16">
-    <Reveal>
-      <p className="max-w-[512px] text-sm leading-[1.6] text-ink">{children}</p>
+  <section className={`${PAGE_X} py-12 md:py-16`}>
+    <Reveal className={PAGE_SHELL}>
+      <p className={`max-w-[512px] ${BODY} text-ink`}>{children}</p>
     </Reveal>
   </section>
 );
@@ -121,7 +140,7 @@ const BrowserMockup = ({
   alt: string;
 }) => (
   <div className="rounded-2xl bg-ink/[0.06] p-5 sm:p-10 md:p-16">
-    <div className="mx-auto max-w-[1152px] overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-ink/10">
+    <div className="mx-auto max-w-[1152px] overflow-hidden rounded-xl bg-surface shadow-sm ring-1 ring-ink/10">
       <div className="flex items-center gap-2 border-b border-ink/10 px-3 py-2.5">
         <span className="flex flex-none gap-1.5">
           <span className="size-2.5 rounded-full bg-[#ff5f57]" />
@@ -153,7 +172,8 @@ const caseDocumentTitle = (title: string) =>
   `John Amorim - ${title.charAt(0).toUpperCase()}${title.slice(1).toLowerCase()}`;
 
 const CasePage = ({ slug, previewShowcase = false }: Props) => {
-  const study = getCaseBySlug(slug);
+  const { t, lang } = useI18n();
+  const study = getCaseBySlug(slug, lang);
   const [menuOpen, setMenuOpen] = useState(false);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
 
@@ -171,33 +191,31 @@ const CasePage = ({ slug, previewShowcase = false }: Props) => {
 
   if (!study) {
     return (
-      <div className="flex min-h-svh flex-col items-center justify-center gap-6 bg-white text-ink">
-        <p className="text-sm tracking-[0.2em] text-stone-soft">
-          CASE NÃO ENCONTRADO
-        </p>
+      <div className="flex min-h-svh flex-col items-center justify-center gap-6 bg-surface text-ink">
+        <p className="text-sm tracking-[0.2em] text-stone-soft">{t('case.notFound')}</p>
         <a
           href="/"
           className="text-lg underline decoration-1 underline-offset-4 transition-opacity hover:opacity-60"
         >
-          ← Voltar para a galeria
+          ← {t('nav.backToGallery')}
         </a>
       </div>
     );
   }
 
   const show = previewShowcase ? getShowcase(study) : null;
-  const related = getRelatedCases(study.slug, 2);
+  const related = getRelatedCases(study.slug, 2, lang);
   const host = `${study.slug.replace(/-/g, '')}.com.br`;
   const narrative: [string, string][] = [
-    ['Introdução', study.intro],
-    ['Desafio', study.challenge],
-    ['Abordagem', study.approach],
+    [t('case.intro'), study.intro],
+    [t('case.challenge'), study.challenge],
+    [t('case.approach'), study.approach],
   ];
   const mailto = `mailto:${CONTACT_EMAIL}`;
 
   return (
     <MotionConfig reducedMotion="user">
-      <div className="min-h-svh bg-white text-ink">
+      <div className="min-h-svh bg-surface text-ink">
         {/* Header fixo — mix-blend-difference adapta a marca a fundos claros/escuros */}
         <motion.header
           initial={{ opacity: 0, y: -12 }}
@@ -214,25 +232,29 @@ const CasePage = ({ slug, previewShowcase = false }: Props) => {
             <Logo className="h-6 w-auto md:h-7" />
           </a>
 
-          {/* Menu — mesmo ícone da tela inicial */}
-          <button
-            ref={menuButtonRef}
-            type="button"
-            onClick={() => setMenuOpen(true)}
-            aria-expanded={menuOpen}
-            aria-label="Abrir menu"
-            className="transition-opacity duration-300 hover:opacity-60"
-          >
-            <Menu className="size-6" strokeWidth={1.5} aria-hidden />
-          </button>
+          {/* Idioma · tema · menu — idioma só no case */}
+          <div className="flex items-center gap-4">
+            <LanguageToggle />
+            <ThemeToggle />
+            <button
+              ref={menuButtonRef}
+              type="button"
+              onClick={() => setMenuOpen(true)}
+              aria-expanded={menuOpen}
+              aria-label={t('nav.openMenu')}
+              className="transition-opacity duration-300 hover:opacity-60"
+            >
+              <Menu className="size-6" strokeWidth={1.5} aria-hidden />
+            </button>
+          </div>
         </motion.header>
 
         <GalleryMenu open={menuOpen} onClose={closeMenu} />
 
         {/* -------------------------------------------------------- Hero */}
         <section className="pt-12 md:pt-20">
-          <div className="px-4 md:px-8">
-            <div className="mx-auto max-w-[1760px]">
+          <div className={PAGE_X}>
+            <div className={PAGE_SHELL}>
               <motion.div
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -251,41 +273,45 @@ const CasePage = ({ slug, previewShowcase = false }: Props) => {
             </div>
           </div>
 
-          <StaggerGroup className="mx-auto mt-12 grid max-w-[1760px] gap-8 px-6 sm:grid-cols-2 md:px-20 lg:grid-cols-[1.5fr_2fr_2fr_1fr_1fr]">
-            <MetaColumn label="Nome do projeto">
-              <h1 className="text-sm font-medium text-ink">{study.title}</h1>
+          <StaggerGroup
+            className={`${PAGE_SHELL} mt-12 grid gap-8 ${PAGE_X} sm:grid-cols-2 lg:grid-cols-[1.5fr_2fr_2fr_1fr_1fr]`}
+          >
+            <MetaColumn label={t('case.projectName')}>
+              <h1 className="text-[clamp(1.05rem,1.8vw,1.25rem)] font-medium leading-snug tracking-tight text-ink">
+                {study.title}
+              </h1>
             </MetaColumn>
-            <MetaColumn label="O que fizemos">
+            <MetaColumn label={t('case.whatWeDid')}>
               {study.services.map((service) => (
                 <Chip key={service}>{service}</Chip>
               ))}
             </MetaColumn>
-            <MetaColumn label="Indústrias">
+            <MetaColumn label={t('case.industries')}>
               {study.industries.map((industry) => (
                 <Chip key={industry}>{industry}</Chip>
               ))}
             </MetaColumn>
-            <MetaColumn label="Localização">
-              <span className="flex items-center gap-1.5 text-sm text-ink">
-                <MapPin className="size-4 text-stone-soft" aria-hidden />
+            <MetaColumn label={t('case.location')}>
+              <span className="flex items-center gap-1.5 text-[15px] text-ink md:text-[16px]">
+                <MapPin className="size-4 shrink-0 text-stone-soft" aria-hidden />
                 {study.location}
               </span>
             </MetaColumn>
-            <MetaColumn label="Estágio">
+            <MetaColumn label={t('case.stage')}>
               <Chip>{study.growthStage}</Chip>
             </MetaColumn>
           </StaggerGroup>
         </section>
 
         {/* ------------------------------- Introdução / Desafio / Abordagem */}
-        <section className="px-6 py-20 md:px-20 md:py-28">
-          <StaggerGroup className="mx-auto grid max-w-[1760px] gap-x-8 gap-y-12 md:grid-cols-3">
+        <section className={`${PAGE_X} py-20 md:py-28`}>
+          <StaggerGroup
+            className={`${PAGE_SHELL} grid gap-x-8 gap-y-12 md:grid-cols-3`}
+          >
             {narrative.map(([heading, body]) => (
               <motion.div key={heading} variants={item}>
-                <h2 className="text-xl font-medium leading-snug">{heading}</h2>
-                <p className="mt-4 max-w-[523px] text-[15px] leading-relaxed text-charcoal">
-                  {body}
-                </p>
+                <h2 className={SECTION_TITLE}>{heading}</h2>
+                <p className={`mt-4 max-w-[40ch] ${BODY}`}>{body}</p>
               </motion.div>
             ))}
           </StaggerGroup>
@@ -294,8 +320,8 @@ const CasePage = ({ slug, previewShowcase = false }: Props) => {
         {previewShowcase && show ? (
           <>
             {/* ------------------------------------------------- Mosaico bento */}
-            <section className="px-4 md:px-8">
-              <div className="mx-auto max-w-[1760px] space-y-4">
+            <section className={PAGE_X}>
+              <div className={`${PAGE_SHELL} space-y-4`}>
                 <StaggerGroup className="grid grid-cols-2 gap-4 md:grid-cols-8">
                   <motion.img
                     variants={item}
@@ -356,8 +382,8 @@ const CasePage = ({ slug, previewShowcase = false }: Props) => {
             <Caption>{study.captionOne}</Caption>
 
             {/* -------------------------------------------------- Grade 2×2 */}
-            <section className="px-4 md:px-8">
-              <StaggerGroup className="mx-auto grid max-w-[1760px] grid-cols-1 gap-4 sm:grid-cols-2">
+            <section className={PAGE_X}>
+              <StaggerGroup className={`${PAGE_SHELL} grid grid-cols-1 gap-4 sm:grid-cols-2`}>
                 {show.grid.map((src, i) => (
                   <motion.img
                     key={src}
@@ -372,8 +398,8 @@ const CasePage = ({ slug, previewShowcase = false }: Props) => {
             </section>
 
             {/* ------------------------------------------------ Imagem full-width */}
-            <section className="px-4 pt-4 md:px-8">
-              <Reveal className="mx-auto max-w-[1760px]">
+            <section className={`${PAGE_X} pt-4`}>
+              <Reveal className={PAGE_SHELL}>
                 <img
                   src={show.full}
                   alt={`Visão ampla do projeto ${study.title}`}
@@ -384,9 +410,9 @@ const CasePage = ({ slug, previewShowcase = false }: Props) => {
             </section>
 
             {/* ------------------------------------------- Nota "Website" */}
-            <section className="px-6 py-16 md:px-20 md:py-20">
-              <Reveal className="mx-auto max-w-[1760px]">
-                <p className="text-sm font-medium text-ink/40">Website</p>
+            <section className={`${PAGE_X} py-16 md:py-20`}>
+              <Reveal className={PAGE_SHELL}>
+                <p className={LABEL}>{t('case.website')}</p>
                 <p className="mt-8 max-w-[1024px] text-[clamp(1.25rem,2.5vw,1.5rem)] font-medium leading-[1.3] text-ink">
                   {study.websiteNote}
                 </p>
@@ -394,8 +420,8 @@ const CasePage = ({ slug, previewShowcase = false }: Props) => {
             </section>
 
             {/* -------------------------------------------- Mockup navegador 1 */}
-            <section className="px-4 md:px-8">
-              <Reveal className="mx-auto max-w-[1760px]">
+            <section className={PAGE_X}>
+              <Reveal className={PAGE_SHELL}>
                 <BrowserMockup
                   url={host}
                   image={show.mockups[0]}
@@ -408,8 +434,8 @@ const CasePage = ({ slug, previewShowcase = false }: Props) => {
             <Caption>{study.captionTwo}</Caption>
 
             {/* -------------------------------------------- Mockup navegador 2 */}
-            <section className="px-4 md:px-8">
-              <Reveal className="mx-auto max-w-[1760px]">
+            <section className={PAGE_X}>
+              <Reveal className={PAGE_SHELL}>
                 <BrowserMockup
                   url={host}
                   image={show.mockups[1]}
@@ -419,8 +445,8 @@ const CasePage = ({ slug, previewShowcase = false }: Props) => {
             </section>
 
             {/* -------------------------------------------------- Depoimento */}
-            <section className="px-4 py-16 md:px-8 md:py-24">
-              <Reveal className="mx-auto max-w-[1760px]">
+            <section className={`${PAGE_X} py-16 md:py-24`}>
+              <Reveal className={PAGE_SHELL}>
                 <div className="rounded-2xl bg-ink/[0.03] p-5 sm:p-10 md:p-16">
                   <div className="mx-auto max-w-[1080px]">
                     <img
@@ -441,12 +467,10 @@ const CasePage = ({ slug, previewShowcase = false }: Props) => {
                           className="size-12 rounded-full object-cover"
                         />
                         <div>
-                          <p className="text-sm font-medium">
+                          <p className="text-[15px] font-medium text-ink">
                             {study.testimonial.author}
                           </p>
-                          <p className="text-[13px] text-stone-soft">
-                            {study.testimonial.role}
-                          </p>
+                          <p className={LABEL}>{study.testimonial.role}</p>
                         </div>
                       </div>
                     </div>
@@ -456,45 +480,38 @@ const CasePage = ({ slug, previewShowcase = false }: Props) => {
             </section>
           </>
         ) : (
-          <section className="px-4 pb-8 md:px-8">
-            <Reveal className="mx-auto flex max-w-[1760px] flex-col items-center justify-center gap-3 rounded-3xl bg-cream-soft px-6 py-24 text-center md:py-32">
-              <p className="text-[11px] font-medium uppercase tracking-[0.28em] text-stone-soft">
-                Case study
-              </p>
-              <h2 className="text-[clamp(1.6rem,4vw,2.25rem)] font-medium tracking-tight text-ink">
-                Em desenvolvimento
-              </h2>
-              <p className="max-w-md text-[15px] leading-relaxed text-charcoal">
-                A vitrine visual deste projeto ainda está sendo montada. A capa
-                e o contexto acima já contam a história — o restante chega em
-                breve.
-              </p>
+          <section className={`${PAGE_X} pb-8`}>
+            <Reveal
+              className={`${PAGE_SHELL} flex flex-col items-center justify-center gap-3 rounded-3xl bg-cream-soft px-6 py-24 text-center md:py-32`}
+            >
+              <p className={LABEL}>{t('case.label')}</p>
+              <h2 className={SECTION_TITLE}>{t('case.wip')}</h2>
+              <p className={`max-w-md ${BODY}`}>{t('case.wipBody')}</p>
             </Reveal>
           </section>
         )}
 
         {/* -------------------------------------------------------- CTA final */}
-        <section className="px-4 md:px-8">
-          <Reveal className="mx-auto flex max-w-[1760px] flex-col items-center gap-8 rounded-[32px] bg-cream-soft px-6 py-24 text-center md:py-32">
+        <section className={PAGE_X}>
+          <Reveal
+            className={`${PAGE_SHELL} flex flex-col items-center gap-8 rounded-[32px] bg-cream-soft px-6 py-24 text-center md:py-32`}
+          >
             <h2 className="text-[clamp(2.2rem,6vw,3rem)] font-medium tracking-tight">
-              Vamos construir algo.
+              {t('case.ctaTitle')}
             </h2>
-            <a
-              href={mailto}
+            <ContactLink
               className="rounded-full bg-ink px-8 py-4 text-base font-medium text-cream transition-opacity hover:opacity-80"
             >
-              Entrar em contato
-            </a>
+              {t('case.ctaAction')}
+            </ContactLink>
           </Reveal>
         </section>
 
         {/* ------------------------------------------------- Quer ver mais? */}
-        <section className="px-4 pt-20 pb-12 md:px-8 md:pt-28">
-          <div className="mx-auto max-w-[1760px]">
+        <section className={`${PAGE_X} pt-20 pb-12 md:pt-28`}>
+          <div className={PAGE_SHELL}>
             <Reveal>
-              <h2 className="text-[clamp(1.6rem,4vw,2.25rem)] font-medium tracking-tight">
-                Quer ver mais?
-              </h2>
+              <h2 className={SECTION_TITLE}>{t('case.more')}</h2>
             </Reveal>
             <StaggerGroup className="mt-8 grid gap-4 md:grid-cols-2">
               {related.map((rc) => (
@@ -512,7 +529,7 @@ const CasePage = ({ slug, previewShowcase = false }: Props) => {
                       className="aspect-[16/10] w-full object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                   </div>
-                  <p className="mt-3 text-sm font-medium">{rc.title}</p>
+                  <p className="mt-3 text-[15px] font-medium text-ink">{rc.title}</p>
                 </motion.a>
               ))}
             </StaggerGroup>
@@ -529,19 +546,18 @@ const CasePage = ({ slug, previewShowcase = false }: Props) => {
               href="/"
               className="tracking-[0.2em] transition-colors hover:text-ink"
             >
-              ← VOLTAR PARA A GALERIA
+              ← {t('nav.backToGallery').toUpperCase()}
             </a>
           </div>
         </footer>
 
         {/* -------------------------------- Pílula flutuante (chat/contato) */}
-        <a
-          href={mailto}
+        <ContactLink
           className="fixed bottom-4 left-4 z-40 inline-flex items-center gap-2 rounded-full bg-ink px-5 py-3 text-[13px] font-medium text-cream shadow-lg transition-opacity hover:opacity-90"
         >
           <span className="size-2 rounded-full bg-[#28ca41]" />
-          Vamos trabalhar juntos
-        </a>
+          {t('case.floating')}
+        </ContactLink>
       </div>
     </MotionConfig>
   );

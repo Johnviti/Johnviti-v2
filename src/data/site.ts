@@ -4,14 +4,14 @@ import card03 from '@/assets/card-03.png';
 import card04 from '@/assets/card-04.png';
 import card05 from '@/assets/card-05.png';
 
-export const CONTACT_EMAIL = 'observatorio@sistemafiea.com.br';
+export const CONTACT_EMAIL = 'johnviti21@hotmail.com';
 
 /**
  * Caixa de entrada que recebe as mensagens do formulário de contato.
  * O destino real é definido pela chave do Web3Forms (ver `.env.example`);
  * este valor é usado no fallback `mailto:` quando o envio falha.
  */
-export const CONTACT_INBOX = 'johnviti21@gmail.com';
+export const CONTACT_INBOX = 'johnviti21@hotmail.com';
 
 /** Currículo em PDF — o arquivo vive em `public/cv.pdf`. */
 export const CV_URL = '/cv.pdf';

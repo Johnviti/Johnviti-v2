@@ -8,6 +8,9 @@
   --color-ink: #121210;
   --color-charcoal: #232120;
   --color-stone-soft: #6f6d66;
+  /* Superfície "papel" das páginas de conteúdo. Existe como token (e não como
+     `bg-white`) porque no modo escuro ela precisa virar quase-preto. */
+  --color-surface: #ffffff;
   /* Fonte padrão de todo o projeto: Inter. O nome do token é mantido por
      compatibilidade com as classes `font-grotesk` já espalhadas nas páginas. */
   --font-grotesk: "Inter", ui-sans-serif, system-ui, sans-serif;
@@ -20,6 +23,35 @@
   --color-oryzo-orange: #dc5000;
   --font-archivo: "Archivo", ui-sans-serif, system-ui, sans-serif;
   --font-literata: "Literata", ui-serif, Georgia, serif;
+}
+
+/* ---------------------------------------------------------------- Modo escuro
+   Os tokens do @theme viram variáveis CSS em `:root`; aqui elas são
+   reescritas quando `<html data-theme="dark">`. Como todo o projeto usa
+   `bg-cream`, `text-ink`, `bg-surface` etc., a paleta inteira inverte sem
+   precisar de variantes `dark:` espalhadas pelas classes. */
+html[data-theme='dark'] {
+  --color-cream: #0e0e0d;
+  --color-cream-soft: #1a1a18;
+  --color-ink: #f4f3ec;
+  --color-charcoal: #cfcdc4;
+  --color-stone-soft: #8d8b83;
+  --color-surface: #080807;
+  color-scheme: dark;
+}
+
+/* Véu estático enquanto a transição Galeria ↔ Contato assume o reveal. */
+html.ja-route-enter body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 199;
+  pointer-events: none;
+  background: var(--color-cream, #fafaf5);
+}
+
+html[data-theme='light'] {
+  color-scheme: light;
 }
 
 @layer base {
@@ -46,23 +78,6 @@
     text-rendering: optimizeLegibility;
   }
 
-  @media (pointer: fine) {
-    html,
-    body,
-    body * {
-      cursor: url('/cursors/pixel-arrow.png') 2 2, auto;
-    }
-
-    a,
-    button,
-    [role='button'],
-    summary,
-    label[for],
-    select {
-      cursor: url('/cursors/pixel-hand.png') 4 3, pointer;
-    }
-  }
-
   ::selection {
     background-color: var(--color-ink);
     color: var(--color-cream);
@@ -75,6 +90,102 @@
 
   button {
     font-family: inherit;
+  }
+}
+
+/* ------------------------------------------------------- Cursor do sistema
+   Os cursores pixelados de `public/cursors` são O cursor do site inteiro.
+   O bloco fica FORA de `@layer base` de propósito: regras sem camada vencem
+   as utilities do Tailwind, então `cursor-pointer`, `cursor-default` &
+   companhia continuam trocando a forma sem voltar ao cursor do sistema
+   operacional. Em telas de toque nada disso se aplica. */
+@media (pointer: fine) {
+  html,
+  body,
+  body *,
+  .cursor-default,
+  .cursor-auto,
+  .cursor-text,
+  .cursor-not-allowed,
+  .cursor-wait {
+    cursor: url('/cursors/pixel-arrow.png') 2 0, auto;
+  }
+
+  a,
+  button,
+  [role='button'],
+  summary,
+  label[for],
+  select,
+  .cursor-pointer,
+  .cursor-grab,
+  .cursor-grabbing,
+  .cursor-help {
+    cursor: url('/cursors/pixel-hand.png') 6 0, pointer;
+  }
+
+  /* `cursor-none` continua escondendo o ponteiro (cursores customizados 3D). */
+  .cursor-none,
+  .cursor-none * {
+    cursor: none;
+  }
+}
+
+/* ------------------------------------------- Transição de tema (elipse)
+   A troca de tema roda dentro de `document.startViewTransition()`. O
+   snapshot antigo fica parado embaixo e o novo é revelado por um círculo
+   que cresce a partir do botão sol/lua (`--theme-x` / `--theme-y` / `--theme-r`,
+   escritos em `document.documentElement` antes da transição). */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  z-index: 0;
+}
+
+::view-transition-new(root) {
+  z-index: 1;
+  animation: theme-reveal 720ms cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+
+@keyframes theme-reveal {
+  from {
+    clip-path: circle(0 at var(--theme-x, 50%) var(--theme-y, 0%));
+  }
+  to {
+    clip-path: circle(var(--theme-r, 150vmax) at var(--theme-x, 50%) var(--theme-y, 0%));
+  }
+}
+
+/* Navegadores sem View Transitions: o mesmo gesto, feito com um véu da cor
+   do tema que chega, crescendo do botão até cobrir a tela. */
+@keyframes theme-reveal-fallback {
+  from {
+    clip-path: circle(0 at var(--theme-x, 50%) var(--theme-y, 0%));
+  }
+  to {
+    clip-path: circle(var(--theme-r, 150vmax) at var(--theme-x, 50%) var(--theme-y, 0%));
+  }
+}
+
+.theme-ripple {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483647;
+  pointer-events: none;
+  animation: theme-reveal-fallback 620ms cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-new(root) {
+    animation-duration: 1ms;
+  }
+
+  .theme-ripple {
+    animation-duration: 1ms;
   }
 }
 
@@ -96,4 +207,27 @@
 
 .animate-spin-slow {
   animation: spin-slow 9s linear infinite;
+}
+
+/* Setas do cursor "ver projeto": entram pela esquerda, saem pela direita.
+   Duas cópias com `animation-delay` diferente dão a sensação de perseguição. */
+@keyframes cursor-chevron {
+  0% {
+    transform: translateX(-7px);
+    opacity: 0;
+  }
+  35% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(7px);
+    opacity: 0;
+  }
+}
+
+.animate-cursor-chevron {
+  animation: cursor-chevron 1.1s cubic-bezier(0.45, 0, 0.25, 1) infinite;
 }

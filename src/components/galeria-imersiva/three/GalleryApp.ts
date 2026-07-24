@@ -16,10 +16,14 @@ export type GalleryAppOptions = {
   items: GalleryItem[];
   config: GalleryConfig;
   reducedMotion: boolean;
+  /** Cor de fundo da parede (o "gap" entre os tiles). Segue o tema do site. */
+  background?: string;
   /** Disparado na primeira interação do usuário (cancela a introdução). */
   onUserInteract?: () => void;
   /** Disparado quando um tile é clicado (tap sem arraste). */
   onItemClick?: (item: GalleryItem, index: number) => void;
+  /** Disparado quando o ponteiro entra/sai de um tile (alimenta o cursor customizado). */
+  onHoverChange?: (item: GalleryItem | null) => void;
 };
 
 type Tile = {
@@ -38,11 +42,15 @@ type Tile = {
 const OVERSCAN = 1.09;
 const FOV = 50;
 
+/** Cursores pixel — mesmos hotspots de `src/index.css`. */
+const CURSOR_ARROW = "url('/cursors/pixel-arrow.png') 3 0, auto";
+const CURSOR_HAND = "url('/cursors/pixel-hand.png') 5 0, pointer";
+
 export class GalleryApp {
   /** Posição-alvo da parede, em unidades de mundo. Tweenável pela introdução. */
   readonly target: Vec2 = { x: 0, y: 0 };
 
-  /** Estado público lido pelo cursor personalizado a cada frame. */
+  /** Estado público da interação (arraste / hover). */
   readonly state = { speed: 0, vx: 0, vy: 0, dragging: false, hovering: false };
 
   private readonly opts: GalleryAppOptions;
@@ -88,6 +96,10 @@ export class GalleryApp {
   private resizeObserver?: ResizeObserver;
   private textures: THREE.Texture[] = [];
   private abortLoad = false;
+  /** Último valor de `style.cursor` aplicado — evita writes CSS a cada frame. */
+  private cursorCss = '';
+  /** Índice do tile sob o ponteiro (-1 = nenhum), para disparar `onHoverChange`. */
+  private hoveredIndex = -1;
 
   constructor(opts: GalleryAppOptions) {
     this.opts = opts;
@@ -103,6 +115,7 @@ export class GalleryApp {
     this.buildTiles();
     this.resize();
     this.bindEvents();
+    this.syncCursor();
     this.loadTextures();
     this.start();
   }
@@ -117,7 +130,7 @@ export class GalleryApp {
       alpha: false,
       powerPreference: 'high-performance',
     });
-    this.renderer.setClearColor(0xffffff, 1);
+    this.renderer.setClearColor(new THREE.Color(this.opts.background ?? '#ffffff'), 1);
 
     this.camera = new THREE.PerspectiveCamera(FOV, 1, 0.1, 50);
     this.camera.position.z = 5;
@@ -283,9 +296,28 @@ export class GalleryApp {
     }
   }
 
+  /** Troca a cor do "gap" entre os tiles — chamada quando o tema muda. */
+  setBackground(color: string) {
+    this.renderer.setClearColor(new THREE.Color(color), 1);
+  }
+
+  /** Seta pixel ou mão, conforme arraste / hover no tile. */
+  private syncCursor() {
+    if (!this.hasFinePointer) return;
+    const next =
+      this.state.dragging || this.state.hovering ? CURSOR_HAND : CURSOR_ARROW;
+    if (next === this.cursorCss) return;
+    this.cursorCss = next;
+    // `body *` no CSS define cursor em cada elemento — precisa setar no
+    // container e no canvas (o alvo real sob o ponteiro).
+    this.opts.container.style.cursor = next;
+    this.opts.canvas.style.cursor = next;
+  }
+
   private onPointerDown = (e: PointerEvent) => {
     this.markInteraction();
     this.state.dragging = true;
+    this.syncCursor();
     this.activePointerId = e.pointerId;
     this.lastPointer = { x: e.clientX, y: e.clientY };
     this.pointerDownAt = { x: e.clientX, y: e.clientY };
@@ -321,6 +353,7 @@ export class GalleryApp {
   private onPointerUp = (e: PointerEvent) => {
     if (e.pointerId !== this.activePointerId) return;
     this.state.dragging = false;
+    this.syncCursor();
     this.activePointerId = null;
 
     // Tap: pouco deslocamento acumulado entre down e up → clique no tile.
@@ -515,7 +548,19 @@ export class GalleryApp {
       const hits = this.raycaster.intersectObjects(this.scene.children, false);
       if (hits.length > 0) hoveredIndex = hits[0].object.userData.index as number;
     }
+    const wasHovering = this.state.hovering;
     this.state.hovering = hoveredIndex >= 0;
+    if (wasHovering !== this.state.hovering) this.syncCursor();
+    // Só notifica quando o tile sob o ponteiro muda — o callback alimenta o
+    // cursor "ver projeto" em React e não deve rodar a 60fps.
+    if (hoveredIndex !== this.hoveredIndex) {
+      this.hoveredIndex = hoveredIndex;
+      this.opts.onHoverChange?.(
+        hoveredIndex >= 0
+          ? this.opts.items[hoveredIndex % this.opts.items.length]
+          : null,
+      );
+    }
     for (const tile of this.tiles) {
       const targetHover = tile.mesh.userData.index === hoveredIndex ? 1 : 0;
       tile.hover += (targetHover - tile.hover) * cfg.hoverEase * dt60;
@@ -567,6 +612,8 @@ export class GalleryApp {
     document.removeEventListener('visibilitychange', this.onVisibility);
     window.removeEventListener('resize', this.onWindowResize);
     this.resizeObserver?.disconnect();
+    this.opts.container.style.cursor = '';
+    this.opts.canvas.style.cursor = '';
 
     for (const tile of this.tiles) tile.mesh.material.dispose();
     this.tileGeometry.dispose();

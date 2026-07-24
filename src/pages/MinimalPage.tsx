@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import ContactDialog from '@/components/contact/ContactDialog';
-import { CONTACT_EMAIL, CV_URL, PROJECTS, SOCIALS, VERSIONS } from '@/data/site';
+import ThemeToggle from '@/components/ui/ThemeToggle';
+import { caseStudies } from '@/data/cases';
+import { CONTACT_EMAIL, CV_URL, SOCIALS, VERSIONS } from '@/data/site';
 
 type Preview = { x: number; y: number; image: string };
 
@@ -27,26 +29,34 @@ const MinimalPage = () => {
       }
     >
       <div className="mx-auto max-w-xl px-5 py-20 text-[15px] leading-relaxed md:py-28">
-        <header>
-          <h1 className="font-medium">john amorim</h1>
-          <p className="text-stone-soft">desenvolvedor — maceió, brasil</p>
+        <header className="flex items-start justify-between gap-6">
+          <div>
+            <h1 className="font-medium">John Amorim</h1>
+            <p className="text-stone-soft">Desenvolvedor — Maceió, Brasil</p>
+          </div>
+          {/* Sol/lua também aqui — o tema é do site, não de uma página */}
+          <ThemeToggle className="mt-0.5 shrink-0" size={18} />
         </header>
 
         <p className="mt-10 max-w-md text-stone-soft">
-          Crio produtos digitais de ponta a ponta: design, código e dados, com
+          Crio produtos digitais de ponta a ponta: Design, Código e Dados, com
           um toque de encanto.
         </p>
 
         <section className="mt-14">
           <h2 className="text-xs uppercase tracking-wide text-stone-soft">Projetos</h2>
           <ul className="mt-3 divide-y divide-ink/10">
-            {PROJECTS.map((project) => (
-              <li key={project.title}>
+            {caseStudies.map((project) => (
+              <li key={project.slug}>
                 <a
-                  href={project.href}
+                  href={`/case/${project.slug}`}
                   className="group flex items-baseline justify-between gap-4 py-3"
                   onMouseEnter={(e) =>
-                    setPreview({ x: e.clientX, y: e.clientY, image: project.image })
+                    setPreview({
+                      x: e.clientX,
+                      y: e.clientY,
+                      image: project.cover,
+                    })
                   }
                   onMouseLeave={() => setPreview(null)}
                 >
@@ -81,7 +91,7 @@ const MinimalPage = () => {
                   rel="noreferrer"
                   className="underline-offset-4 hover:underline"
                 >
-                  {social.label.toLowerCase()} ↗
+                    {social.label} ↗
                 </a>
               </li>
             ))}
@@ -92,7 +102,7 @@ const MinimalPage = () => {
             onClick={() => setContactOpen(true)}
             className="mt-5 inline-flex items-center gap-2.5 rounded-full bg-ink px-4 py-2 text-sm text-cream transition-opacity hover:opacity-80"
           >
-            entrar em contato
+            Entrar em contato
             <span aria-hidden>→</span>
           </button>
         </section>
@@ -106,7 +116,7 @@ const MinimalPage = () => {
             download
             className="mt-3 inline-flex items-center gap-2.5 rounded-full border border-ink/20 px-4 py-2 text-sm transition-colors hover:border-ink hover:bg-ink hover:text-cream"
           >
-            baixar currículo (pdf)
+            Baixar currículo (PDF)
             <span aria-hidden>↓</span>
           </a>
         </section>

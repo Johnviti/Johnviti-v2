@@ -1,17 +1,18 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { preloaderDone } from '@/components/loader/loaderGate';
-import CustomCursor from '@/components/galeria-imersiva/CustomCursor';
 import FixedHeader from '@/components/galeria-imersiva/FixedHeader';
 import IntroOverlay from '@/components/galeria-imersiva/IntroOverlay';
+import ProjectCursor from '@/components/galeria-imersiva/ProjectCursor';
 import { galleryConfig } from '@/components/galeria-imersiva/galleryConfig';
 import { galleryItems } from '@/components/galeria-imersiva/galleryItems';
 import { GalleryApp } from '@/components/galeria-imersiva/three/GalleryApp';
+import { THEME_BACKGROUND, useTheme } from '@/lib/theme';
 
 /**
  * Experiência fullscreen: parede digital curva de imagens explorável em 2D.
  * A cena WebGL vive em GalleryApp (imperativo); este componente monta o
- * canvas, a interface fixa, o cursor e a coreografia de introdução.
+ * canvas, a interface fixa e a coreografia de introdução.
  */
 const INTRO_STORAGE_KEY = 'galeria-imersiva-intro-vista';
 
@@ -37,6 +38,15 @@ const GaleriaImersivaPage = () => {
   // auto-dismiss consome o tempo de leitura do usuário.
   const [preloaderGone, setPreloaderGone] = useState(false);
   const introChoreoRef = useRef<gsap.core.Timeline | null>(null);
+
+  const { theme } = useTheme();
+  // Slug do tile sob o ponteiro — controla a etiqueta "ver projeto".
+  const [hoveredSlug, setHoveredSlug] = useState<string | null>(null);
+  // A cor de fundo do canvas é lida na criação da cena; guardá-la em ref evita
+  // recriar toda a galeria a cada troca de tema (a ref só é escrita em efeito).
+  const themeRef = useRef(theme);
+  const introVisibleRef = useRef(introVisible);
+  introVisibleRef.current = introVisible;
 
   useEffect(() => {
     let cancelled = false;
@@ -77,6 +87,14 @@ const GaleriaImersivaPage = () => {
       items: galleryItems,
       config: galleryConfig,
       reducedMotion,
+      background: THEME_BACKGROUND[themeRef.current],
+      onHoverChange: (item) => {
+        if (introVisibleRef.current) {
+          setHoveredSlug(null);
+          return;
+        }
+        setHoveredSlug(item?.caseSlug ?? null);
+      },
       // A primeira interação interrompe a coreografia e dispensa o overlay.
       onUserInteract: () => {
         introChoreoRef.current?.kill();
@@ -85,6 +103,7 @@ const GaleriaImersivaPage = () => {
       },
       // Clique (tap sem arraste) em um tile abre a página do case.
       onItemClick: (item) => {
+        if (introVisibleRef.current) return;
         window.location.href = `/case/${item.caseSlug}`;
       },
     });
@@ -97,6 +116,13 @@ const GaleriaImersivaPage = () => {
       appRef.current = null;
     };
   }, [dismissIntro]);
+
+  /* O "gap" entre os tiles acompanha o tema — a parede não pode continuar
+     branca quando o resto do site vira noite. */
+  useEffect(() => {
+    themeRef.current = theme;
+    appRef.current?.setBackground(THEME_BACKGROUND[theme]);
+  }, [theme]);
 
   // Coreografia inicial: três impulsos com pausas, timing guiado pelo vídeo.
   // Disparada apenas quando o véu do Preloader já saiu de cena.
@@ -127,13 +153,13 @@ const GaleriaImersivaPage = () => {
   }, [preloaderGone]);
 
   return (
-    <div className="fixed inset-0 overflow-hidden bg-white">
+    <div className="fixed inset-0 overflow-hidden bg-surface">
       <div
         ref={containerRef}
         role="application"
         aria-label="Galeria imersiva de imagens. Arraste com o mouse ou use as setas do teclado para explorar a parede de imagens em qualquer direção. Clique em uma imagem para abrir o case do projeto."
         tabIndex={0}
-        className="absolute inset-0 outline-none [@media(pointer:fine)]:cursor-none"
+        className="absolute inset-0 outline-none"
         style={{ touchAction: 'none', overscrollBehavior: 'none' }}
       >
         <canvas ref={canvasRef} className="block h-full w-full" />
@@ -153,7 +179,8 @@ const GaleriaImersivaPage = () => {
       )}
 
       <FixedHeader />
-      <CustomCursor appRef={appRef} />
+
+      <ProjectCursor visible={hoveredSlug !== null && !introVisible} />
     </div>
   );
 };

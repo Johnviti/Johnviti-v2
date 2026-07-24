@@ -51,12 +51,6 @@ export const galleryConfig = {
   /** Deslocamento máximo (px) para um toque contar como clique no tile. */
   clickMaxDistance: 8,
 
-  /** Cursor personalizado — anel em mix-blend-difference (branco adaptativo). */
-  cursorSize: 26,
-  cursorHoverSize: 72,
-  cursorDragSize: 44,
-  cursorColor: '#ffffff',
-
   /** Performance. */
   maxPixelRatioDesktop: 2,
   maxPixelRatioMobile: 1.5,

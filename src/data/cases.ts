@@ -1,13 +1,20 @@
 import casesData from '@/data/cases.json';
+import casesEn from '@/data/cases.en.json';
+import type { Lang } from '@/lib/i18n';
 
 /**
  * Case studies — um por projeto (mesmo `slug` dos tiles da galeria).
  *
- * O conteúdo textual vive em `cases.json`. A capa (`cover`) é a imagem real
- * de cada projeto. A vitrine (bento, grade, mockups, depoimento) ainda usa
- * `placeholderShowcase` e só aparece na rota local `/dev/case/:slug`.
- * Na rota pública `/case/:slug`, essas seções mostram "Em desenvolvimento".
- * Para publicar a vitrine de um projeto, adicione `showcase` ao case no JSON.
+ * O conteúdo textual vive em `cases.json` (português, a fonte da verdade) e as
+ * traduções em `cases.<idioma>.json`, indexadas por slug. Só os campos de texto
+ * são traduzidos; imagens, slug e ano vêm sempre do arquivo base — assim uma
+ * tradução incompleta degrada para o português em vez de quebrar a página.
+ *
+ * A capa (`cover`) é a imagem real de cada projeto. A vitrine (bento, grade,
+ * mockups, depoimento) ainda usa `placeholderShowcase` e só aparece na rota
+ * local `/dev/case/:slug`. Na rota pública `/case/:slug`, essas seções mostram
+ * "Em desenvolvimento". Para publicar a vitrine de um projeto, adicione
+ * `showcase` ao case no JSON.
  */
 export type Testimonial = {
   quote: string;
@@ -59,6 +66,44 @@ const data = casesData as unknown as {
 
 export const caseStudies = data.cases;
 
+/* ------------------------------------------------------------------ idiomas */
+
+/** Campos traduzíveis de um case (o resto — slug, ano, imagens — é comum). */
+export type CaseTranslation = Partial<
+  Pick<
+    CaseStudy,
+    | 'title'
+    | 'client'
+    | 'category'
+    | 'services'
+    | 'industries'
+    | 'location'
+    | 'growthStage'
+    | 'intro'
+    | 'challenge'
+    | 'approach'
+    | 'captionOne'
+    | 'captionTwo'
+    | 'websiteNote'
+    | 'testimonial'
+  >
+>;
+
+/** Traduções por idioma → slug. `pt` é o próprio `cases.json`, então fica vazio. */
+const translations: Partial<Record<Lang, Record<string, CaseTranslation>>> = {
+  en: casesEn as Record<string, CaseTranslation>,
+};
+
+/** Case com os campos traduzidos por cima do português. */
+export const localizeCase = (study: CaseStudy, lang: Lang): CaseStudy => {
+  const translation = translations[lang]?.[study.slug];
+  return translation ? { ...study, ...translation } : study;
+};
+
+/** Lista completa de cases no idioma pedido. */
+export const getCaseStudies = (lang: Lang): CaseStudy[] =>
+  caseStudies.map((study) => localizeCase(study, lang));
+
 /** Vitrine padrão (copiada do Figma), usada enquanto um projeto não tem imagens próprias. */
 export const placeholderShowcase = data.placeholderShowcase;
 
@@ -68,8 +113,13 @@ export const getShowcase = (study: CaseStudy): Showcase => ({
   ...(study.showcase ?? {}),
 });
 
-export const getCaseBySlug = (slug: string): CaseStudy | undefined =>
-  caseStudies.find((c) => c.slug === slug);
+export const getCaseBySlug = (
+  slug: string,
+  lang: Lang = 'pt',
+): CaseStudy | undefined => {
+  const study = caseStudies.find((c) => c.slug === slug);
+  return study && localizeCase(study, lang);
+};
 
 /** Próximo case na ordem do array, com wrap. */
 export const getNextCase = (slug: string): CaseStudy => {
@@ -78,10 +128,13 @@ export const getNextCase = (slug: string): CaseStudy => {
 };
 
 /** Próximos `count` cases (com wrap), para a seção "Quer ver mais?". */
-export const getRelatedCases = (slug: string, count = 2): CaseStudy[] => {
+export const getRelatedCases = (
+  slug: string,
+  count = 2,
+  lang: Lang = 'pt',
+): CaseStudy[] => {
   const index = caseStudies.findIndex((c) => c.slug === slug);
-  return Array.from(
-    { length: Math.min(count, caseStudies.length - 1) },
-    (_, i) => caseStudies[(index + 1 + i) % caseStudies.length],
+  return Array.from({ length: Math.min(count, caseStudies.length - 1) }, (_, i) =>
+    localizeCase(caseStudies[(index + 1 + i) % caseStudies.length], lang),
   );
 };

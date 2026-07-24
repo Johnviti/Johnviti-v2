@@ -10,6 +10,33 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <title>John Amorim</title>
+  <script>
+    // Tema aplicado antes do primeiro paint — sem isto o site pisca claro
+    // por um frame antes do React montar. Mesma chave usada em src/lib/theme.tsx.
+    (function () {
+      try {
+        var saved = localStorage.getItem('john-amorim-tema');
+        var theme = saved === 'light' || saved === 'dark'
+          ? saved
+          : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.dataset.theme = theme;
+        document.documentElement.style.colorScheme = theme;
+      } catch (e) {
+        document.documentElement.dataset.theme = 'light';
+      }
+    })();
+  </script>
+  <script>
+    // Véu estático da transição Galeria ↔ Contato — evita o Preloader
+    // aparecer por um frame antes do wipe de entrada.
+    (function () {
+      try {
+        if (sessionStorage.getItem('ja:route-transition') === '1') {
+          document.documentElement.classList.add('ja-route-enter');
+        }
+      } catch (e) {}
+    })();
+  </script>
 </head>
 
 <body>
