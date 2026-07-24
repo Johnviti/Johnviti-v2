@@ -36,6 +36,7 @@ export const dictionary = {
   'nav.versions': { pt: 'Versões', en: 'Versions' },
   'nav.social': { pt: 'Redes', en: 'Social' },
   'nav.backToGallery': { pt: 'Voltar para a galeria', en: 'Back to the gallery' },
+  'nav.backToTop': { pt: 'Voltar ao início', en: 'Back to top' },
 
   /* -------------------------------------------------- tema / idioma */
   'theme.toLight': { pt: 'Ativar modo claro', en: 'Switch to light mode' },

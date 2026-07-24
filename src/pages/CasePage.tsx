@@ -1,12 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { motion, MotionConfig, type Variants } from 'framer-motion';
-import { MapPin, Menu } from 'lucide-react';
+import { MapPin, Menu, ArrowUp } from 'lucide-react';
 import Logo from '@/components/Logo';
 import GalleryMenu from '@/components/galeria-imersiva/GalleryMenu';
 import { ContactLink } from '@/components/loader/ContactTransition';
 import LanguageToggle from '@/components/ui/LanguageToggle';
 import ThemeToggle from '@/components/ui/ThemeToggle';
-import { CONTACT_EMAIL } from '@/data/site';
 import { getCaseBySlug, getRelatedCases, getShowcase } from '@/data/cases';
 import { useI18n } from '@/lib/i18n';
 
@@ -214,7 +213,10 @@ const CasePage = ({ slug, previewShowcase = false }: Props) => {
     [t('case.challenge'), study.challenge],
     [t('case.approach'), study.approach],
   ];
-  const mailto = `mailto:${CONTACT_EMAIL}`;
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
     <MotionConfig reducedMotion="user">
@@ -276,32 +278,34 @@ const CasePage = ({ slug, previewShowcase = false }: Props) => {
             </div>
           </div>
 
-          <StaggerGroup
-            className={`${PAGE_SHELL} mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-[1.5fr_2fr_2fr_1fr_1fr]`}
-          >
-            <MetaColumn label={t('case.projectName')}>
-              <h1 className={BODY}>{study.title}</h1>
-            </MetaColumn>
-            <MetaColumn label={t('case.whatWeDid')}>
-              {study.services.map((service) => (
-                <Chip key={service}>{service}</Chip>
-              ))}
-            </MetaColumn>
-            <MetaColumn label={t('case.industries')}>
-              {study.industries.map((industry) => (
-                <Chip key={industry}>{industry}</Chip>
-              ))}
-            </MetaColumn>
-            <MetaColumn label={t('case.location')}>
-              <span className={`flex items-center gap-1.5 ${BODY}`}>
-                <MapPin className="size-4 shrink-0 opacity-60" aria-hidden />
-                {study.location}
-              </span>
-            </MetaColumn>
-            <MetaColumn label={t('case.stage')}>
-              <Chip>{study.growthStage}</Chip>
-            </MetaColumn>
-          </StaggerGroup>
+          <div className={`${PAGE_X} mt-12`}>
+            <StaggerGroup
+              className={`${PAGE_SHELL} grid gap-8 sm:grid-cols-2 lg:grid-cols-[1.5fr_2fr_2fr_1fr_1fr]`}
+            >
+              <MetaColumn label={t('case.projectName')}>
+                <h1 className={BODY}>{study.title}</h1>
+              </MetaColumn>
+              <MetaColumn label={t('case.whatWeDid')}>
+                {study.services.map((service) => (
+                  <Chip key={service}>{service}</Chip>
+                ))}
+              </MetaColumn>
+              <MetaColumn label={t('case.industries')}>
+                {study.industries.map((industry) => (
+                  <Chip key={industry}>{industry}</Chip>
+                ))}
+              </MetaColumn>
+              <MetaColumn label={t('case.location')}>
+                <span className={`flex items-center gap-1.5 ${BODY}`}>
+                  <MapPin className="size-4 shrink-0 opacity-60" aria-hidden />
+                  {study.location}
+                </span>
+              </MetaColumn>
+              <MetaColumn label={t('case.stage')}>
+                <Chip>{study.growthStage}</Chip>
+              </MetaColumn>
+            </StaggerGroup>
+          </div>
         </section>
 
         {/* ------------------------------- Introdução / Desafio / Abordagem */}
@@ -509,7 +513,7 @@ const CasePage = ({ slug, previewShowcase = false }: Props) => {
         </section>
 
         {/* ------------------------------------------------- Quer ver mais? */}
-        <section className={`${PAGE_X} pt-20 pb-12 md:pt-28`}>
+        <section className={`${PAGE_X} pt-20 pb-28 md:pt-28 md:pb-36`}>
           <div className={PAGE_SHELL}>
             <Reveal>
               <h2 className={SECTION_TITLE}>{t('case.more')}</h2>
@@ -537,28 +541,23 @@ const CasePage = ({ slug, previewShowcase = false }: Props) => {
           </div>
         </section>
 
-        {/* ------------------------------------------------------------ Footer */}
-        <footer className="border-t border-ink/10">
-          <div className="flex flex-col gap-4 px-6 py-10 text-[13px] text-stone-soft md:flex-row md:items-center md:justify-between md:px-10">
-            <a href={mailto} className="transition-colors hover:text-ink">
-              {CONTACT_EMAIL}
-            </a>
-            <a
-              href="/"
-              className="tracking-[0.2em] transition-colors hover:text-ink"
-            >
-              ← {t('nav.backToGallery').toUpperCase()}
-            </a>
-          </div>
-        </footer>
-
-        {/* -------------------------------- Pílula flutuante (chat/contato) */}
+        {/* -------------------------------- Pílula flutuante (contato) */}
         <ContactLink
-          className="fixed bottom-4 left-4 z-40 inline-flex items-center gap-2 rounded-full bg-ink px-5 py-3 text-[13px] font-medium text-cream shadow-lg transition-opacity hover:opacity-90"
+          className="fixed bottom-4 left-4 z-40 inline-flex items-center gap-2 rounded-full bg-ink px-5 py-3 text-[13px] font-medium text-cream shadow-lg transition-opacity hover:opacity-90 md:bottom-6 md:left-6"
         >
           <span className="size-2 rounded-full bg-[#28ca41]" />
           {t('case.floating')}
         </ContactLink>
+
+        {/* -------------------------------- Voltar ao topo */}
+        <button
+          type="button"
+          onClick={scrollToTop}
+          aria-label={t('nav.backToTop')}
+          className="fixed bottom-4 right-4 z-40 inline-flex size-12 items-center justify-center rounded-full border border-ink/20 bg-surface text-ink shadow-lg transition-colors hover:border-ink hover:bg-ink hover:text-cream md:bottom-6 md:right-6"
+        >
+          <ArrowUp className="size-5" strokeWidth={1.75} aria-hidden />
+        </button>
       </div>
     </MotionConfig>
   );

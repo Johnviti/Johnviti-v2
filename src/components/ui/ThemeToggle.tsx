@@ -11,15 +11,17 @@ type Props = {
 /**
  * Botão sol ↔ lua — ícone minimalista.
  *
- * Um círculo + 4 raios curtos nos eixos. No escuro, o círculo cresce e a
- * máscara “morde” a lua; os raios somem. A troca de tema em si é animada
- * pelo `useTheme` a partir do centro deste botão.
+ * Mostra o destino da troca: sol no tema escuro (ir para o claro), lua no
+ * claro (ir para o escuro). Um círculo + 8 raios; no “lua”, a máscara morde
+ * o disco e os raios somem. A animação de tema sai do centro deste botão.
  */
 export default function ThemeToggle({ className = '', size = 20 }: Props) {
   const { theme, toggleTheme } = useTheme();
   const { t } = useI18n();
   const maskId = useId();
   const dark = theme === 'dark';
+  /* Ícone = próximo tema (não o atual). */
+  const showMoon = !dark;
 
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     const rect = event.currentTarget.getBoundingClientRect();
@@ -57,8 +59,8 @@ export default function ThemeToggle({ className = '', size = 20 }: Props) {
         <mask id={maskId}>
           <rect x="0" y="0" width="24" height="24" fill="white" />
           <circle
-            cx={dark ? 17 : 26}
-            cy={dark ? 8 : 2}
+            cx={showMoon ? 17 : 26}
+            cy={showMoon ? 8 : 2}
             r="9"
             fill="black"
             className="transition-[cx,cy] duration-500 ease-[cubic-bezier(0.65,0,0.35,1)]"
@@ -68,7 +70,7 @@ export default function ThemeToggle({ className = '', size = 20 }: Props) {
         <circle
           cx="12"
           cy="12"
-          r={dark ? 9 : 4.5}
+          r={showMoon ? 9 : 4.5}
           fill="currentColor"
           mask={`url(#${maskId})`}
           className="transition-[r] duration-500 ease-[cubic-bezier(0.65,0,0.35,1)]"
@@ -80,8 +82,8 @@ export default function ThemeToggle({ className = '', size = 20 }: Props) {
           strokeLinecap="round"
           className="origin-center transition-all duration-500 ease-[cubic-bezier(0.65,0,0.35,1)]"
           style={{
-            opacity: dark ? 0 : 1,
-            transform: dark ? 'scale(0.5)' : 'scale(1)',
+            opacity: showMoon ? 0 : 1,
+            transform: showMoon ? 'scale(0.5)' : 'scale(1)',
           }}
         >
           {rays.map(([x1, y1, x2, y2]) => (
