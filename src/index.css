@@ -295,14 +295,17 @@ html[data-theme='light'] {
 }
 
 /* ------------------------------------------------------------- Film grain
-   Textura de ruído sobre a página (case / contato). O `::before` é maior que a
+   Textura de ruído sobre o papel (case / contato). O `::before` é maior que a
    viewport (200%) e é deslocado em passos para o granulado "tremer" sem revelar
    as bordas. `multiply` escurece levemente o papel claro; no tema escuro vira
-   `screen` para clarear o quase-preto. Fica abaixo da interface fixa (z-40+). */
+   `screen` para clarear o quase-preto.
+
+   z-index negativo + `isolate` no wrapper da página: o grão fica entre o
+   fundo e o conteúdo — aparece no papel, nunca por cima de imagens/UI. */
 .grain-overlay {
   position: fixed;
   inset: 0;
-  z-index: 30;
+  z-index: -1;
   pointer-events: none;
   overflow: hidden;
   opacity: 0.4;

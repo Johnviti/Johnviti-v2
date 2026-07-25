@@ -199,7 +199,7 @@ const ContactPage = () => {
 
   return (
     <MotionConfig reducedMotion="user">
-      <div className="min-h-svh bg-surface text-ink">
+      <div className="relative isolate min-h-svh bg-surface text-ink">
         <SkipLink />
         <GrainOverlay />
         <WhatsAppButton className="fixed bottom-4 right-4 z-40 md:bottom-6 md:right-6" />

@@ -11,8 +11,8 @@ import gsap from 'gsap';
 import {
   LOGO_CELLS,
   LOGO_GREEN,
-  LOGO_INK,
   LOGO_VIEWBOX,
+  resolveThemeInk,
 } from '@/components/loader/logoCells';
 import { markPreloaderDone } from '@/components/loader/loaderGate';
 import {
@@ -91,6 +91,8 @@ export const ContactTransitionExit = ({
       return;
     }
 
+    const ink = resolveThemeInk();
+
     gsap.set(veil, { yPercent: 100 });
     gsap.set(logo, { opacity: 0, scale: 0.9, transformOrigin: '50% 50%' });
     gsap.set(cells, { fill: LOGO_GREEN });
@@ -102,7 +104,7 @@ export const ContactTransitionExit = ({
         .to(logo, { opacity: 1, scale: 1, duration: 0.28, ease: 'power2.out' }, '-=0.08')
         .to(
           cells,
-          { fill: LOGO_INK, duration: 0.28, stagger: 0.012, ease: 'power2.inOut' },
+          { fill: ink, duration: 0.28, stagger: 0.012, ease: 'power2.inOut' },
           '-=0.05',
         );
     }, root);
@@ -129,11 +131,11 @@ export const ContactTransitionExit = ({
  */
 let enterPromise: Promise<void> | null = null;
 
-const logoCellsMarkup = () =>
+const logoCellsMarkup = (fill: string) =>
   LOGO_CELLS.map((c) =>
     c.t === 'r'
-      ? `<rect data-cell x="${c.x}" y="${c.y}" width="80" height="80" fill="${LOGO_INK}"/>`
-      : `<polygon data-cell points="${c.pts}" fill="${LOGO_INK}"/>`,
+      ? `<rect data-cell x="${c.x}" y="${c.y}" width="80" height="80" fill="${fill}"/>`
+      : `<polygon data-cell points="${c.pts}" fill="${fill}"/>`,
   ).join('');
 
 const runEnterRevealOnce = (): Promise<void> => {
@@ -147,6 +149,7 @@ const runEnterRevealOnce = (): Promise<void> => {
       return;
     }
 
+    const ink = resolveThemeInk();
     const root = document.createElement('div');
     root.setAttribute('role', 'status');
     root.setAttribute('aria-label', 'Carregando página');
@@ -155,7 +158,7 @@ const runEnterRevealOnce = (): Promise<void> => {
     root.innerHTML = `
       <div data-veil style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:var(--color-cream,#f4f3ec);color:var(--color-ink,#121210)">
         <svg data-logo viewBox="${LOGO_VIEWBOX}" style="width:min(42vw,220px);overflow:visible" aria-hidden="true">
-          ${logoCellsMarkup()}
+          ${logoCellsMarkup(ink)}
         </svg>
       </div>
     `;
@@ -178,7 +181,7 @@ const runEnterRevealOnce = (): Promise<void> => {
 
     gsap.set(veil, { yPercent: 0 });
     gsap.set(logo, { opacity: 1, scale: 1, transformOrigin: '50% 50%' });
-    gsap.set(cells, { fill: LOGO_INK });
+    gsap.set(cells, { fill: ink });
 
     // O véu JS (z-200) já cobre a tela: retiramos o véu estático
     // (`body::before`, z-199) ANTES do slide. Se ele ficar, mascara a subida e

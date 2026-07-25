@@ -231,7 +231,7 @@ const CasePage = ({ slug, previewShowcase = false }: Props) => {
 
   return (
     <MotionConfig reducedMotion="user">
-      <div className="min-h-svh bg-surface text-ink">
+      <div className="relative isolate min-h-svh bg-surface text-ink">
         <SkipLink />
         <GrainOverlay />
         {/* Header fixo — mix-blend-difference adapta a marca a fundos claros/escuros */}

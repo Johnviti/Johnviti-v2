@@ -6,6 +6,18 @@
 export const LOGO_GREEN = '#69FF91';
 export const LOGO_INK = '#121210';
 
+/**
+ * Tinta da marca no tema ativo — `--color-ink` vira claro no dark.
+ * Usar em GSAP/fill hardcoded (não respeitam `currentColor` sozinhos).
+ */
+export const resolveThemeInk = (): string => {
+  if (typeof document === 'undefined') return LOGO_INK;
+  const value = getComputedStyle(document.documentElement)
+    .getPropertyValue('--color-ink')
+    .trim();
+  return value || LOGO_INK;
+};
+
 export type LogoCell =
   | { t: 'r'; x: number; y: number; cx: number; cy: number }
   | { t: 'p'; pts: string; cx: number; cy: number };

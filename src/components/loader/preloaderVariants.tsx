@@ -7,6 +7,7 @@ import {
   LOGO_GRID_Y,
   LOGO_INK,
   LOGO_VIEWBOX,
+  resolveThemeInk,
   type LogoCell,
 } from '@/components/loader/logoCells';
 import PreloaderStatus from '@/components/loader/PreloaderStatus';
@@ -214,14 +215,6 @@ const neighborOrder = (): number[] => {
 
 const q = (root: HTMLElement, sel: string) =>
   root.querySelectorAll(sel) as NodeListOf<SVGElement>;
-
-/** Tinta da marca no tema ativo (`--color-ink` inverte no dark). */
-const resolveThemeInk = () => {
-  const value = getComputedStyle(document.documentElement)
-    .getPropertyValue('--color-ink')
-    .trim();
-  return value || LOGO_INK;
-};
 
 const settleAndExit = (
   root: HTMLElement,

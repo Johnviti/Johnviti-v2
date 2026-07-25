@@ -1,12 +1,12 @@
 /**
- * Textura de grão (film grain) sobre a página inteira — como o fundo de
+ * Textura de grão (film grain) no papel da página — como o fundo de
  * funtownstudio.com/contact. Ruído SVG (feTurbulence) que "treme" em passos,
  * dando a sensação de granulado analógico.
  *
- * É puramente decorativo (`aria-hidden`), não captura ponteiro e fica atrás da
- * interface fixa (header/menu). A animação e a mistura de cores vivem em
- * `.grain-overlay` no index.css, que respeita `prefers-reduced-motion` e troca
- * o blend entre os temas claro e escuro.
+ * É puramente decorativo (`aria-hidden`), não captura ponteiro e fica atrás do
+ * conteúdo (imagens, texto, header). O wrapper da página precisa de `isolate`
+ * para o z-index negativo do overlay não sumir atrás do fundo. Animação e
+ * blend vivem em `.grain-overlay` no index.css.
  */
 export default function GrainOverlay() {
   return <div className="grain-overlay" aria-hidden />;

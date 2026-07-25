@@ -7,6 +7,7 @@ import {
   LOGO_GRID_Y,
   LOGO_INK,
   LOGO_VIEWBOX,
+  resolveThemeInk,
   type LogoCell,
 } from '@/components/loader/logoCells';
 
@@ -171,13 +172,14 @@ const runWipePulse = (
   gsap.set(logo, { opacity: 0, scale: 0.9, transformOrigin: '50% 50%' });
   gsap.set(cells, { fill: LOGO_GREEN });
 
+  const ink = resolveThemeInk();
   const tl = gsap.timeline({ onComplete: onDone });
 
   tl.to(veil, { yPercent: 0, duration: 0.38, ease: 'power3.inOut' })
     .to(logo, { opacity: 1, scale: 1, duration: 0.28, ease: 'power2.out' }, '-=0.08')
     .to(
       cells,
-      { fill: LOGO_INK, duration: 0.28, stagger: 0.012, ease: 'power2.inOut' },
+      { fill: ink, duration: 0.28, stagger: 0.012, ease: 'power2.inOut' },
       '-=0.05',
     )
     .call(() => callCover(onCovered))
