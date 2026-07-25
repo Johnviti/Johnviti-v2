@@ -91,7 +91,7 @@ export const Hero = ({ onIntroComplete }: HeroProps) => {
               <LinkedinIcon size={16} className="text-white hover:text-[#00B2FF] drop-shadow-[0_0_6px_rgba(0,178,255,0.3)] group-hover:drop-shadow-[0_0_10px_rgba(0,178,255,0.5)]" />
             </motion.a>
             {/* <motion.a
-              href="https://www.instagram.com/johnviti/"
+              href="https://www.instagram.com/victor.john_/"
               target="_blank"
               rel="noopener noreferrer"
               className="group inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#00B2FF]/10 ring-1 ring-[#00B2FF]/20 backdrop-blur-[2px] transition-all duration-200 hover:bg-[#00B2FF]/20 hover:ring-[#00B2FF]/40"

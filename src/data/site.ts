@@ -34,7 +34,7 @@ export const CV_URL = '/cv.pdf';
 export const SOCIALS = [
   { label: 'GitHub', href: 'https://github.com/Johnviti' },
   { label: 'LinkedIn', href: 'https://www.linkedin.com/in/john-amorim-648480225/' },
-  { label: 'Instagram', href: 'https://www.instagram.com/johnviti/' },
+  { label: 'Instagram', href: 'https://www.instagram.com/victor.john_/' },
 ];
 
 export const PROJECTS = [
