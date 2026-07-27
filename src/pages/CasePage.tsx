@@ -562,8 +562,8 @@ const CasePage = ({ slug, previewShowcase = false }: Props) => {
           side="top"
           className="fixed bottom-4 left-4 z-40 max-w-[calc(100vw-5.5rem)] md:bottom-6 md:left-6 md:max-w-none"
         >
-          <ContactLink className="inline-flex max-w-full items-center gap-2 truncate rounded-full bg-ink px-5 py-3 text-[13px] font-medium text-cream shadow-lg transition-opacity hover:opacity-90">
-            <span className="size-2 shrink-0 rounded-full bg-[#28ca41]" />
+          <ContactLink className="contact-cta-pill inline-flex max-w-full items-center gap-2 truncate rounded-full px-5 py-3 text-[13px] font-medium shadow-lg transition-opacity hover:opacity-90">
+            <span className="contact-cta-pill__dot size-2 shrink-0 rounded-full" />
             <span className="truncate">{t('case.floating')}</span>
           </ContactLink>
         </IconTooltip>

@@ -80,6 +80,21 @@ const Preloader = () => {
 
     const ctx = gsap.context(() => {
       const cells = gsap.utils.toArray<SVGElement>('[data-cell]');
+      const progressValue = root.querySelector<HTMLElement>('[data-progress-value]');
+      const progressState = { value: 0 };
+
+      const setProgress = (n: number) => {
+        if (progressValue) progressValue.textContent = `${Math.round(n)}%`;
+      };
+
+      const runProgress = (duration: number) => {
+        gsap.to(progressState, {
+          value: 100,
+          duration,
+          ease: 'power2.out',
+          onUpdate: () => setProgress(progressState.value),
+        });
+      };
 
       if (reduceMotion) {
         gsap.set('[data-grid]', { opacity: 1 });
@@ -93,8 +108,10 @@ const Preloader = () => {
           { opacity: 0, scale: 0.92, transformOrigin: '50% 50%' },
           { opacity: 1, scale: 1, duration: 0.35, ease: 'power2.out' },
         );
+        runProgress(0.4);
         whenAssetsReady(4000).then(() => {
           if (cancelled) return;
+          setProgress(100);
           gsap.to(root, {
             opacity: 0,
             duration: 0.3,
@@ -111,6 +128,7 @@ const Preloader = () => {
         if (buildDone && assetsReady && !cancelled) finish();
       };
 
+      runProgress(FULL_MIN_DURATION);
       runOndaCursor(
         root,
         () => {
@@ -227,6 +245,14 @@ const Preloader = () => {
       </svg>
 
       <PreloaderStatus />
+
+      <p
+        data-progress
+        className="pointer-events-none absolute bottom-5 left-5 text-[18px] font-medium tabular-nums tracking-tight text-ink/70 md:bottom-8 md:left-8 md:text-[22px]"
+        aria-hidden
+      >
+        <span data-progress-value>0%</span>
+      </p>
 
       <img
         data-cursor

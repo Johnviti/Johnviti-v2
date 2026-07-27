@@ -23,8 +23,8 @@ export const THEME_BACKGROUND: Record<Theme, string> = {
 
 export type ThemeContextValue = {
   theme: Theme;
-  /** Alterna o tema. `origin` é o ponto (px de viewport) de onde o círculo cresce. */
-  toggleTheme: (origin?: { x: number; y: number }) => void;
+  /** Alterna o tema (sem animação — use o ThemeToggle para a transição). */
+  toggleTheme: () => void;
   setTheme: (theme: Theme) => void;
 };
 
@@ -47,10 +47,6 @@ export const applyTheme = (theme: Theme) => {
   root.dataset.theme = theme;
   root.style.colorScheme = theme;
 };
-
-/** Raio necessário para o círculo cobrir a tela inteira a partir de (x, y). */
-export const radiusToCover = (x: number, y: number) =>
-  Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
 
 export function useTheme(): ThemeContextValue {
   const ctx = useContext(ThemeContext);

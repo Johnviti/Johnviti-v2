@@ -226,10 +226,14 @@ const settleAndExit = (
   const cursor = root.querySelector<HTMLElement>('[data-cursor]');
   const frame = root.querySelector<HTMLElement>('[data-frame]');
   const status = root.querySelector<HTMLElement>('[data-status]');
+  const progress = root.querySelector<HTMLElement>('[data-progress]');
+  const progressValue = root.querySelector<HTMLElement>('[data-progress-value]');
   const logo = q(root, '[data-logo]');
   const svg = root.querySelector('svg');
   // No site (voo ao header) respeita o tema; no lab mantém tinta escura no fundo branco.
   const settleFill = options.flyToHeader ? resolveThemeInk() : LOGO_INK;
+
+  if (progressValue) progressValue.textContent = '100%';
 
   const tl = gsap.timeline({
     onComplete: () => {
@@ -245,6 +249,7 @@ const settleAndExit = (
   if (cursor) tl.to(cursor, { opacity: 0, duration: 0.25 }, 0);
   if (frame) tl.to(frame, { opacity: 0, duration: 0.25 }, 0);
   if (status) tl.to(status, { opacity: 0, duration: 0.25 }, 0);
+  if (progress) tl.to(progress, { opacity: 0, duration: 0.25 }, 0);
 
   tl.to(
     cells,
