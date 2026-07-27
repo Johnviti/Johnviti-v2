@@ -5,6 +5,7 @@ import Logo from '@/components/Logo';
 import GalleryMenu from '@/components/galeria-imersiva/GalleryMenu';
 import { ContactLink } from '@/components/loader/ContactTransition';
 import GrainOverlay from '@/components/ui/GrainOverlay';
+import GradualBlur from '@/components/ui/gradual-blur';
 import IconTooltip from '@/components/ui/IconTooltip';
 import LanguageToggle from '@/components/ui/LanguageToggle';
 import SkipLink from '@/components/ui/SkipLink';
@@ -234,6 +235,18 @@ const CasePage = ({ slug, previewShowcase = false }: Props) => {
       <div className="relative isolate min-h-svh bg-surface text-ink">
         <SkipLink />
         <GrainOverlay />
+        {/* Blur gradual na borda inferior — suaviza o conteúdo sob as CTAs. */}
+        <GradualBlur
+          target="page"
+          position="bottom"
+          height="6rem"
+          strength={2}
+          divCount={5}
+          curve="bezier"
+          exponential
+          opacity={1}
+          style={{ zIndex: 30 }}
+        />
         {/* Header fixo — mix-blend-difference adapta a marca a fundos claros/escuros */}
         <motion.header
           initial={{ opacity: 0, y: -12 }}
