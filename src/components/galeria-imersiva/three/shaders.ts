@@ -87,6 +87,9 @@ export const postFragmentShader = /* glsl */ `
   uniform float uZoom;        // zoom total (base + movimento)
   uniform float uZoomEffect;  // 0..1 — pulso enquanto o zoom está em movimento
   uniform float uZoomDirection; // -1 = zoom out, 1 = zoom in
+  uniform float uZoomCycleSpeed; // voltas completas do espectro por segundo
+  uniform float uZoomHaloWidth;  // alcance do glow em pixels CSS
+  uniform float uZoomRimWidth;   // espessura do filete neon em pixels CSS
   uniform float uDistortion;  // intensidade do barril
   uniform float uAberration;  // deslocamento RGB em UV
   uniform vec2  uVelocity;    // direção/magnitude do movimento (suavizada)
@@ -164,21 +167,31 @@ export const postFragmentShader = /* glsl */ `
     // dentro da tela e um filete mais luminoso no limite da viewport.
     vec2 edgePx2 = min(vUv * uResolution, (1.0 - vUv) * uResolution);
     float edgePx = min(edgePx2.x, edgePx2.y);
-    float softHalo = exp(-edgePx / 58.0);
-    float hotRim = exp(-edgePx / 5.0);
+    float softHalo = exp(-edgePx / max(uZoomHaloWidth, 1.0));
+    float hotRim = exp(-edgePx / max(uZoomRimWidth, 1.0));
     float angle = atan(centered.y, centered.x);
+    float colorPhase = uTime * uZoomCycleSpeed;
     float hue = fract(0.65 - (angle / 3.14159265) * 0.65
+                    + colorPhase
                     + (1.0 - uZoomDirection) * 0.0125);
     vec3 haloColor = hsv2rgb(vec3(hue, 0.92, 1.0));
+    float corner = smoothstep(0.18, 0.62, abs(centered.x * centered.y));
+    float shimmer = 0.93 + 0.07 * sin(angle * 7.0 - uTime * 5.0);
     float haloMask = clamp(
-      (softHalo * 0.82 + hotRim * 0.55) * uZoomEffect,
+      (softHalo * (0.8 + corner * 0.24) + hotRim * 0.62)
+        * uZoomEffect * shimmer,
       0.0,
       1.0
     );
     vec3 screened = 1.0 - (1.0 - color) * (1.0 - haloColor * 0.92);
     color = mix(color, screened, haloMask * 0.78);
-    // O segundo mix mantém a cor perceptível também sobre gaps muito claros.
-    color = mix(color, haloColor, haloMask * 0.18);
+    // O segundo mix cria a linha neon saturada e a mantém visível sobre gaps claros.
+    float neonCore = clamp(
+      haloMask * 0.22 + hotRim * uZoomEffect * 0.38,
+      0.0,
+      0.68
+    );
+    color = mix(color, haloColor, neonCore);
 
     // 7. Leve ganho de contraste.
     color = (color - 0.5) * 1.06 + 0.5;

@@ -44,6 +44,11 @@ export const galleryConfig = {
   zoomEffectDecay: 0.075,
   /** Intensidade do halo espectral e do pulso de lente durante o zoom. */
   zoomHaloStrength: 1,
+  /** Uma volta completa do espectro por segundo, como no vídeo de referência. */
+  zoomHaloCycleSpeed: 0.8,
+  /** Alcance do glow interno e espessura do filete neon, em pixels CSS. */
+  zoomHaloWidth: 62,
+  zoomRimWidth: 4.5,
   zoomDistortionBoost: 0.075,
 
   /** Física do arraste. */
