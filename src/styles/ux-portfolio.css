@@ -1,0 +1,133 @@
+/**
+ * Tokens da direção visual do portfólio UX/UI.
+ *
+ * Ficam escopados em `.ux-root` (e não no `@theme` global) para conviver com a
+ * paleta do site principal sem vazar. Para trocar a identidade inteira, basta
+ * editar os valores abaixo.
+ */
+
+.ux-root {
+  /* Cores */
+  --color-primary: #164194;
+  --color-primary-soft: #e8edf7;
+  --color-secondary: #52ae32;
+  --color-secondary-soft: #ecf6e7;
+  --color-background: #f5f5f1;
+  --color-surface: #ffffff;
+  --color-text: #111111;
+  --color-muted: #6b6b6b;
+  --color-border: #d9d9d4;
+  --color-ink: #0e0e10;
+  --color-ink-soft: #1a1a1e;
+  --color-ink-border: rgba(255, 255, 255, 0.12);
+  --color-ink-muted: rgba(255, 255, 255, 0.56);
+  --color-danger: #b42318;
+  --color-warning: #b54708;
+
+  /* Raio dos cards — o briefing pede entre 12px e 20px */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+
+  /* Escala de espaçamento em múltiplos de 4 */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-24: 96px;
+
+  /* Layout */
+  --container-max: 1360px;
+  --gutter: 24px;
+
+  /* Tipografia */
+  --font-display: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-editorial: 'Literata', ui-serif, Georgia, 'Times New Roman', serif;
+
+  background-color: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-display);
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: 'ss01', 'cv05';
+}
+
+/* Foco visível e consistente em toda a página. */
+.ux-root :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.ux-root ::selection {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+/* Link com underline animado (usado no header e no footer). */
+.ux-link {
+  position: relative;
+}
+
+.ux-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  height: 1px;
+  width: 100%;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 280ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ux-link:hover::after,
+.ux-link:focus-visible::after,
+.ux-link[data-active='true']::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* Galerias com rolagem horizontal no mobile. */
+.ux-scroller {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+  scroll-snap-type: x mandatory;
+}
+
+.ux-scroller::-webkit-scrollbar {
+  height: 6px;
+}
+
+.ux-scroller::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 999px;
+}
+
+.ux-scroller > * {
+  scroll-snap-align: start;
+}
+
+/* Trama do grid de referência (seção de design system). */
+.ux-grid-lines {
+  background-image: linear-gradient(
+    to right,
+    color-mix(in srgb, var(--color-primary) 12%, transparent) 0 100%
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ux-root *,
+  .ux-root *::before,
+  .ux-root *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

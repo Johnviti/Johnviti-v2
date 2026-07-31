@@ -28,6 +28,24 @@ export const galleryConfig = {
   /** Zoom-in aplicado durante o movimento (1 = sem zoom). */
   motionZoom: 0.16,
 
+  /** Zoom da parede: Ctrl/⌘ + roda, pinça de dois dedos ou `+` / `-`.
+   *  `1` é o enquadramento base — não deixamos passar disso para fora, senão a
+   *  área visível ultrapassa o bloco 8×8 e aparece o corte do wrap. */
+  minZoom: 1,
+  maxZoom: 3,
+  /** Ganho da roda no zoom (aplicado como exponencial do delta). */
+  zoomSensitivity: 0.0026,
+  /** Suavização do zoom por frame — mesma família do `interpolation`. */
+  zoomInterpolation: 0.16,
+  /** Velocidade logarítmica de zoom que acende o halo por completo. */
+  zoomSpeedForMaxEffect: 0.035,
+  /** Resposta do halo: acende rápido e permanece um instante depois do gesto. */
+  zoomEffectAttack: 0.34,
+  zoomEffectDecay: 0.075,
+  /** Intensidade do halo espectral e do pulso de lente durante o zoom. */
+  zoomHaloStrength: 1,
+  zoomDistortionBoost: 0.075,
+
   /** Física do arraste. */
   dragSensitivity: 1.0,
   wheelSensitivity: 0.8,

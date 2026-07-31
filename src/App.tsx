@@ -19,6 +19,10 @@ const CasePage = lazy(() => import('@/pages/CasePage'));
 const ContactPage = lazy(() => import('@/pages/ContactPage'));
 const PreloaderLabPage = lazy(() => import('@/pages/PreloaderLabPage'));
 const PageTransitionLabPage = lazy(() => import('@/pages/PageTransitionLabPage'));
+/* Case de portfólio UX/UI — `/ux` e `/ux/<slug>`. */
+const UxPortfolioPage = lazy(() => import('@/pages/UxPortfolioPage'));
+const UxCasePage = lazy(() => import('@/pages/UxCasePage'));
+const UxTestimonialsPage = lazy(() => import('@/pages/UxTestimonialsPage'));
 // const OryzoPage = lazy(() => import('@/pages/OryzoPage'));
 // Rota desativada — reative aqui e em VERSIONS (data/site.ts).
 // const CineticaPage = lazy(() => import('@/pages/CineticaPage'));
@@ -29,8 +33,8 @@ const PageLoader = () => (
   </div>
 );
 
-/** Extrai o slug de `/case/:slug` ou `/dev/case/:slug`. */
-const matchCaseSlug = (path: string, prefix: '/case/' | '/dev/case/') =>
+/** Extrai o slug de rotas como `/case/:slug`, `/dev/case/:slug` ou `/ux/:slug`. */
+const matchCaseSlug = (path: string, prefix: string) =>
   path.startsWith(prefix) ? path.slice(prefix.length) || null : null;
 
 /** Avaliado 1× no load do módulo — não no remount do StrictMode. */
@@ -46,6 +50,11 @@ function App() {
   const isPreloaderLab = isDev && path === '/dev/preloader';
   const isTransitionLab = isDev && path === '/dev/transitions';
   const onContact = isContactPath(path);
+  /* Portfólio UX/UI: `/ux` é o índice e `/ux/<slug>` abre o estudo de caso. */
+  const isUxHome = path === '/ux';
+  const isUxTestimonials = path === '/ux/depoimentos';
+  /* Avaliado depois das rotas fixas de `/ux/*` para não capturá-las como slug. */
+  const uxSlug = isUxTestimonials ? null : matchCaseSlug(path, '/ux/');
 
   const [routeEnter, setRouteEnter] = useState(ROUTE_ENTER);
 
@@ -58,6 +67,12 @@ function App() {
     <ContactPage />
   ) : path === '/minimal' ? (
     <MinimalPage />
+  ) : isUxHome ? (
+    <UxPortfolioPage />
+  ) : isUxTestimonials ? (
+    <UxTestimonialsPage />
+  ) : uxSlug ? (
+    <UxCasePage slug={uxSlug} />
   ) : // path === '/mundo' ? (
   //   <WorldPage />
   // ) : path === '/playground' ? (
@@ -81,8 +96,15 @@ function App() {
     <NotFoundPage />
   );
 
+  /* O portfólio UX tem abertura própria e não usa o preloader do site. */
   const showPreloader =
-    !isPreloaderLab && !isTransitionLab && !ROUTE_ENTER && !routeEnter;
+    !isPreloaderLab &&
+    !isTransitionLab &&
+    !isUxHome &&
+    !isUxTestimonials &&
+    !uxSlug &&
+    !ROUTE_ENTER &&
+    !routeEnter;
 
   return (
     <>

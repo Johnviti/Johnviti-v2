@@ -75,6 +75,7 @@ export const postVertexShader = /* glsl */ `
  *    então uZoom >= uZoomBase nunca amostra fora do FBO);
  *  - distorção barril tipo CRT (bordas dos tiles se curvam de forma contínua);
  *  - aberração cromática radial + direcional pela velocidade;
+ *  - halo espectral nas bordas, acionado pela velocidade do zoom;
  *  - motion blur direcional sutil;
  *  - vinheta, grain animado e fade de entrada.
  */
@@ -84,6 +85,8 @@ export const postFragmentShader = /* glsl */ `
   uniform sampler2D uScene;
   uniform float uTime;
   uniform float uZoom;        // zoom total (base + movimento)
+  uniform float uZoomEffect;  // 0..1 — pulso enquanto o zoom está em movimento
+  uniform float uZoomDirection; // -1 = zoom out, 1 = zoom in
   uniform float uDistortion;  // intensidade do barril
   uniform float uAberration;  // deslocamento RGB em UV
   uniform vec2  uVelocity;    // direção/magnitude do movimento (suavizada)
@@ -97,6 +100,12 @@ export const postFragmentShader = /* glsl */ `
 
   float hash(vec2 p) {
     return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
+  }
+
+  // Conversão compacta para criar o espectro contínuo ao redor da viewport.
+  vec3 hsv2rgb(vec3 c) {
+    vec3 p = abs(fract(c.xxx + vec3(0.0, 0.6666667, 0.3333333)) * 6.0 - 3.0);
+    return c.z * mix(vec3(1.0), clamp(p - 1.0, 0.0, 1.0), c.y);
   }
 
   vec2 barrel(vec2 uv, float k) {
@@ -125,8 +134,12 @@ export const postFragmentShader = /* glsl */ `
     // 3. Aberração cromática: radial (bordas) + direcional (velocidade).
     // Quase imperceptível no centro, mais visível nas extremidades.
     vec2 radialDir = normalize(vUv - 0.5 + 1e-6);
+    // O zoom separa os canais radialmente: no zoom out a direção se inverte.
+    vec2 zoomCa = radialDir * uZoomDirection * uZoomEffect
+                * (0.0015 + radial * 0.0045);
     vec2 caOffset = radialDir * uAberration * (0.15 + radial * 3.2)
-                  + uVelocity * uAberration * 8.0;
+                  + uVelocity * uAberration * 8.0
+                  + zoomCa;
 
     vec3 color;
     color.r = sampleScene(uv + caOffset).r;
@@ -147,15 +160,35 @@ export const postFragmentShader = /* glsl */ `
     float vig = smoothstep(0.35, 1.55, radial) * uVignette;
     color = mix(color, vec3(1.0), vig);
 
-    // 6. Leve ganho de contraste.
+    // 6. Halo de lente inspirado na Oryzo: espectro angular, bloom macio para
+    // dentro da tela e um filete mais luminoso no limite da viewport.
+    vec2 edgePx2 = min(vUv * uResolution, (1.0 - vUv) * uResolution);
+    float edgePx = min(edgePx2.x, edgePx2.y);
+    float softHalo = exp(-edgePx / 58.0);
+    float hotRim = exp(-edgePx / 5.0);
+    float angle = atan(centered.y, centered.x);
+    float hue = fract(0.65 - (angle / 3.14159265) * 0.65
+                    + (1.0 - uZoomDirection) * 0.0125);
+    vec3 haloColor = hsv2rgb(vec3(hue, 0.92, 1.0));
+    float haloMask = clamp(
+      (softHalo * 0.82 + hotRim * 0.55) * uZoomEffect,
+      0.0,
+      1.0
+    );
+    vec3 screened = 1.0 - (1.0 - color) * (1.0 - haloColor * 0.92);
+    color = mix(color, screened, haloMask * 0.78);
+    // O segundo mix mantém a cor perceptível também sobre gaps muito claros.
+    color = mix(color, haloColor, haloMask * 0.18);
+
+    // 7. Leve ganho de contraste.
     color = (color - 0.5) * 1.06 + 0.5;
     color = clamp(color, 0.0, 1.0);
 
-    // 7. Grain animado, fixo na viewport.
+    // 8. Grain animado, fixo na viewport.
     float grain = hash(vUv * uResolution * 0.75 + fract(uTime) * 917.0);
     color += (grain - 0.5) * uGrain;
 
-    // 8. Fade de entrada a partir do branco.
+    // 9. Fade de entrada a partir do branco.
     gl_FragColor = vec4(mix(vec3(1.0), color, uFade), 1.0);
   }
 `;

@@ -50,8 +50,16 @@ export class GalleryApp {
   /** Posição-alvo da parede, em unidades de mundo. Tweenável pela introdução. */
   readonly target: Vec2 = { x: 0, y: 0 };
 
-  /** Estado público da interação (arraste / hover). */
-  readonly state = { speed: 0, vx: 0, vy: 0, dragging: false, hovering: false };
+  /** Estado público da interação (arraste / hover / zoom). */
+  readonly state = {
+    speed: 0,
+    vx: 0,
+    vy: 0,
+    dragging: false,
+    hovering: false,
+    zoom: 1,
+    zoomEffect: 0,
+  };
 
   private readonly opts: GalleryAppOptions;
   private readonly cfg: GalleryConfig;
@@ -81,12 +89,33 @@ export class GalleryApp {
   private activePointerId: number | null = null;
   private pointerDownAt: Vec2 = { x: 0, y: 0 };
   private pointerTravel = 0;
+  /** Ponteiros ativos — dois deles ligam a pinça. */
+  private pointers = new Map<number, Vec2>();
+  private pinch: { distance: number; zoom: number } | null = null;
+  /** Suprime o clique no tile logo depois de uma pinça. */
+  private pinched = false;
 
   private visibleWidth = 4;
   private visibleHeight = 3;
   private worldPerPixel = 0.01;
   private gridWidth = GRID_COLS;
   private gridHeight = GRID_ROWS;
+
+  /** Enquadramento sem zoom, recalculado só no resize. */
+  private baseVisibleWidth = 4;
+  private baseWorldPerPixel = 0.01;
+  private viewAspect = 1;
+  private viewWidth = 1;
+  private viewHeight = 1;
+
+  private zoom = 1;
+  private zoomTarget = 1;
+  /** Pulso visual derivado da velocidade do zoom, não do nível de zoom. */
+  private zoomEffect = 0;
+  private zoomDirection = 1;
+  /** Ponto da tela (NDC) que fica parado durante o zoom — o cursor, ou o
+   *  centro da pinça. `(0,0)` = centro da viewport. */
+  private zoomAnchor = new THREE.Vector2(0, 0);
 
   private rafId: number | null = null;
   private lastTime = 0;
@@ -150,6 +179,8 @@ export class GalleryApp {
         uScene: { value: this.renderTarget.texture },
         uTime: { value: 0 },
         uZoom: { value: OVERSCAN },
+        uZoomEffect: { value: 0 },
+        uZoomDirection: { value: 1 },
         uDistortion: { value: this.cfg.baseDistortion },
         uAberration: { value: this.cfg.minimumChromaticAberration },
         uVelocity: { value: new THREE.Vector2() },
@@ -316,6 +347,21 @@ export class GalleryApp {
 
   private onPointerDown = (e: PointerEvent) => {
     this.markInteraction();
+    this.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
+    /* Dois dedos: pinça para zoom, arraste desligado enquanto durar. */
+    if (this.pointers.size === 2) {
+      this.pinch = { distance: this.pointerSpread(), zoom: this.zoomTarget };
+      this.pinched = true;
+      this.state.dragging = false;
+      this.activePointerId = null;
+      this.velocity = { x: 0, y: 0 };
+      this.pendingDrag = { x: 0, y: 0 };
+      this.syncCursor();
+      return;
+    }
+
+    this.pinched = false;
     this.state.dragging = true;
     this.syncCursor();
     this.activePointerId = e.pointerId;
@@ -331,6 +377,20 @@ export class GalleryApp {
   };
 
   private onPointerMove = (e: PointerEvent) => {
+    if (this.pointers.has(e.pointerId)) {
+      this.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    }
+
+    if (this.pinch && this.pointers.size === 2) {
+      const spread = this.pointerSpread();
+      const center = this.pointerCenter();
+      this.setPointerAnchor(center.x, center.y);
+      if (this.pinch.distance > 0) {
+        this.setZoom(this.pinch.zoom * (spread / this.pinch.distance));
+      }
+      return;
+    }
+
     if (this.hasFinePointer) {
       const rect = this.opts.container.getBoundingClientRect();
       this.pointerNdc.set(
@@ -351,20 +411,41 @@ export class GalleryApp {
   };
 
   private onPointerUp = (e: PointerEvent) => {
+    this.pointers.delete(e.pointerId);
+    if (this.pointers.size < 2) this.pinch = null;
     if (e.pointerId !== this.activePointerId) return;
     this.state.dragging = false;
     this.syncCursor();
     this.activePointerId = null;
 
     // Tap: pouco deslocamento acumulado entre down e up → clique no tile.
+    // Depois de uma pinça o dedo remanescente não deve abrir o case.
     const fromDown = Math.hypot(
       e.clientX - this.pointerDownAt.x,
       e.clientY - this.pointerDownAt.y,
     );
-    if (fromDown < this.cfg.clickMaxDistance && this.pointerTravel < this.cfg.clickMaxDistance * 2) {
+    if (
+      !this.pinched &&
+      fromDown < this.cfg.clickMaxDistance &&
+      this.pointerTravel < this.cfg.clickMaxDistance * 2
+    ) {
       this.handleTileClick(e.clientX, e.clientY);
     }
   };
+
+  /** Distância entre os dois ponteiros ativos — base da pinça. */
+  private pointerSpread() {
+    const [a, b] = [...this.pointers.values()];
+    if (!a || !b) return 0;
+    return Math.hypot(a.x - b.x, a.y - b.y);
+  }
+
+  /** Ponto médio entre os dois ponteiros ativos, em coordenadas de tela. */
+  private pointerCenter(): Vec2 {
+    const [a, b] = [...this.pointers.values()];
+    if (!a || !b) return { x: this.viewWidth / 2, y: this.viewHeight / 2 };
+    return { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
+  }
 
   /** Raycast na posição do clique e notifica o item atingido. */
   private handleTileClick(clientX: number, clientY: number) {
@@ -391,6 +472,15 @@ export class GalleryApp {
     const scale = e.deltaMode === 1 ? 16 : 1;
     let dx = e.deltaX * scale;
     let dy = e.deltaY * scale;
+
+    /* Ctrl/⌘ + roda dá zoom em vez de deslocar — mesmo evento que o trackpad
+       manda na pinça de dois dedos. A roda sozinha continua movendo a parede. */
+    if (e.ctrlKey || e.metaKey) {
+      this.setPointerAnchor(e.clientX, e.clientY);
+      this.setZoom(this.zoomTarget * Math.exp(-dy * this.cfg.zoomSensitivity));
+      return;
+    }
+
     if (e.shiftKey && Math.abs(dx) < 0.01) {
       dx = dy;
       dy = 0;
@@ -406,12 +496,29 @@ export class GalleryApp {
     else if (e.key === 'ArrowRight') this.target.x -= step;
     else if (e.key === 'ArrowUp') this.target.y -= step;
     else if (e.key === 'ArrowDown') this.target.y += step;
+    else if (e.key === '+' || e.key === '=') this.zoomBy(1.25, { x: 0, y: 0 });
+    else if (e.key === '-' || e.key === '_') this.zoomBy(1 / 1.25, { x: 0, y: 0 });
+    else if (e.key === '0') this.resetZoom();
     else handled = false;
     if (handled) {
       e.preventDefault();
       this.markInteraction();
     }
   };
+
+  /** Converte coordenadas de tela em NDC e guarda como âncora do zoom. */
+  private setPointerAnchor(clientX: number, clientY: number) {
+    const rect = this.opts.container.getBoundingClientRect();
+    // Container ainda sem layout: ancora no centro em vez de dividir por zero.
+    if (rect.width < 1 || rect.height < 1) {
+      this.zoomAnchor.set(0, 0);
+      return;
+    }
+    this.zoomAnchor.set(
+      THREE.MathUtils.clamp(((clientX - rect.left) / rect.width) * 2 - 1, -1, 1),
+      THREE.MathUtils.clamp(-((clientY - rect.top) / rect.height) * 2 + 1, -1, 1),
+    );
+  }
 
   private onVisibility = () => {
     if (document.hidden) this.stop();
@@ -444,17 +551,45 @@ export class GalleryApp {
           ? this.cfg.columnsTablet
           : this.cfg.columnsDesktop;
 
-    const aspect = width / height;
-    this.visibleWidth = columns * this.cfg.cellWidth * OVERSCAN;
-    this.visibleHeight = this.visibleWidth / aspect;
-    this.worldPerPixel = (columns * this.cfg.cellWidth) / width;
+    this.viewWidth = width;
+    this.viewHeight = height;
+    this.viewAspect = width / height;
+    this.baseVisibleWidth = columns * this.cfg.cellWidth * OVERSCAN;
+    this.baseWorldPerPixel = (columns * this.cfg.cellWidth) / width;
+    this.applyZoom();
 
-    this.camera.aspect = aspect;
+    (this.postMaterial.uniforms.uResolution.value as THREE.Vector2).set(width, height);
+  }
+
+  /**
+   * Reprojeta a câmera para o zoom atual. Aproximar a câmera (em vez de mexer
+   * no FOV) mantém a curvatura da parede coerente com o resto da cena.
+   */
+  private applyZoom() {
+    this.visibleWidth = this.baseVisibleWidth / this.zoom;
+    this.visibleHeight = this.visibleWidth / this.viewAspect;
+    this.worldPerPixel = this.baseWorldPerPixel / this.zoom;
+
+    this.camera.aspect = this.viewAspect;
     this.camera.position.z =
       this.visibleHeight / 2 / Math.tan(THREE.MathUtils.degToRad(FOV / 2));
     this.camera.updateProjectionMatrix();
+  }
 
-    (this.postMaterial.uniforms.uResolution.value as THREE.Vector2).set(width, height);
+  /** Multiplica o zoom-alvo, ancorando num ponto da tela em NDC. */
+  zoomBy(factor: number, anchor?: Vec2) {
+    if (anchor) this.zoomAnchor.set(anchor.x, anchor.y);
+    this.setZoom(this.zoomTarget * factor);
+  }
+
+  /** Define o zoom-alvo absoluto (o valor é limitado pela config). */
+  setZoom(value: number) {
+    this.zoomTarget = THREE.MathUtils.clamp(value, this.cfg.minZoom, this.cfg.maxZoom);
+  }
+
+  resetZoom() {
+    this.zoomAnchor.set(0, 0);
+    this.setZoom(1);
   }
 
   // ------------------------------------------------------------------ loop
@@ -481,6 +616,59 @@ export class GalleryApp {
     this.lastTime = now;
     const cfg = this.cfg;
     const reduced = this.opts.reducedMotion;
+
+    // --- zoom ---------------------------------------------------------------
+    // O ponto da tela sob o cursor (ou sob o centro da pinça) fica parado: a
+    // parede é deslocada pela mesma diferença que a escala de mundo mudou.
+    const zoomBefore = this.zoom;
+    if (Math.abs(this.zoomTarget - this.zoom) > 0.0002) {
+      const zoomK = 1 - Math.pow(1 - cfg.zoomInterpolation, dt60);
+      const previousWorldPerPixel = this.worldPerPixel;
+      this.zoom = THREE.MathUtils.lerp(this.zoom, this.zoomTarget, zoomK);
+      this.applyZoom();
+
+      const delta = this.worldPerPixel - previousWorldPerPixel;
+      const shiftX = this.zoomAnchor.x * (this.viewWidth / 2) * delta;
+      const shiftY = this.zoomAnchor.y * (this.viewHeight / 2) * delta;
+      this.target.x += shiftX;
+      this.target.y += shiftY;
+      this.current.x += shiftX;
+      this.current.y += shiftY;
+      // `previous` acompanha o salto, senão o reenquadramento vira velocidade
+      // (e liga o motion blur / a distorção) sem ninguém ter arrastado nada.
+      this.previous.x += shiftX;
+      this.previous.y += shiftY;
+      this.state.zoom = this.zoom;
+    }
+
+    // O halo reage à velocidade do gesto (zoom in e zoom out), em vez de ficar
+    // permanentemente ligado quando a galeria está aproximada.
+    const zoomDelta =
+      Math.log(Math.max(this.zoom, 0.0001) / Math.max(zoomBefore, 0.0001)) /
+      Math.max(dt60, 0.0001);
+    const zoomSpeedNorm = Math.min(
+      Math.abs(zoomDelta) / cfg.zoomSpeedForMaxEffect,
+      1,
+    );
+    const zoomEffectEase =
+      zoomSpeedNorm > this.zoomEffect
+        ? cfg.zoomEffectAttack
+        : cfg.zoomEffectDecay;
+    const zoomEffectK = 1 - Math.pow(1 - zoomEffectEase, dt60);
+    this.zoomEffect = THREE.MathUtils.lerp(
+      this.zoomEffect,
+      zoomSpeedNorm,
+      zoomEffectK,
+    );
+    if (Math.abs(zoomDelta) > 0.00001) {
+      const directionK = 1 - Math.pow(0.72, dt60);
+      this.zoomDirection = THREE.MathUtils.lerp(
+        this.zoomDirection,
+        Math.sign(zoomDelta),
+        directionK,
+      );
+    }
+    this.state.zoomEffect = this.zoomEffect;
 
     // --- física -----------------------------------------------------------
     if (this.state.dragging) {
@@ -573,9 +761,12 @@ export class GalleryApp {
     u.uTime.value = (now - this.startTime) / 1000;
     u.uFade.value = this.fade;
     u.uZoom.value = OVERSCAN * (1 + cfg.motionZoom * this.speedSmooth * effectScale);
+    u.uZoomEffect.value = this.zoomEffect * cfg.zoomHaloStrength * effectScale;
+    u.uZoomDirection.value = this.zoomDirection;
     u.uDistortion.value =
       cfg.baseDistortion +
-      (cfg.maximumDistortion - cfg.baseDistortion) * this.speedSmooth * effectScale;
+      (cfg.maximumDistortion - cfg.baseDistortion) * this.speedSmooth * effectScale +
+      cfg.zoomDistortionBoost * this.zoomEffect * effectScale;
     u.uAberration.value = THREE.MathUtils.lerp(
       cfg.minimumChromaticAberration,
       cfg.maximumChromaticAberration * effectScale,
@@ -612,6 +803,8 @@ export class GalleryApp {
     document.removeEventListener('visibilitychange', this.onVisibility);
     window.removeEventListener('resize', this.onWindowResize);
     this.resizeObserver?.disconnect();
+    this.pointers.clear();
+    this.pinch = null;
     this.opts.container.style.cursor = '';
     this.opts.canvas.style.cursor = '';
 
