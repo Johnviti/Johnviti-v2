@@ -15,6 +15,7 @@ import TestimonialMinimal from '@/components/ux/testimonials/TestimonialMinimal'
 import TestimonialCarousel from '@/components/ux/testimonials/TestimonialCarousel';
 import TestimonialGrid from '@/components/ux/testimonials/TestimonialGrid';
 import TestimonialMetric from '@/components/ux/testimonials/TestimonialMetric';
+import TestimonialMosaic from '@/components/ux/testimonials/TestimonialMosaic';
 
 /**
  * Catálogo das variações de card de depoimento.
@@ -25,9 +26,9 @@ import TestimonialMetric from '@/components/ux/testimonials/TestimonialMetric';
  */
 export default function UxTestimonialsPage() {
   useDocumentMeta({
-    title: 'Depoimentos — variações de card · John Amorim',
+    title: 'Depoimentos — variações de layout · John Amorim',
     description:
-      'Seis variações de card de depoimento do design system: destaque, dividido, mínimo, carrossel, grade e com métrica.',
+      'Sete variações de layout de depoimentos do design system: destaque, dividido, mínimo, carrossel, grade, com métrica e mosaico editorial.',
     path: '/ux/depoimentos',
   });
 
@@ -47,7 +48,7 @@ export default function UxTestimonialsPage() {
                 Variações de depoimento
               </h1>
               <p className="mt-6 max-w-[56ch] text-[17px] leading-[1.62] text-[var(--color-muted)] md:text-[18px]">
-                Seis formatos para a mesma informação. A escolha não é estética: depende de quanta
+                Sete formatos para a mesma informação. A escolha não é estética: depende de quanta
                 atenção o depoimento merece na página e de haver ou não imagem, número e volume de
                 falas para sustentar o formato.
               </p>
@@ -115,6 +116,10 @@ export default function UxTestimonialsPage() {
           </div>
         </Variation>
 
+        <Variation spec={spec('mosaico')} number="07">
+          <TestimonialMosaic testimonials={testimonials.slice(0, 3)} />
+        </Variation>
+
         {/* --------------------------------------------------- como escolher */}
         <section className="py-24 md:py-32" aria-labelledby="escolha-title">
           <Container>
@@ -152,6 +157,7 @@ export default function UxTestimonialsPage() {
                     ['Carrossel', 'Há muitas falas equivalentes', 'Quatro ou mais depoimentos'],
                     ['Grade', 'O volume é o argumento', 'Falas curtas e parecidas em tamanho'],
                     ['Com métrica', 'O dado precisa de testemunha', 'Número medido e verificável'],
+                    ['Mosaico editorial', 'Uma fala lidera e outras duas validam', 'Três relatos com pesos diferentes'],
                   ].map(([name, when, needs]) => (
                     <tr key={name} className="border-t border-[var(--color-border)] align-top">
                       <td className="px-5 py-4 font-medium">{name}</td>

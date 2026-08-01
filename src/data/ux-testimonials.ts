@@ -138,4 +138,11 @@ export const variations = [
       'Fundo escuro, número grande e a fala como evidência do número. Para a seção de resultados, onde o dado precisa vir acompanhado.',
     props: 'testimonial',
   },
+  {
+    id: 'mosaico',
+    name: 'Mosaico editorial',
+    description:
+      'Uma fala principal ocupa a maior parte da composição e duas evidências menores completam a história. Ideal para encerrar uma landing page com hierarquia e ritmo visual.',
+    props: 'testimonials',
+  },
 ];

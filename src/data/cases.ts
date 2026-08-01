@@ -1,6 +1,7 @@
 import casesData from '@/data/cases.json';
 import casesEn from '@/data/cases.en.json';
 import type { Lang } from '@/lib/i18n';
+import type { VisualIdentity } from '@/data/ux-portfolio';
 
 /**
  * Case studies — um por projeto (mesmo `slug` dos tiles da galeria).
@@ -20,6 +21,8 @@ export type Testimonial = {
   quote: string;
   author: string;
   role: string;
+  /** Logo da empresa/marca, opcional — exibida centralizada acima da fala. */
+  logo?: string;
 };
 
 /** Conjunto de imagens de vitrine do case (layout Figma). */
@@ -30,8 +33,8 @@ export type Showcase = {
   grid: string[];
   /** Imagem full-width. */
   full: string;
-  /** Telas em janela de navegador — 2 imagens. */
-  mockups: string[];
+  /** Telas do produto em janela de navegador — título + imagem. */
+  mockups: { src: string; title: string }[];
   testimonialImage: string;
   avatar: string;
 };
@@ -48,6 +51,7 @@ export type CaseStudy = {
   growthStage: string;
   /** Capa do projeto — hero do case e imagem do tile na galeria. */
   cover: string;
+  visualIdentity: VisualIdentity;
   intro: string;
   challenge: string;
   approach: string;

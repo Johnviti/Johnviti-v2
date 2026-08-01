@@ -79,6 +79,23 @@ export type VisualIdentity = {
     primary: { family: string; usage: string; weights: number[] };
     secondary?: { family: string; usage: string; weights: number[] } | null;
     sample: { uppercase: string; lowercase: string; title: string; text: string };
+    /** Espécime editorial opcional, usado quando o case define uma prancha própria. */
+    specimen?: {
+      layout?: 'scale' | 'alphabet';
+      eyebrow: string;
+      display: string;
+      weights: { label: string; value: number }[];
+      roles: { label: string; text: string }[];
+      alphabet?: {
+        eyebrow: string;
+        display: string;
+        family: string;
+        weights: { label: string; value: number }[];
+        uppercase: string;
+        lowercase: string;
+        numerals: string;
+      };
+    };
   };
   icons: {
     library: string;

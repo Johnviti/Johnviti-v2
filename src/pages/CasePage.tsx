@@ -13,6 +13,7 @@ import SkipLink from '@/components/ui/SkipLink';
 import WhatsAppButton from '@/components/ui/WhatsAppButton';
 import ThemeToggle from '@/components/ui/ThemeToggle';
 import ButtonWithAnimatedArrow from '@/components/ui/ButtonWithAnimatedArrow';
+import CaseVisualIdentity from '@/components/case/CaseVisualIdentity';
 import { getCaseBySlug, getRelatedCases, getShowcase } from '@/data/cases';
 import { useDocumentMeta } from '@/lib/useDocumentMeta';
 import { useI18n } from '@/lib/i18n';
@@ -108,6 +109,50 @@ const StaggerGroup = ({
     {children}
   </motion.div>
 );
+
+/** Iniciais do nome — no máximo duas, para caber no círculo. */
+const initialsOf = (name: string) =>
+  name
+    .split(' ')
+    .filter(Boolean)
+    .map((part) => part.charAt(0))
+    .slice(0, 2)
+    .join('')
+    .toUpperCase();
+
+/**
+ * Avatar do depoimento: foto da pessoa quando existir (e carregar); iniciais do
+ * nome quando não — mesmo padrão do monograma da identidade visual.
+ */
+const TestimonialAvatar = ({
+  name,
+  image,
+}: {
+  name: string;
+  image?: string;
+}) => {
+  const [failed, setFailed] = useState(false);
+  if (image && !failed) {
+    return (
+      <img
+        src={image}
+        alt={`Foto de ${name}`}
+        loading="lazy"
+        decoding="async"
+        onError={() => setFailed(true)}
+        className="size-9 shrink-0 rounded-full object-cover"
+      />
+    );
+  }
+  return (
+    <span
+      aria-hidden="true"
+      className="inline-flex size-9 shrink-0 items-center justify-center rounded-full bg-ink/10 text-[12px] font-semibold text-ink"
+    >
+      {initialsOf(name)}
+    </span>
+  );
+};
 
 /** Chip cinza de metadado. */
 const Chip = ({ children }: { children: React.ReactNode }) => (
@@ -408,62 +453,12 @@ const CasePage = ({ slug, previewShowcase = false }: Props) => {
 
         {previewShowcase && show ? (
           <>
-            {/* ------------------------------------------------- Mosaico bento */}
+            {/* -------------------------------------------- Identidade visual
+                Bento com os blocos 10–14 (imagem secundária · cores · marca ·
+                fonte · ícones), montado a partir de `study.visualIdentity`. */}
             <section className={PAGE_X}>
-              <div className={`${PAGE_SHELL} space-y-4`}>
-                <StaggerGroup className="grid grid-cols-2 gap-4 md:grid-cols-8">
-                  <motion.img
-                    variants={item}
-                    src={show.bento[0]}
-                    alt="Detalhe do projeto"
-                    loading="lazy"
-                    className="col-span-2 h-[220px] w-full rounded-2xl object-cover sm:h-[340px] md:col-span-4 lg:h-[520px]"
-                  />
-                  <motion.img
-                    variants={item}
-                    src={show.bento[1]}
-                    alt="Detalhe do projeto"
-                    loading="lazy"
-                    className="col-span-1 h-[220px] w-full rounded-2xl object-cover sm:h-[340px] md:col-span-2 lg:h-[520px]"
-                  />
-                  <motion.img
-                    variants={item}
-                    src={show.bento[2]}
-                    alt="Detalhe do projeto"
-                    loading="lazy"
-                    className="col-span-1 h-[220px] w-full rounded-2xl object-cover sm:h-[340px] md:col-span-2 lg:h-[520px]"
-                  />
-                </StaggerGroup>
-                <StaggerGroup className="grid grid-cols-2 gap-4 md:grid-cols-8">
-                  <motion.img
-                    variants={item}
-                    src={show.bento[3]}
-                    alt="Detalhe do projeto"
-                    loading="lazy"
-                    className="col-span-1 h-[180px] w-full rounded-2xl object-cover sm:h-[280px] md:col-span-1 lg:h-[440px]"
-                  />
-                  <motion.img
-                    variants={item}
-                    src={show.bento[4]}
-                    alt="Detalhe do projeto"
-                    loading="lazy"
-                    className="col-span-1 h-[180px] w-full rounded-2xl object-cover sm:h-[280px] md:col-span-2 lg:h-[440px]"
-                  />
-                  <motion.img
-                    variants={item}
-                    src={show.bento[5]}
-                    alt="Detalhe do projeto"
-                    loading="lazy"
-                    className="col-span-2 h-[180px] w-full rounded-2xl object-cover sm:h-[280px] md:col-span-3 lg:h-[440px]"
-                  />
-                  <motion.img
-                    variants={item}
-                    src={show.bento[6]}
-                    alt="Detalhe do projeto"
-                    loading="lazy"
-                    className="col-span-2 h-[180px] w-full rounded-2xl object-cover sm:h-[280px] md:col-span-2 lg:h-[440px]"
-                  />
-                </StaggerGroup>
+              <div className={PAGE_SHELL}>
+                <CaseVisualIdentity identity={study.visualIdentity} />
               </div>
             </section>
 
@@ -508,13 +503,15 @@ const CasePage = ({ slug, previewShowcase = false }: Props) => {
               </Reveal>
             </section>
 
-            {/* -------------------------------------------- Mockup navegador 1 */}
+            {/* -------------------------------------------- Mockup navegador 1
+                Padrão productShowcase: título acima + imagem do produto. */}
             <section className={PAGE_X}>
-              <Reveal className={PAGE_SHELL}>
+              <Reveal className={`${PAGE_SHELL} space-y-6`}>
+                <h3 className={SECTION_TITLE}>{show.mockups[0].title}</h3>
                 <BrowserMockup
                   url={host}
-                  image={show.mockups[0]}
-                  alt={`Site do projeto ${study.title}`}
+                  image={show.mockups[0].src}
+                  alt={`${show.mockups[0].title} — ${study.title}`}
                 />
               </Reveal>
             </section>
@@ -524,47 +521,55 @@ const CasePage = ({ slug, previewShowcase = false }: Props) => {
 
             {/* -------------------------------------------- Mockup navegador 2 */}
             <section className={PAGE_X}>
-              <Reveal className={PAGE_SHELL}>
+              <Reveal className={`${PAGE_SHELL} space-y-6`}>
+                <h3 className={SECTION_TITLE}>{show.mockups[1].title}</h3>
                 <BrowserMockup
                   url={host}
-                  image={show.mockups[1]}
-                  alt={`Interface do projeto ${study.title}`}
+                  image={show.mockups[1].src}
+                  alt={`${show.mockups[1].title} — ${study.title}`}
                 />
               </Reveal>
             </section>
 
-            {/* -------------------------------------------------- Depoimento */}
+            {/* -------------------------------------------------- Depoimento
+                Variação "Mínimo" (/ux/depoimentos): centralizado, dentro de um
+                container com fundo — logo da marca no topo (quando houver),
+                fala e, abaixo, avatar (foto ou iniciais) + nome · cargo. */}
             <section className={`${PAGE_X} py-16 md:py-24`}>
               <Reveal className={PAGE_SHELL}>
-                <div className="rounded-2xl bg-ink/[0.03] p-5 sm:p-10 md:p-16">
-                  <div className="mx-auto max-w-[1080px]">
+                <figure className="mx-auto flex flex-col items-center rounded-[24px] bg-cream-soft px-6 py-16 text-center sm:px-10 md:py-24">
+                  {study.testimonial.logo && (
                     <img
-                      src={show.testimonialImage}
-                      alt="Contexto do depoimento"
+                      src={study.testimonial.logo}
+                      alt={study.testimonial.role}
                       loading="lazy"
-                      className="aspect-[16/9] w-full rounded-xl object-cover"
+                      decoding="async"
+                      className="mb-8 h-10 w-auto object-contain"
                     />
-                    <div className="mt-4 rounded-xl border border-ink/15 p-8 md:p-10">
-                      <p className="text-[clamp(1.4rem,3vw,2rem)] font-medium italic leading-snug tracking-tight text-ink">
-                        “{study.testimonial.quote}”
-                      </p>
-                      <div className="mt-8 flex items-center gap-3">
-                        <img
-                          src={show.avatar}
-                          alt={`Foto de ${study.testimonial.author}`}
-                          loading="lazy"
-                          className="size-12 rounded-full object-cover"
-                        />
-                        <div>
-                          <p className="text-[15px] font-medium text-ink">
-                            {study.testimonial.author}
-                          </p>
-                          <p className={LABEL}>{study.testimonial.role}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                  )}
+                  <blockquote className="max-w-[62ch]">
+                    <p className="text-[clamp(1.35rem,2.6vw,2rem)] font-medium leading-[1.4] tracking-[-0.01em] text-ink">
+                      <span aria-hidden="true">“</span>
+                      {study.testimonial.quote}
+                      <span aria-hidden="true">”</span>
+                    </p>
+                  </blockquote>
+                  <figcaption className="mt-8 flex items-center justify-center gap-3 text-[14px]">
+                    <TestimonialAvatar
+                      name={study.testimonial.author}
+                      image={show.avatar}
+                    />
+                    <span className="font-medium text-ink">
+                      {study.testimonial.author}
+                    </span>
+                    <span aria-hidden="true" className="text-stone-soft">
+                      ·
+                    </span>
+                    <span className="text-stone-soft">
+                      {study.testimonial.role}
+                    </span>
+                  </figcaption>
+                </figure>
               </Reveal>
             </section>
           </>
