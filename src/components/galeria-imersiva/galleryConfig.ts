@@ -29,9 +29,9 @@ export const galleryConfig = {
   motionZoom: 0.16,
 
   /** Zoom da parede: Ctrl/⌘ + roda, pinça de dois dedos ou `+` / `-`.
-   *  `1` é o enquadramento base — não deixamos passar disso para fora, senão a
-   *  área visível ultrapassa o bloco 8×8 e aparece o corte do wrap. */
-  minZoom: 1,
+   *  O limite de `0.64` oferece dois níveis completos de zoom out a partir do
+   *  enquadramento base (`1 → 0.8 → 0.64`). */
+  minZoom: 0.64,
   maxZoom: 3,
   /** Ganho da roda no zoom (aplicado como exponencial do delta). */
   zoomSensitivity: 0.0026,

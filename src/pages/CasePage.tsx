@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { motion, MotionConfig, type Variants } from 'framer-motion';
+import { AnimatePresence, motion, MotionConfig, type Variants } from 'framer-motion';
 import { MapPin, Menu, ArrowUp } from 'lucide-react';
 import Logo from '@/components/Logo';
 import GalleryMenu from '@/components/galeria-imersiva/GalleryMenu';
@@ -11,6 +11,7 @@ import LanguageToggle from '@/components/ui/LanguageToggle';
 import SkipLink from '@/components/ui/SkipLink';
 import WhatsAppButton from '@/components/ui/WhatsAppButton';
 import ThemeToggle from '@/components/ui/ThemeToggle';
+import ButtonWithAnimatedArrow from '@/components/ui/ButtonWithAnimatedArrow';
 import { getCaseBySlug, getRelatedCases, getShowcase } from '@/data/cases';
 import { useDocumentMeta } from '@/lib/useDocumentMeta';
 import { useI18n } from '@/lib/i18n';
@@ -183,7 +184,9 @@ const CasePage = ({ slug, previewShowcase = false }: Props) => {
   const { t, lang } = useI18n();
   const study = getCaseBySlug(slug, lang);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [showBackToTop, setShowBackToTop] = useState(false);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const narrativeSectionRef = useRef<HTMLElement>(null);
 
   const closeMenu = useCallback(() => {
     setMenuOpen(false);
@@ -202,6 +205,27 @@ const CasePage = ({ slug, previewShowcase = false }: Props) => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [study]);
+
+  /* A seta só passa a fazer sentido depois que o visitante terminou o bloco
+     Introdução / Desafio / Abordagem. O observer também a esconde novamente
+     quando a pessoa retorna ao início. */
+  useEffect(() => {
+    const section = narrativeSectionRef.current;
+    if (!section) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry) return;
+        setShowBackToTop(
+          !entry.isIntersecting && entry.boundingClientRect.bottom <= 0,
+        );
+      },
+      { threshold: 0 },
+    );
+    observer.observe(section);
+
+    return () => observer.disconnect();
+  }, [study?.slug]);
 
   if (!study) {
     return (
@@ -337,7 +361,7 @@ const CasePage = ({ slug, previewShowcase = false }: Props) => {
         </section>
 
         {/* ------------------------------- Introdução / Desafio / Abordagem */}
-        <section className={`${PAGE_X} py-20 md:py-28`}>
+        <section ref={narrativeSectionRef} className={`${PAGE_X} py-20 md:py-28`}>
           <StaggerGroup
             className={`${PAGE_SHELL} grid gap-x-8 gap-y-12 md:grid-cols-3`}
           >
@@ -532,10 +556,10 @@ const CasePage = ({ slug, previewShowcase = false }: Props) => {
             <h2 className="text-[clamp(2.2rem,6vw,3rem)] font-medium tracking-tight">
               {t('case.ctaTitle')}
             </h2>
-            <ContactLink
-              className="rounded-full bg-ink px-8 py-4 text-base font-medium text-cream transition-opacity hover:opacity-80"
-            >
-              {t('case.ctaAction')}
+            <ContactLink>
+              <ButtonWithAnimatedArrow asChild variant="primary">
+                {t('case.ctaAction')}
+              </ButtonWithAnimatedArrow>
             </ContactLink>
           </Reveal>
         </section>
@@ -575,27 +599,48 @@ const CasePage = ({ slug, previewShowcase = false }: Props) => {
           side="top"
           className="fixed bottom-4 left-4 z-40 max-w-[calc(100vw-5.5rem)] md:bottom-6 md:left-6 md:max-w-none"
         >
-          <ContactLink className="contact-cta-pill inline-flex max-w-full items-center gap-2 truncate rounded-full px-5 py-3 text-[13px] font-medium shadow-lg transition-opacity hover:opacity-90">
-            <span className="contact-cta-pill__dot size-2 shrink-0 rounded-full" />
-            <span className="truncate">{t('case.floating')}</span>
+          <ContactLink>
+            <ButtonWithAnimatedArrow asChild variant="secondary" size="compact">
+              {t('case.floating')}
+            </ButtonWithAnimatedArrow>
           </ContactLink>
         </IconTooltip>
 
-        {/* -------------------------------- WhatsApp · Voltar ao topo */}
+        {/* -------------------------------- Voltar ao topo · WhatsApp */}
         <div className="fixed bottom-4 right-4 z-40 flex flex-col items-center gap-3 md:bottom-6 md:right-6">
+          <AnimatePresence initial={false}>
+            {showBackToTop && (
+              <motion.div
+                key="back-to-top"
+                initial={{ opacity: 0, scale: 0.65, y: 20, rotate: -12 }}
+                animate={{ opacity: 1, scale: 1, y: 0, rotate: 0 }}
+                exit={{ opacity: 0, scale: 0.72, y: 14, rotate: 10 }}
+                transition={{
+                  type: 'spring',
+                  stiffness: 360,
+                  damping: 23,
+                  mass: 0.65,
+                }}
+                className="flex origin-bottom items-center justify-center"
+              >
+                <IconTooltip label={t('nav.backToTop')} side="top" align="right">
+                  <motion.button
+                    type="button"
+                    onClick={scrollToTop}
+                    aria-label={t('nav.backToTop')}
+                    whileHover={{ y: -2, scale: 1.04 }}
+                    whileTap={{ scale: 0.94 }}
+                    className="inline-flex size-12 items-center justify-center rounded-full border border-ink/20 bg-ink text-cream shadow-lg transition-colors hover:border-ink hover:bg-charcoal"
+                  >
+                    <ArrowUp className="size-5" strokeWidth={1.75} aria-hidden />
+                  </motion.button>
+                </IconTooltip>
+              </motion.div>
+            )}
+          </AnimatePresence>
           <WhatsAppButton
             message={`Olá John! Vi o case "${study.title}" no seu portfólio e gostaria de conversar sobre um projeto.`}
           />
-          <IconTooltip label={t('nav.backToTop')} side="top" align="right">
-            <button
-              type="button"
-              onClick={scrollToTop}
-              aria-label={t('nav.backToTop')}
-              className="inline-flex size-12 items-center justify-center rounded-full border border-ink/20 bg-surface text-ink shadow-lg transition-colors hover:border-ink hover:bg-ink hover:text-cream"
-            >
-              <ArrowUp className="size-5" strokeWidth={1.75} aria-hidden />
-            </button>
-          </IconTooltip>
         </div>
       </div>
     </MotionConfig>

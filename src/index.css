@@ -327,9 +327,9 @@ html[data-theme='dark'] .grain-overlay {
   }
 }
 
-/* Pílula “Vamos trabalhar juntos”: verde no claro, tokens invertidos no escuro. */
+/* Pílula “Vamos trabalhar juntos”:tokens invertidos no escuro. */
 .contact-cta-pill {
-  background-color: #28ca41;
+  background-color: #111111;
   color: #ffffff;
 }
 

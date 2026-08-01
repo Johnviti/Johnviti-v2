@@ -5,6 +5,7 @@ import { ContactLink } from '@/components/loader/ContactTransition';
 import IconTooltip from '@/components/ui/IconTooltip';
 import MenuToggle from '@/components/ui/MenuToggle';
 import ThemeToggle from '@/components/ui/ThemeToggle';
+import ButtonWithAnimatedArrow from '@/components/ui/ButtonWithAnimatedArrow';
 import { useI18n } from '@/lib/i18n';
 
 /**
@@ -79,9 +80,10 @@ export default function FixedHeader() {
         side="top"
         className="fixed bottom-4 left-4 z-40 max-w-[calc(100vw-5.5rem)] md:bottom-6 md:left-6 md:max-w-none"
       >
-        <ContactLink className="contact-cta-pill inline-flex max-w-full items-center gap-1.5 truncate rounded-full px-3.5 py-2 text-[11px] font-medium shadow-lg transition-opacity hover:opacity-90">
-          <span className="contact-cta-pill__dot size-1.5 shrink-0 rounded-full" aria-hidden />
-          <span className="truncate">{t('case.floating')}</span>
+        <ContactLink>
+          <ButtonWithAnimatedArrow asChild variant="secondary" size="compact">
+            {t('case.floating')}
+          </ButtonWithAnimatedArrow>
         </ContactLink>
       </IconTooltip>
 

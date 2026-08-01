@@ -187,7 +187,7 @@ const GaleriaImersivaPage = () => {
         id="conteudo"
         ref={containerRef}
         role="application"
-        aria-label="Galeria imersiva de imagens. Arraste com o mouse ou use as setas do teclado para explorar a parede de imagens em qualquer direção. Use Ctrl com a roda do mouse, a pinça de dois dedos ou as teclas mais e menos para aproximar as imagens, e zero para voltar ao enquadramento padrão. Clique em uma imagem para abrir o case do projeto."
+        aria-label="Galeria imersiva de imagens. Arraste com o mouse ou use as setas do teclado para explorar a parede de imagens em qualquer direção. Use Ctrl com a roda do mouse, a pinça de dois dedos ou as teclas mais e menos para aproximar ou afastar as imagens, e zero para voltar ao enquadramento padrão. Clique em uma imagem para abrir o case do projeto."
         tabIndex={0}
         className="absolute inset-0 outline-none"
         style={{ touchAction: 'none', overscrollBehavior: 'none' }}
