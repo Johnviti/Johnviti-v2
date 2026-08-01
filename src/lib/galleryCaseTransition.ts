@@ -42,7 +42,9 @@ const heroTarget = () => {
   const width = Math.min(1760, viewportWidth - gutter * 2);
   return {
     left: (viewportWidth - width) / 2,
-    top: desktop ? 80 : 48,
+    // O hero usa `pt-20` em todos os breakpoints. Manter o mesmo destino evita
+    // que a capa termine 32px acima e salte para baixo ao montar o case mobile.
+    top: 80,
     width,
     height: width * (9 / 16),
   };

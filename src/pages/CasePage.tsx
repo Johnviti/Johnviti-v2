@@ -390,7 +390,7 @@ const CasePage = ({ slug }: Props) => {
         <GalleryMenu open={menuOpen} onClose={closeMenu} />
 
         {/* -------------------------------------------------------- Hero */}
-        <section id="conteudo" tabIndex={-1} className="pt-12 outline-none md:pt-20">
+        <section id="conteudo" tabIndex={-1} className="pt-20 outline-none">
           <div className={PAGE_X}>
             <div className={PAGE_SHELL}>
               <motion.div
@@ -410,7 +410,6 @@ const CasePage = ({ slug }: Props) => {
                     decoding="async"
                     className="aspect-[16/9] w-full object-cover"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent" />
                 </div>
               </motion.div>
             </div>
