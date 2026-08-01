@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, MotionConfig, type Variants } from 'framer-motion';
-import { MapPin, Menu, ArrowUp } from 'lucide-react';
+import { MapPin, ArrowUp } from 'lucide-react';
 import Logo from '@/components/Logo';
 import GalleryMenu from '@/components/galeria-imersiva/GalleryMenu';
 import { ContactLink } from '@/components/loader/ContactTransition';
@@ -8,6 +8,7 @@ import GrainOverlay from '@/components/ui/GrainOverlay';
 import GradualBlur from '@/components/ui/gradual-blur';
 import IconTooltip from '@/components/ui/IconTooltip';
 import LanguageToggle from '@/components/ui/LanguageToggle';
+import MenuToggle from '@/components/ui/MenuToggle';
 import SkipLink from '@/components/ui/SkipLink';
 import WhatsAppButton from '@/components/ui/WhatsAppButton';
 import ThemeToggle from '@/components/ui/ThemeToggle';
@@ -249,6 +250,8 @@ const CasePage = ({ slug, previewShowcase = false }: Props) => {
     [t('case.challenge'), study.challenge],
     [t('case.approach'), study.approach],
   ];
+  const enteringFromGallery =
+    document.documentElement.dataset.galleryCaseTransition === study.slug;
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -273,34 +276,58 @@ const CasePage = ({ slug, previewShowcase = false }: Props) => {
         />
         {/* Header fixo — mix-blend-difference adapta a marca a fundos claros/escuros */}
         <motion.header
-          initial={{ opacity: 0, y: -12 }}
+          initial={enteringFromGallery ? false : { opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: EASE }}
-          className="fixed inset-x-0 top-0 z-40 flex items-center justify-between px-6 py-5 text-white mix-blend-difference md:px-10"
+          className="gallery-case-shared-header pointer-events-none fixed inset-0 z-[70] select-none text-white mix-blend-difference"
         >
           {/* Logo — monograma JA */}
           <a
             href="/"
             aria-label="John Amorim — voltar ao início"
-            className="transition-opacity duration-300 hover:opacity-70"
+            className="pointer-events-auto absolute left-6 top-6 transition-opacity duration-300 hover:opacity-70 md:left-10 md:top-7"
           >
-            <Logo className="h-6 w-auto md:h-7" />
+            <Logo className="h-8 w-auto" />
           </a>
 
           {/* Idioma · tema · menu — idioma só no case */}
-          <div className="flex items-center gap-4">
-            <LanguageToggle />
-            <ThemeToggle />
-            <IconTooltip label={t('nav.openMenu')}>
+          <div className="pointer-events-auto absolute right-6 top-5 flex items-center gap-4 md:right-10 md:top-6">
+            <motion.div
+              initial={enteringFromGallery ? { opacity: 0, x: 10 } : false}
+              animate={{ opacity: menuOpen ? 0 : 1, x: 0 }}
+              transition={{ duration: 0.35, delay: enteringFromGallery ? 0.18 : 0 }}
+              className={menuOpen ? 'pointer-events-none' : undefined}
+            >
+              <LanguageToggle />
+            </motion.div>
+            <div
+              className={`transition-opacity duration-300 ${
+                menuOpen ? 'pointer-events-none opacity-0' : 'opacity-100'
+              }`}
+            >
+              <ThemeToggle />
+            </div>
+            <IconTooltip label={t(menuOpen ? 'nav.closeMenu' : 'nav.openMenu')}>
               <button
                 ref={menuButtonRef}
                 type="button"
-                onClick={() => setMenuOpen(true)}
+                onClick={() => setMenuOpen((open) => !open)}
                 aria-expanded={menuOpen}
-                aria-label={t('nav.openMenu')}
-                className="transition-opacity duration-300 hover:opacity-60"
+                aria-label={t(menuOpen ? 'nav.closeMenu' : 'nav.openMenu')}
+                className="group relative flex size-11 items-center justify-center rounded-full text-white"
               >
-                <Menu className="size-6" strokeWidth={1.5} aria-hidden />
+                <span
+                  aria-hidden
+                  className={`absolute inset-0 rounded-full transition-[background-color,opacity] duration-300 ${
+                    menuOpen
+                      ? 'bg-white/[0.08] opacity-100 group-hover:bg-white/[0.14]'
+                      : 'bg-transparent opacity-0'
+                  }`}
+                />
+                <MenuToggle
+                  open={menuOpen}
+                  className="relative size-6 transition-opacity duration-300 group-hover:opacity-60"
+                />
               </button>
             </IconTooltip>
           </div>
@@ -313,15 +340,20 @@ const CasePage = ({ slug, previewShowcase = false }: Props) => {
           <div className={PAGE_X}>
             <div className={PAGE_SHELL}>
               <motion.div
-                initial={{ opacity: 0, y: 40 }}
+                initial={enteringFromGallery ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={VIEWPORT}
                 transition={{ duration: 0.9, ease: EASE }}
               >
-                <div className="relative overflow-hidden rounded-3xl bg-ink">
+                <div
+                  data-case-hero={study.slug}
+                  className="relative overflow-hidden rounded-3xl bg-ink"
+                >
                   <img
+                    data-case-hero-image
                     src={study.cover}
                     alt={`Apresentação do projeto ${study.title}`}
+                    decoding="async"
                     className="aspect-[16/9] w-full object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent" />
@@ -592,19 +624,6 @@ const CasePage = ({ slug, previewShowcase = false }: Props) => {
             </StaggerGroup>
           </div>
         </section>
-
-        {/* -------------------------------- Pílula flutuante (contato) */}
-        <IconTooltip
-          label={t('case.ctaAction')}
-          side="top"
-          className="fixed bottom-4 left-4 z-40 max-w-[calc(100vw-5.5rem)] md:bottom-6 md:left-6 md:max-w-none"
-        >
-          <ContactLink>
-            <ButtonWithAnimatedArrow asChild variant="secondary" size="compact">
-              {t('case.floating')}
-            </ButtonWithAnimatedArrow>
-          </ContactLink>
-        </IconTooltip>
 
         {/* -------------------------------- Voltar ao topo · WhatsApp */}
         <div className="fixed bottom-4 right-4 z-40 flex flex-col items-center gap-3 md:bottom-6 md:right-6">

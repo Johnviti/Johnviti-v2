@@ -10,6 +10,13 @@ import {
 
 type Vec2 = { x: number; y: number };
 
+export type GalleryTileBounds = {
+  left: number;
+  top: number;
+  width: number;
+  height: number;
+};
+
 export type GalleryAppOptions = {
   canvas: HTMLCanvasElement;
   container: HTMLElement;
@@ -20,8 +27,12 @@ export type GalleryAppOptions = {
   background?: string;
   /** Disparado na primeira interação do usuário (cancela a introdução). */
   onUserInteract?: () => void;
-  /** Disparado quando um tile é clicado (tap sem arraste). */
-  onItemClick?: (item: GalleryItem, index: number) => void;
+  /** Disparado quando um tile é clicado, com sua caixa projetada na tela. */
+  onItemClick?: (
+    item: GalleryItem,
+    index: number,
+    bounds: GalleryTileBounds,
+  ) => void;
   /** Disparado quando o ponteiro entra/sai de um tile (alimenta o cursor customizado). */
   onHoverChange?: (item: GalleryItem | null) => void;
 };
@@ -462,7 +473,74 @@ export class GalleryApp {
     if (hits.length === 0) return;
     const index = hits[0].object.userData.index as number;
     const item = this.opts.items[index % this.opts.items.length];
-    this.opts.onItemClick?.(item, index);
+    const tile = this.tiles[index];
+    if (!tile) return;
+    this.opts.onItemClick?.(item, index, this.tileScreenBounds(tile));
+  }
+
+  /**
+   * Replica em CPU a projeção do vertex shader e o zoom/distorção do
+   * pós-processamento. A caixa resultante permite que uma imagem DOM nasça
+   * praticamente em cima do tile WebGL durante a transição para o case.
+   */
+  private tileScreenBounds(tile: Tile): GalleryTileBounds {
+    const viewport = this.opts.container.getBoundingClientRect();
+    const curve = tile.mesh.material.uniforms.uCurve.value as number;
+    const hoverScale = 1 + tile.hover * (this.cfg.hoverScale - 1);
+    const halfWidth = tile.mesh.scale.x * hoverScale * 0.5;
+    const halfHeight = tile.mesh.scale.y * hoverScale * 0.5;
+    const postZoom = this.postMaterial.uniforms.uZoom.value as number;
+    const distortion = this.postMaterial.uniforms.uDistortion.value as number;
+
+    const project = (offsetX: number, offsetY: number) => {
+      const worldX = tile.mesh.position.x + offsetX;
+      const worldY = tile.mesh.position.y + offsetY;
+      const worldZ = -(worldX * worldX + worldY * worldY) * curve;
+      const ndc = new THREE.Vector3(worldX, worldY, worldZ).project(this.camera);
+
+      // Inverte `barrel(zoom(uv))` do fragment shader para reencontrar o pixel
+      // de saída onde o ponto projetado é exibido.
+      const sceneX = ndc.x * 0.5;
+      const sceneY = ndc.y * 0.5;
+      const sceneRadius = Math.hypot(sceneX, sceneY);
+      let undistortedRadius = sceneRadius;
+      if (sceneRadius > 0.000001) {
+        for (let i = 0; i < 5; i++) {
+          undistortedRadius =
+            sceneRadius /
+            (1 + distortion * undistortedRadius * undistortedRadius);
+        }
+      }
+      const radialScale =
+        sceneRadius > 0.000001 ? undistortedRadius / sceneRadius : 1;
+      const outputX = sceneX * radialScale * postZoom;
+      const outputY = sceneY * radialScale * postZoom;
+
+      return {
+        x: viewport.left + (0.5 + outputX) * viewport.width,
+        y: viewport.top + (0.5 - outputY) * viewport.height,
+      };
+    };
+
+    const corners = [
+      project(-halfWidth, halfHeight),
+      project(halfWidth, halfHeight),
+      project(halfWidth, -halfHeight),
+      project(-halfWidth, -halfHeight),
+    ];
+    const xs = corners.map((point) => point.x);
+    const ys = corners.map((point) => point.y);
+    const left = Math.min(...xs);
+    const right = Math.max(...xs);
+    const top = Math.min(...ys);
+    const bottom = Math.max(...ys);
+
+    return {
+      left,
+      top,
+      width: Math.max(1, right - left),
+      height: Math.max(1, bottom - top),
+    };
   }
 
   private onPointerLeave = () => {

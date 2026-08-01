@@ -1,11 +1,9 @@
 import { useCallback, useRef, useState } from 'react';
 import GalleryMenu from './GalleryMenu';
 import Logo from '@/components/Logo';
-import { ContactLink } from '@/components/loader/ContactTransition';
 import IconTooltip from '@/components/ui/IconTooltip';
 import MenuToggle from '@/components/ui/MenuToggle';
 import ThemeToggle from '@/components/ui/ThemeToggle';
-import ButtonWithAnimatedArrow from '@/components/ui/ButtonWithAnimatedArrow';
 import { useI18n } from '@/lib/i18n';
 
 /**
@@ -31,7 +29,7 @@ export default function FixedHeader() {
     <>
       {/* mix-blend-difference: logo e ícones se adaptam ao que passa por trás
           (pretos sobre áreas claras, claros sobre capas escuras). */}
-      <header className="pointer-events-none fixed inset-0 z-40 select-none text-white mix-blend-difference">
+      <header className="gallery-case-shared-header pointer-events-none fixed inset-0 z-40 select-none text-white mix-blend-difference">
         {/* Logo — canto superior esquerdo */}
         <div className="absolute left-6 top-6 md:left-10 md:top-7">
           <Logo className="h-8 w-auto" />
@@ -40,7 +38,7 @@ export default function FixedHeader() {
 
       {/* Tema · MENU — canto superior direito. Fica acima do painel (z-[70])
           para o toggle continuar visível como X e fechar o menu ao clicar. */}
-      <div className="pointer-events-auto fixed right-6 top-5 z-[70] flex items-center gap-4 text-white mix-blend-difference md:right-10 md:top-6">
+      <div className="gallery-case-shared-header pointer-events-auto fixed right-6 top-5 z-[70] flex items-center gap-4 text-white mix-blend-difference md:right-10 md:top-6">
         {/* Tema some enquanto o menu está aberto — evita flutuar sobre o painel. */}
         <div
           className={`transition-opacity duration-300 ${
@@ -74,18 +72,6 @@ export default function FixedHeader() {
           </button>
         </IconTooltip>
       </div>
-
-      <IconTooltip
-        label={t('case.ctaAction')}
-        side="top"
-        className="fixed bottom-4 left-4 z-40 max-w-[calc(100vw-5.5rem)] md:bottom-6 md:left-6 md:max-w-none"
-      >
-        <ContactLink>
-          <ButtonWithAnimatedArrow asChild variant="secondary" size="compact">
-            {t('case.floating')}
-          </ButtonWithAnimatedArrow>
-        </ContactLink>
-      </IconTooltip>
 
       <GalleryMenu open={menuOpen} onClose={closeMenu} />
     </>

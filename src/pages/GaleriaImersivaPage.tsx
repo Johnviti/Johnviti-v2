@@ -9,6 +9,7 @@ import { useDocumentMeta } from '@/lib/useDocumentMeta';
 import { galleryConfig } from '@/components/galeria-imersiva/galleryConfig';
 import { galleryItems } from '@/components/galeria-imersiva/galleryItems';
 import { GalleryApp } from '@/components/galeria-imersiva/three/GalleryApp';
+import { runGalleryCaseTransition } from '@/lib/galleryCaseTransition';
 import { THEME_BACKGROUND, useTheme } from '@/lib/theme';
 
 /**
@@ -22,6 +23,7 @@ const GaleriaImersivaPage = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const appRef = useRef<GalleryApp | null>(null);
+  const caseTransitioningRef = useRef(false);
 
   // Overlay de instrução: exibido uma vez por sessão, dispensado na primeira
   // interação (ou por timeout). "visible" controla o fade; "mounted" desmonta
@@ -48,7 +50,10 @@ const GaleriaImersivaPage = () => {
   // recriar toda a galeria a cada troca de tema (a ref só é escrita em efeito).
   const themeRef = useRef(theme);
   const introVisibleRef = useRef(introVisible);
-  introVisibleRef.current = introVisible;
+
+  useEffect(() => {
+    introVisibleRef.current = introVisible;
+  }, [introVisible]);
 
   useEffect(() => {
     let cancelled = false;
@@ -111,9 +116,15 @@ const GaleriaImersivaPage = () => {
           dismissIntro();
         },
         // Clique (tap sem arraste) em um tile abre a página do case.
-        onItemClick: (item) => {
-          if (introVisibleRef.current) return;
-          window.location.href = `/case/${item.caseSlug}`;
+        onItemClick: (item, _index, bounds) => {
+          if (introVisibleRef.current || caseTransitioningRef.current) return;
+          caseTransitioningRef.current = true;
+          setHoveredSlug(null);
+          void runGalleryCaseTransition({
+            bounds,
+            cover: item.src,
+            slug: item.caseSlug,
+          });
         },
       });
       appRef.current = app;

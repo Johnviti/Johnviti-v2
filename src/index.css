@@ -54,6 +54,18 @@ html[data-theme='light'] {
   color-scheme: light;
 }
 
+/* Durante Galeria → Case o fundo passa por tons intermediários. O blend de
+   diferença perderia contraste nesses frames; travamos a cor do mesmo header
+   nos dois lados da rota e devolvemos o blend assim que a capa se encaixa. */
+html[data-gallery-case-transition] .gallery-case-shared-header {
+  color: var(--color-ink) !important;
+  mix-blend-mode: normal !important;
+}
+
+html[data-gallery-case-transition] .gallery-case-shared-header button {
+  color: var(--color-ink) !important;
+}
+
 @layer base {
   *,
   *::before,
@@ -277,20 +289,35 @@ html[data-magicui-theme-vt='active']::view-transition-new(root) {
    z-index negativo + `isolate` no wrapper da página: o grão fica entre o
    fundo e o conteúdo — aparece no papel, nunca por cima de imagens/UI. */
 .grain-overlay {
+  --grain-opacity: 0.24;
   position: fixed;
   inset: 0;
   z-index: -1;
   pointer-events: none;
   overflow: hidden;
   /* Suave o suficiente para texturizar o papel sem “sujar” o branco. */
-  opacity: 0.24;
+  opacity: var(--grain-opacity);
   mix-blend-mode: multiply;
 }
 
 html[data-theme='dark'] .grain-overlay {
+  --grain-opacity: 0.14;
   mix-blend-mode: screen;
   /* Screen clareia o preto — baixa opacidade evita o cinza escuro. */
-  opacity: 0.14;
+  opacity: var(--grain-opacity);
+}
+
+html[data-gallery-case-transition] .grain-overlay {
+  animation: grain-overlay-reveal 0.72s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes grain-overlay-reveal {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: var(--grain-opacity);
+  }
 }
 
 .grain-overlay::before {
@@ -322,6 +349,10 @@ html[data-theme='dark'] .grain-overlay {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html[data-gallery-case-transition] .grain-overlay {
+    animation: none;
+  }
+
   .grain-overlay::before {
     animation: none;
   }

@@ -31,7 +31,7 @@ export const galleryConfig = {
   /** Zoom da parede: Ctrl/⌘ + roda, pinça de dois dedos ou `+` / `-`.
    *  O limite de `0.64` oferece dois níveis completos de zoom out a partir do
    *  enquadramento base (`1 → 0.8 → 0.64`). */
-  minZoom: 0.64,
+  minZoom: 0.80,
   maxZoom: 3,
   /** Ganho da roda no zoom (aplicado como exponencial do delta). */
   zoomSensitivity: 0.0026,

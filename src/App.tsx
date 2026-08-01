@@ -1,5 +1,6 @@
-import { lazy, Suspense, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import Preloader from '@/components/loader/Preloader';
+import SharedFloatingContactButton from '@/components/ui/SharedFloatingContactButton';
 import {
   ContactTransitionEnter,
   ensureEnterReveal,
@@ -42,7 +43,19 @@ const ROUTE_ENTER = takeRouteTransitionEnter();
 if (ROUTE_ENTER) ensureEnterReveal();
 
 function App() {
-  const path = window.location.pathname.replace(/\/+$/, '') || '/';
+  const [path, setPath] = useState(
+    () => window.location.pathname.replace(/\/+$/, '') || '/',
+  );
+
+  // A transição Galeria → Case troca somente a rota no mesmo documento para
+  // que a capa animada continue viva. Voltar/avançar também sincronizam a tela.
+  useEffect(() => {
+    const syncPath = () => {
+      setPath(window.location.pathname.replace(/\/+$/, '') || '/');
+    };
+    window.addEventListener('popstate', syncPath);
+    return () => window.removeEventListener('popstate', syncPath);
+  }, []);
   const caseSlug = matchCaseSlug(path, '/case/');
   const isDev = import.meta.env.DEV;
   /* Rotas de laboratório — só existem em `npm run dev`. */
@@ -105,6 +118,11 @@ function App() {
     !uxSlug &&
     !ROUTE_ENTER &&
     !routeEnter;
+  const showSharedFloatingContact =
+    path === '/' ||
+    path === '/galeria-imersiva' ||
+    Boolean(caseSlug) ||
+    Boolean(devCaseSlug);
 
   return (
     <>
@@ -112,6 +130,7 @@ function App() {
       {routeEnter && (
         <ContactTransitionEnter onDone={() => setRouteEnter(false)} />
       )}
+      {showSharedFloatingContact && <SharedFloatingContactButton />}
       <Suspense fallback={<PageLoader />}>{page}</Suspense>
     </>
   );
