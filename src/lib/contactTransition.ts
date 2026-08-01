@@ -2,7 +2,7 @@
  * Ponte MPA para transição entre Galeria ↔ Contato (não envolve Case).
  * O exit arma a flag; o enter consome e revela sem passar pelo Preloader.
  *
- * Padrão de produção (por enquanto): wipe + pulse —
+ * Padrão de produção (por enquanto): wipe + progresso —
  * ver `ContactTransition.tsx` e `DEFAULT_ROUTE_TRANSITION`.
  */
 
@@ -10,7 +10,7 @@ export const CONTACT_HREF = '/contato';
 export const GALLERY_HREF = '/';
 
 /** Variante ativa na navegação real Galeria ↔ Contato. */
-export const DEFAULT_ROUTE_TRANSITION = 'wipe-pulse' as const;
+export const DEFAULT_ROUTE_TRANSITION = 'wipe-progress' as const;
 
 const STORAGE_KEY = 'ja:route-transition';
 

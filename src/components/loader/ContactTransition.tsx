@@ -22,7 +22,7 @@ import {
 } from '@/lib/contactTransition';
 
 /**
- * Wipe + pulse entre Galeria ↔ Contato (e Case → Contato).
+ * Wipe + progresso entre Galeria ↔ Contato (e Case → Contato).
  * Padrão de produção (`DEFAULT_ROUTE_TRANSITION`) — exit cobre e navega;
  * Enter assume o véu e revela o destino.
  */
@@ -65,7 +65,7 @@ type PhaseProps = {
   onDone: () => void;
 };
 
-/** Metade de saída — sobe o véu e para coberto (logo em tinta). */
+/** Metade de saída — o verde drena conforme a rota fica pronta para navegar. */
 export const ContactTransitionExit = ({
   onCovered,
 }: {
@@ -98,6 +98,8 @@ export const ContactTransitionExit = ({
     gsap.set(cells, { fill: LOGO_GREEN });
 
     const ctx = gsap.context(() => {
+      // O verde funciona como progresso em uma única passada. A navegação só
+      // acontece depois que todas as células assentam na tinta do tema.
       gsap
         .timeline({ onComplete: onCovered })
         .to(veil, { yPercent: 0, duration: 0.38, ease: 'power3.inOut' })
@@ -184,12 +186,11 @@ const runEnterRevealOnce = (): Promise<void> => {
     gsap.set(cells, { fill: ink });
 
     // O véu JS (z-200) já cobre a tela: retiramos o véu estático
-    // (`body::before`, z-199) ANTES do slide. Se ele ficar, mascara a subida e
-    // a revelação vira um corte/fade. Sem ele, o véu sobe e revela a página.
+    // (`body::before`, z-199). Os dois mostram a MESMA logo em tinta, então a
+    // troca é invisível — a marca não some e reaparece (evita o piscar).
     document.documentElement.classList.remove('ja-route-enter');
 
-    // Finalização no mesmo sentido da entrada: a tela branca (com a logo) sobe
-    // inteira e sai pelo topo — sem fade parado no lugar.
+    // O véu sobe inteiro e sai pelo topo, revelando a página — sem pulso.
     gsap
       .timeline({ onComplete: cleanup })
       .to(veil, { yPercent: -100, duration: 0.72, ease: 'power4.inOut' }, 0.16);

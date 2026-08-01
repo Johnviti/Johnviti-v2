@@ -251,43 +251,17 @@ const settleAndExit = (
   if (status) tl.to(status, { opacity: 0, duration: 0.25 }, 0);
   if (progress) tl.to(progress, { opacity: 0, duration: 0.25 }, 0);
 
-  /* No preloader de produção, a tinta verde funciona como um indicador de
-     carregamento: duas passadas verde → tinta antes do voo para o header. */
   tl.to(
     cells,
-    { fill: settleFill, duration: 0.44, ease: 'power2.inOut', stagger: 0.015 },
+    { fill: settleFill, duration: 0.5, ease: 'power2.inOut', stagger: 0.015 },
     0.1,
-  );
-
-  if (options.flyToHeader) {
-    tl.to({}, { duration: 0.24 })
-      .to(
-        cells,
-        {
-          fill: LOGO_GREEN,
-          duration: 0.3,
-          ease: 'power1.inOut',
-          stagger: { each: 0.01, from: 'end' },
-        },
-      )
-      .to({}, { duration: 0.28 })
-      .to(cells, {
-        fill: settleFill,
-        duration: 0.44,
-        ease: 'power2.inOut',
-        stagger: 0.015,
-      })
-      // Segura brevemente o resultado para a segunda passagem ser percebida.
-      .to({}, { duration: 0.32 });
-  }
-
-  tl.to(
+  ).to(
     logo,
     {
       scale: 1.04,
       duration: 0.18,
       yoyo: true,
-      repeat: options.flyToHeader ? 3 : 1,
+      repeat: 1,
       transformOrigin: '50% 50%',
       ease: 'sine.inOut',
     },
