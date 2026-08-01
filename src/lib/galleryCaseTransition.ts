@@ -201,6 +201,7 @@ export const runGalleryCaseTransition = async ({
 
     veil = document.createElement('div');
     veil.setAttribute('aria-hidden', 'true');
+    veil.dataset.galleryCaseTransitionVeil = '';
     Object.assign(veil.style, {
       position: 'fixed',
       inset: '0',
@@ -290,14 +291,19 @@ export const runGalleryCaseTransition = async ({
       ]);
     }
 
-    await Promise.all([
-      tween(veil, { opacity: 0, duration: 0.72, ease: 'power2.inOut' }),
-      tween(image, {
-        opacity: 0,
-        duration: 0.72,
-        ease: 'power2.inOut',
-      }),
-    ]);
+    // O veu sai primeiro com a capa ainda 100% opaca. Se os dois esmaecem ao
+    // mesmo tempo, o branco do veu aparece entre a capa e o hero no meio da
+    // composicao e parece um flash. Depois, a capa cruza suavemente para o hero.
+    await tween(veil, {
+      opacity: 0,
+      duration: 0.28,
+      ease: 'power2.out',
+    });
+    await tween(image, {
+      opacity: 0,
+      duration: 0.64,
+      ease: 'power2.inOut',
+    });
 
     headerGuard?.remove();
     transitionBlur.remove();

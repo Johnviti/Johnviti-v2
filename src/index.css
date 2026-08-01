@@ -177,16 +177,28 @@ html[data-gallery-case-transition] .gallery-case-shared-header button {
       ) 2 0, auto;
   }
 
-  a,
-  button,
-  [role='button'],
+  a[href],
+  a[href] *,
+  button:not(:disabled),
+  button:not(:disabled) *,
+  input[type='button']:not(:disabled),
+  input[type='submit']:not(:disabled),
+  input[type='reset']:not(:disabled),
+  [role='button']:not([aria-disabled='true']),
+  [role='button']:not([aria-disabled='true']) *,
   summary,
+  summary *,
   label[for],
-  select,
+  label[for] *,
+  select:not(:disabled),
   .cursor-pointer,
+  .cursor-pointer *,
   .cursor-grab,
+  .cursor-grab *,
   .cursor-grabbing,
-  .cursor-help {
+  .cursor-grabbing *,
+  .cursor-help,
+  .cursor-help * {
     cursor: url('/cursors/pixel-hand.png') 6 0, pointer;
     cursor: -webkit-image-set(
         url('/cursors/pixel-hand.png') 1x,

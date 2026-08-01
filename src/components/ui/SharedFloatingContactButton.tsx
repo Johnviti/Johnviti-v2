@@ -11,9 +11,9 @@ export default function SharedFloatingContactButton() {
     <IconTooltip
       label={t('case.ctaAction')}
       side="top"
-      className="gallery-case-shared-cta fixed bottom-4 left-4 z-40 max-w-[calc(100vw-5.5rem)] md:bottom-6 md:left-6 md:max-w-none"
+      className="gallery-case-shared-cta fixed bottom-4 left-4 z-40 max-w-[calc(100vw-5.5rem)] cursor-pointer md:bottom-6 md:left-6 md:max-w-none"
     >
-      <ContactLink>
+      <ContactLink className="cursor-pointer">
         <ButtonWithAnimatedArrow asChild variant="secondary" size="compact">
           {t('case.floating')}
         </ButtonWithAnimatedArrow>
