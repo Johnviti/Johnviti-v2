@@ -25,4 +25,42 @@ describe('cases', () => {
       expect(getCaseBySlug(p.slug), `case ausente para ${p.slug}`).toBeDefined();
     }
   });
+
+  it('normaliza como null todo bloco opcional ainda não preenchido', () => {
+    const optionalFields = [
+      'client',
+      'category',
+      'year',
+      'services',
+      'visualIdentity',
+      'captionOne',
+      'captionTwo',
+      'websiteNote',
+      'testimonial',
+      'showcase',
+    ] as const;
+
+    for (const c of caseStudies) {
+      for (const field of optionalFields) {
+        expect(Object.hasOwn(c, field), `${c.slug}.${field}`).toBe(true);
+        expect(c[field], `${c.slug}.${field}`).not.toBeUndefined();
+      }
+    }
+  });
+
+  it('preserva a identidade visual cadastrada em cada case real', () => {
+    const mercosul = getCaseBySlug('acordo-mercosul-uniao-europeia');
+    const tempo = getCaseBySlug('app-tempo-previsto');
+
+    expect(mercosul?.visualIdentity?.typography.primary.family).toBe('Inter');
+    expect(mercosul?.visualIdentity?.icons.items).toEqual([
+      'MapPin',
+      'ArrowRight',
+      'Menu',
+      'Search',
+      'ExternalLink',
+    ]);
+    expect(tempo?.visualIdentity?.colors.primary.hex).toBe('#0EA5E9');
+    expect(tempo?.visualIdentity?.icons.items).toHaveLength(5);
+  });
 });

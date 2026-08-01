@@ -1,5 +1,6 @@
 import casesData from '@/data/cases.json';
 import casesEn from '@/data/cases.en.json';
+import caseTestFixture from '@/data/case-test.fixture.json';
 import type { Lang } from '@/lib/i18n';
 import type { VisualIdentity } from '@/data/ux-portfolio';
 
@@ -11,64 +12,95 @@ import type { VisualIdentity } from '@/data/ux-portfolio';
  * são traduzidos; imagens, slug e ano vêm sempre do arquivo base — assim uma
  * tradução incompleta degrada para o português em vez de quebrar a página.
  *
- * A capa (`cover`) é a imagem real de cada projeto. A vitrine (bento, grade,
- * mockups, depoimento) ainda usa `placeholderShowcase` e só aparece na rota
- * local `/dev/case/:slug`. Na rota pública `/case/:slug`, essas seções mostram
- * "Em desenvolvimento". Para publicar a vitrine de um projeto, adicione
- * `showcase` ao case no JSON.
+ * A capa e a narrativa-base são os únicos campos obrigatórios. Todo bloco de
+ * vitrine é opcional e começa em `null`: quando recebe conteúdo real no JSON,
+ * passa a ser renderizado automaticamente na página pública do case.
  */
 export type Testimonial = {
   quote: string;
   author: string;
   role: string;
   /** Logo da empresa/marca, opcional — exibida centralizada acima da fala. */
-  logo?: string;
+  logo?: string | null;
 };
 
-/** Conjunto de imagens de vitrine do case (layout Figma). */
+/** Conjunto progressivo de imagens da vitrine. Cada campo pode entrar sozinho. */
 export type Showcase = {
   /** Mosaico "bento" — 7 imagens. */
-  bento: string[];
+  bento?: string[] | null;
   /** Grade 2×2 — 4 imagens. */
-  grid: string[];
+  grid?: string[] | null;
   /** Imagem full-width. */
-  full: string;
+  full?: string | null;
   /** Telas do produto em janela de navegador — título + imagem. */
-  mockups: { src: string; title: string }[];
-  testimonialImage: string;
-  avatar: string;
+  mockups?: { src: string; title: string }[] | null;
+  testimonialImage?: string | null;
+  avatar?: string | null;
 };
 
 export type CaseStudy = {
   slug: string;
   title: string;
-  client: string;
-  category: string;
-  year: string;
-  services: string[];
+  client: string | null;
+  category: string | null;
+  year: string | null;
+  services: string[] | null;
   industries: string[];
   location: string;
   growthStage: string;
   /** Capa do projeto — hero do case e imagem do tile na galeria. */
   cover: string;
-  visualIdentity: VisualIdentity;
+  visualIdentity: VisualIdentity | null;
   intro: string;
   challenge: string;
   approach: string;
-  captionOne: string;
-  captionTwo: string;
-  websiteNote: string;
-  testimonial: Testimonial;
-  /** Imagens de vitrine próprias — sobrescrevem o placeholder campo a campo. */
-  showcase?: Partial<Showcase>;
+  captionOne: string | null;
+  captionTwo: string | null;
+  websiteNote: string | null;
+  testimonial: Testimonial | null;
+  showcase: Showcase | null;
 };
 
-const data = casesData as unknown as {
-  cases: CaseStudy[];
-  placeholderShowcase: Showcase;
+type OptionalCaseContentKey =
+  | 'client'
+  | 'category'
+  | 'year'
+  | 'services'
+  | 'visualIdentity'
+  | 'captionOne'
+  | 'captionTwo'
+  | 'websiteNote'
+  | 'testimonial'
+  | 'showcase';
+
+type RawCaseStudy = Omit<CaseStudy, OptionalCaseContentKey> &
+  Partial<Pick<CaseStudy, OptionalCaseContentKey>>;
+
+const emptyOptionalContent: Pick<CaseStudy, OptionalCaseContentKey> = {
+  client: null,
+  category: null,
+  year: null,
+  services: null,
+  visualIdentity: null,
+  captionOne: null,
+  captionTwo: null,
+  websiteNote: null,
+  testimonial: null,
+  showcase: null,
 };
 
-export const caseStudies = data.cases;
+/** Mantém o JSON progressivo: campos ainda não cadastrados viram `null`. */
+const normalizeCaseStudy = (study: RawCaseStudy): CaseStudy => ({
+  ...emptyOptionalContent,
+  ...study,
+});
+
+const data = casesData as unknown as { cases: RawCaseStudy[] };
+
+export const caseStudies = data.cases.map(normalizeCaseStudy);
+const devCaseStudy = normalizeCaseStudy(
+  caseTestFixture as unknown as RawCaseStudy,
+);
 
 /* ------------------------------------------------------------------ idiomas */
 
@@ -101,27 +133,31 @@ const translations: Partial<Record<Lang, Record<string, CaseTranslation>>> = {
 /** Case com os campos traduzidos por cima do português. */
 export const localizeCase = (study: CaseStudy, lang: Lang): CaseStudy => {
   const translation = translations[lang]?.[study.slug];
-  return translation ? { ...study, ...translation } : study;
+  if (!translation) return study;
+
+  /* Uma tradução antiga não pode ressuscitar um bloco que está `null` na fonte
+     portuguesa. Quando o conteúdo real for adicionado ao base, sua tradução
+     volta a ser aplicada automaticamente. */
+  const applicable = Object.fromEntries(
+    Object.entries(translation).filter(
+      ([key, value]) => value != null && study[key as keyof CaseStudy] != null,
+    ),
+  ) as CaseTranslation;
+
+  return { ...study, ...applicable };
 };
 
 /** Lista completa de cases no idioma pedido. */
 export const getCaseStudies = (lang: Lang): CaseStudy[] =>
   caseStudies.map((study) => localizeCase(study, lang));
 
-/** Vitrine padrão (copiada do Figma), usada enquanto um projeto não tem imagens próprias. */
-export const placeholderShowcase = data.placeholderShowcase;
-
-/** Vitrine do case: placeholder do Figma com os overrides do próprio projeto por cima. */
-export const getShowcase = (study: CaseStudy): Showcase => ({
-  ...placeholderShowcase,
-  ...(study.showcase ?? {}),
-});
-
 export const getCaseBySlug = (
   slug: string,
   lang: Lang = 'pt',
 ): CaseStudy | undefined => {
-  const study = caseStudies.find((c) => c.slug === slug);
+  const study =
+    caseStudies.find((c) => c.slug === slug) ??
+    (import.meta.env.DEV && devCaseStudy.slug === slug ? devCaseStudy : undefined);
   return study && localizeCase(study, lang);
 };
 

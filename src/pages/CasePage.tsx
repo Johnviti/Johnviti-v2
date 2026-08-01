@@ -14,7 +14,7 @@ import WhatsAppButton from '@/components/ui/WhatsAppButton';
 import ThemeToggle from '@/components/ui/ThemeToggle';
 import ButtonWithAnimatedArrow from '@/components/ui/ButtonWithAnimatedArrow';
 import CaseVisualIdentity from '@/components/case/CaseVisualIdentity';
-import { getCaseBySlug, getRelatedCases, getShowcase } from '@/data/cases';
+import { getCaseBySlug, getRelatedCases } from '@/data/cases';
 import { useDocumentMeta } from '@/lib/useDocumentMeta';
 import { useI18n } from '@/lib/i18n';
 
@@ -25,9 +25,8 @@ import { useI18n } from '@/lib/i18n';
  * mosaico bento, legendas, grade 2×2, imagem full-width, nota "Website",
  * mockups em janela de navegador, depoimento, CTA e projetos relacionados.
  *
- * TODO O CONTEÚDO vem de `src/data/cases.json`. As imagens usam o
- * `placeholderShowcase` (copiado do Figma) enquanto cada projeto não recebe
- * as suas — para trocar por projeto, adicione um `showcase` ao case no JSON.
+ * TODO O CONTEÚDO vem de `src/data/cases.json`. Os blocos opcionais começam em
+ * `null` e aparecem individualmente assim que recebem conteúdo real.
  *
  * Fonte: Inter em todo o projeto (as fontes do Figma — StanVision Pro /
  * Neue Montreal — são pagas e foram substituídas por Inter, a fonte padrão).
@@ -219,14 +218,12 @@ const BrowserMockup = ({
 
 type Props = {
   slug: string;
-  /** Mostra a vitrine completa com placeholders (só para preview local). */
-  previewShowcase?: boolean;
 };
 
 const caseDocumentTitle = (title: string) =>
   `John Amorim - ${title.charAt(0).toUpperCase()}${title.slice(1).toLowerCase()}`;
 
-const CasePage = ({ slug, previewShowcase = false }: Props) => {
+const CasePage = ({ slug }: Props) => {
   const { t, lang } = useI18n();
   const study = getCaseBySlug(slug, lang);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -287,9 +284,21 @@ const CasePage = ({ slug, previewShowcase = false }: Props) => {
     );
   }
 
-  const show = previewShowcase ? getShowcase(study) : null;
+  const show = study.showcase;
   const related = getRelatedCases(study.slug, 2, lang);
   const host = `${study.slug.replace(/-/g, '')}.com.br`;
+  const [firstMockup, ...remainingMockups] = show?.mockups ?? [];
+  const hasExtendedContent = Boolean(
+    study.visualIdentity ||
+      study.captionOne ||
+      show?.grid?.length ||
+      show?.full ||
+      study.websiteNote ||
+      firstMockup ||
+      study.captionTwo ||
+      remainingMockups.length ||
+      study.testimonial,
+  );
   const narrative: [string, string][] = [
     [t('case.intro'), study.intro],
     [t('case.challenge'), study.challenge],
@@ -409,16 +418,22 @@ const CasePage = ({ slug, previewShowcase = false }: Props) => {
 
           <div className={`${PAGE_X} mt-12`}>
             <StaggerGroup
-              className={`${PAGE_SHELL} grid gap-8 sm:grid-cols-2 lg:grid-cols-[1.5fr_2fr_2fr_1fr_1fr]`}
+              className={`${PAGE_SHELL} grid gap-8 sm:grid-cols-2 ${
+                study.services?.length
+                  ? 'lg:grid-cols-[1.5fr_2fr_2fr_1fr_1fr]'
+                  : 'lg:grid-cols-[1.5fr_2fr_1fr_1fr]'
+              }`}
             >
               <MetaColumn label={t('case.projectName')}>
                 <h1 className={BODY}>{study.title}</h1>
               </MetaColumn>
-              <MetaColumn label={t('case.whatWeDid')}>
-                {study.services.map((service) => (
-                  <Chip key={service}>{service}</Chip>
-                ))}
-              </MetaColumn>
+              {study.services?.length ? (
+                <MetaColumn label={t('case.whatWeDid')}>
+                  {study.services.map((service) => (
+                    <Chip key={service}>{service}</Chip>
+                  ))}
+                </MetaColumn>
+              ) : null}
               <MetaColumn label={t('case.industries')}>
                 {study.industries.map((industry) => (
                   <Chip key={industry}>{industry}</Chip>
@@ -451,127 +466,126 @@ const CasePage = ({ slug, previewShowcase = false }: Props) => {
           </StaggerGroup>
         </section>
 
-        {previewShowcase && show ? (
+        {hasExtendedContent ? (
           <>
-            {/* -------------------------------------------- Identidade visual
-                Bento com os blocos 10–14 (imagem secundária · cores · marca ·
-                fonte · ícones), montado a partir de `study.visualIdentity`. */}
-            <section className={PAGE_X}>
-              <div className={PAGE_SHELL}>
-                <CaseVisualIdentity identity={study.visualIdentity} />
-              </div>
-            </section>
+            {study.visualIdentity ? (
+              <section className={PAGE_X}>
+                <div className={PAGE_SHELL}>
+                  <CaseVisualIdentity identity={study.visualIdentity} />
+                </div>
+              </section>
+            ) : null}
 
-            {/* ---------------------------------------------------- Legenda 1 */}
-            <Caption>{study.captionOne}</Caption>
+            {study.captionOne ? <Caption>{study.captionOne}</Caption> : null}
 
-            {/* -------------------------------------------------- Grade 2×2 */}
-            <section className={PAGE_X}>
-              <StaggerGroup className={`${PAGE_SHELL} grid grid-cols-1 gap-4 sm:grid-cols-2`}>
-                {show.grid.map((src, i) => (
-                  <motion.img
-                    key={src}
-                    variants={item}
-                    src={src}
-                    alt={`Tela ${i + 1} do projeto`}
-                    loading="lazy"
-                    className="aspect-[16/10] w-full rounded-2xl object-cover"
-                  />
-                ))}
-              </StaggerGroup>
-            </section>
-
-            {/* ------------------------------------------------ Imagem full-width */}
-            <section className={`${PAGE_X} pt-4`}>
-              <Reveal className={PAGE_SHELL}>
-                <img
-                  src={show.full}
-                  alt={`Visão ampla do projeto ${study.title}`}
-                  loading="lazy"
-                  className="aspect-[16/9] w-full rounded-2xl object-cover"
-                />
-              </Reveal>
-            </section>
-
-            {/* ------------------------------------------- Nota "Website" */}
-            <section className={`${PAGE_X} py-16 md:py-20`}>
-              <Reveal className={PAGE_SHELL}>
-                <p className={LABEL}>{t('case.website')}</p>
-                <p className="mt-8 max-w-[1024px] text-[clamp(1.25rem,2.5vw,1.5rem)] font-medium leading-[1.3] text-ink">
-                  {study.websiteNote}
-                </p>
-              </Reveal>
-            </section>
-
-            {/* -------------------------------------------- Mockup navegador 1
-                Padrão productShowcase: título acima + imagem do produto. */}
-            <section className={PAGE_X}>
-              <Reveal className={`${PAGE_SHELL} space-y-6`}>
-                <h3 className={SECTION_TITLE}>{show.mockups[0].title}</h3>
-                <BrowserMockup
-                  url={host}
-                  image={show.mockups[0].src}
-                  alt={`${show.mockups[0].title} — ${study.title}`}
-                />
-              </Reveal>
-            </section>
-
-            {/* ---------------------------------------------------- Legenda 2 */}
-            <Caption>{study.captionTwo}</Caption>
-
-            {/* -------------------------------------------- Mockup navegador 2 */}
-            <section className={PAGE_X}>
-              <Reveal className={`${PAGE_SHELL} space-y-6`}>
-                <h3 className={SECTION_TITLE}>{show.mockups[1].title}</h3>
-                <BrowserMockup
-                  url={host}
-                  image={show.mockups[1].src}
-                  alt={`${show.mockups[1].title} — ${study.title}`}
-                />
-              </Reveal>
-            </section>
-
-            {/* -------------------------------------------------- Depoimento
-                Variação "Mínimo" (/ux/depoimentos): centralizado, dentro de um
-                container com fundo — logo da marca no topo (quando houver),
-                fala e, abaixo, avatar (foto ou iniciais) + nome · cargo. */}
-            <section className={`${PAGE_X} py-16 md:py-24`}>
-              <Reveal className={PAGE_SHELL}>
-                <figure className="mx-auto flex flex-col items-center rounded-[24px] bg-cream-soft px-6 py-16 text-center sm:px-10 md:py-24">
-                  {study.testimonial.logo && (
-                    <img
-                      src={study.testimonial.logo}
-                      alt={study.testimonial.role}
+            {show?.grid?.length ? (
+              <section className={PAGE_X}>
+                <StaggerGroup className={`${PAGE_SHELL} grid grid-cols-1 gap-4 sm:grid-cols-2`}>
+                  {show.grid.map((src, i) => (
+                    <motion.img
+                      key={src}
+                      variants={item}
+                      src={src}
+                      alt={`Tela ${i + 1} do projeto`}
                       loading="lazy"
-                      decoding="async"
-                      className="mb-8 h-10 w-auto object-contain"
+                      className="aspect-[16/10] w-full rounded-2xl object-cover"
                     />
-                  )}
-                  <blockquote className="max-w-[62ch]">
-                    <p className="text-[clamp(1.35rem,2.6vw,2rem)] font-medium leading-[1.4] tracking-[-0.01em] text-ink">
-                      <span aria-hidden="true">“</span>
-                      {study.testimonial.quote}
-                      <span aria-hidden="true">”</span>
-                    </p>
-                  </blockquote>
-                  <figcaption className="mt-8 flex items-center justify-center gap-3 text-[14px]">
-                    <TestimonialAvatar
-                      name={study.testimonial.author}
-                      image={show.avatar}
-                    />
-                    <span className="font-medium text-ink">
-                      {study.testimonial.author}
-                    </span>
-                    <span aria-hidden="true" className="text-stone-soft">
-                      ·
-                    </span>
-                    <span className="text-stone-soft">
-                      {study.testimonial.role}
-                    </span>
-                  </figcaption>
-                </figure>
-              </Reveal>
-            </section>
+                  ))}
+                </StaggerGroup>
+              </section>
+            ) : null}
+
+            {show?.full ? (
+              <section className={`${PAGE_X} pt-4`}>
+                <Reveal className={PAGE_SHELL}>
+                  <img
+                    src={show.full}
+                    alt={`Visão ampla do projeto ${study.title}`}
+                    loading="lazy"
+                    className="aspect-[16/9] w-full rounded-2xl object-cover"
+                  />
+                </Reveal>
+              </section>
+            ) : null}
+
+            {study.websiteNote ? (
+              <section className={`${PAGE_X} py-16 md:py-20`}>
+                <Reveal className={PAGE_SHELL}>
+                  <p className={LABEL}>{t('case.website')}</p>
+                  <p className="mt-8 max-w-[1024px] text-[clamp(1.25rem,2.5vw,1.5rem)] font-medium leading-[1.3] text-ink">
+                    {study.websiteNote}
+                  </p>
+                </Reveal>
+              </section>
+            ) : null}
+
+            {firstMockup ? (
+              <section className={PAGE_X}>
+                <Reveal className={`${PAGE_SHELL} space-y-6`}>
+                  <h3 className={SECTION_TITLE}>{firstMockup.title}</h3>
+                  <BrowserMockup
+                    url={host}
+                    image={firstMockup.src}
+                    alt={`${firstMockup.title} — ${study.title}`}
+                  />
+                </Reveal>
+              </section>
+            ) : null}
+
+            {study.captionTwo ? <Caption>{study.captionTwo}</Caption> : null}
+
+            {remainingMockups.map((mockup) => (
+              <section key={`${mockup.src}-${mockup.title}`} className={PAGE_X}>
+                <Reveal className={`${PAGE_SHELL} space-y-6`}>
+                  <h3 className={SECTION_TITLE}>{mockup.title}</h3>
+                  <BrowserMockup
+                    url={host}
+                    image={mockup.src}
+                    alt={`${mockup.title} — ${study.title}`}
+                  />
+                </Reveal>
+              </section>
+            ))}
+
+            {study.testimonial ? (
+              <section className={`${PAGE_X} py-16 md:py-24`}>
+                <Reveal className={PAGE_SHELL}>
+                  <figure className="mx-auto flex flex-col items-center rounded-[24px] bg-cream-soft px-6 py-16 text-center sm:px-10 md:py-24">
+                    {study.testimonial.logo ? (
+                      <img
+                        src={study.testimonial.logo}
+                        alt={study.testimonial.role}
+                        loading="lazy"
+                        decoding="async"
+                        className="mb-8 h-10 w-auto object-contain"
+                      />
+                    ) : null}
+                    <blockquote className="max-w-[62ch]">
+                      <p className="text-[clamp(1.35rem,2.6vw,2rem)] font-medium leading-[1.4] tracking-[-0.01em] text-ink">
+                        <span aria-hidden="true">“</span>
+                        {study.testimonial.quote}
+                        <span aria-hidden="true">”</span>
+                      </p>
+                    </blockquote>
+                    <figcaption className="mt-8 flex items-center justify-center gap-3 text-[14px]">
+                      <TestimonialAvatar
+                        name={study.testimonial.author}
+                        image={show?.avatar ?? undefined}
+                      />
+                      <span className="font-medium text-ink">
+                        {study.testimonial.author}
+                      </span>
+                      <span aria-hidden="true" className="text-stone-soft">
+                        ·
+                      </span>
+                      <span className="text-stone-soft">
+                        {study.testimonial.role}
+                      </span>
+                    </figcaption>
+                  </figure>
+                </Reveal>
+              </section>
+            ) : null}
           </>
         ) : (
           <section className={`${PAGE_X} pb-8`}>

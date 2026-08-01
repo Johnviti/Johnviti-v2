@@ -7,11 +7,7 @@ Página de portfólio e template de estudo de caso, isolados do restante do site
 | Rota | Página | Arquivo |
 | --- | --- | --- |
 | `/ux` | Índice do portfólio (hero, projetos, sobre, processo) | `src/pages/UxPortfolioPage.tsx` |
-| `/ux/depoimentos` | Catálogo das variações de depoimento | `src/pages/UxTestimonialsPage.tsx` |
 | `/ux/<slug>` | Estudo de caso completo | `src/pages/UxCasePage.tsx` |
-
-`/ux/depoimentos` é avaliada antes do casamento por slug, então um projeto não
-pode usar `depoimentos` como `slug`.
 
 As rotas são registradas em `src/App.tsx` (roteamento por `window.location.pathname`,
 sem biblioteca de router).
@@ -81,28 +77,8 @@ src/
     ├── LearningsSection.tsx     Aprendizados
     ├── NextProject.tsx          Navegação para o próximo case
     ├── CaseNav.tsx              Navegação lateral do case
-    ├── Footer.tsx               Contato, links e voltar ao topo
-    └── testimonials/            Variações de card de depoimento
-        ├── shared.tsx           Avatar, marca da empresa, citação grifada, autoria
-        ├── TestimonialFeatured.tsx  Destaque
-        ├── TestimonialSplit.tsx     Dividido (imagem + fala)
-        ├── TestimonialMinimal.tsx   Mínimo (sem card)
-        ├── TestimonialCarousel.tsx  Carrossel
-        ├── TestimonialGrid.tsx      Grade compacta
-        └── TestimonialMetric.tsx    Com métrica (fundo escuro)
+    └── Footer.tsx               Contato, links e voltar ao topo
 ```
-
-### Variações de depoimento
-
-O conteúdo fica em `src/data/ux-testimonials.ts` (`testimonials` e `variations`).
-As props seguem a nomenclatura dos componentes do 21st.dev (`companyLogo`,
-`quote`, `highlightedText`, `authorName`, `authorPosition`, `authorImage`), então
-substituir por um componente de lá é só trocar o import.
-
-Nenhuma variação depende de imagem externa: sem `authorImage` o avatar cai para
-as iniciais, e sem `companyLogo` a marca vira uma assinatura tipográfica.
-`highlightedText` grifa o primeiro trecho literal que aparecer na fala; se não
-encontrar, a fala é renderizada inteira sem grifo.
 
 ## Trocar textos
 

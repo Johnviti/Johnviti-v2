@@ -1,6 +1,6 @@
 /**
  * Geometria compartilhada da logo JA (grade 80px) — usada pelo Preloader
- * de produção e pelas variantes do laboratório em `/dev/preloader`.
+ * de produção e pelas variantes internas do preloader.
  */
 
 export const LOGO_GREEN = '#69FF91';

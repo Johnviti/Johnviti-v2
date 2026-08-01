@@ -16,7 +16,7 @@ import type { VisualIdentity } from '@/data/ux-portfolio';
  * Identidade visual do case (blocos 10 a 14 do modelo), montada como bento:
  *
  *   Linha 1 →  imagem secundária        |  cores (100% HTML)
- *   Linha 2 →  marca/logo  |  fonte utilizada  |  biblioteca de ícones
+ *   Linha 2 →  marca/logo (7/24) | fonte (10/24) | ícones (7/24)
  *
  * Usa os tokens da própria CasePage (ink/surface/cream/stone-soft), então a
  * paleta inteira inverte sozinha no modo escuro — só os swatches mostram os
@@ -24,7 +24,7 @@ import type { VisualIdentity } from '@/data/ux-portfolio';
  */
 
 /** Nomes PascalCase da lucide-react → componente. Nomes fora do mapa somem. */
-const iconMap: Record<string, LucideIcon> = {
+const iconMap: Partial<Record<string, LucideIcon>> = {
   MapPin, ArrowRight, Menu, Search, ExternalLink, CloudSun, Calendar, RefreshCw,
   Bell, BarChart3, TrendingUp, Table2, Download, Map, TreePine, Flame, Filter,
   Leaf, Users, ShieldCheck, Globe2, ShoppingCart, Check, Plus, Trash2, Anchor,
@@ -57,7 +57,6 @@ export default function CaseVisualIdentity({
   identity: VisualIdentity;
 }) {
   const { colors, typography, icons } = identity;
-  const hasTypographySpecimen = Boolean(typography.specimen);
 
   /* Reúne as cores nomeadas numa lista única para os swatches. */
   const swatches = [
@@ -67,7 +66,13 @@ export default function CaseVisualIdentity({
     ...colors.additional.map((c) => ({ ...c, role: 'Adicional' })),
   ];
 
-  const fontStack = `'${typography.primary.family}', ui-sans-serif, system-ui, sans-serif`;
+  const alphabetSpecimen = resolveAlphabetSpecimen(typography);
+  const resolvedIcons = icons.items.flatMap((name) => {
+    const Icon = iconMap[name];
+    return Icon ? [{ name, Icon }] : [];
+  });
+  const iconColumns = Math.min(5, Math.max(1, resolvedIcons.length));
+  const iconRows = Math.max(1, Math.ceil(resolvedIcons.length / iconColumns));
 
   /* Mosaico de cores: preenche o retângulo por completo qualquer que seja a
      quantidade de cores. As colunas/linhas vêm da raiz quadrada do total e a
@@ -83,12 +88,12 @@ export default function CaseVisualIdentity({
       initial="hidden"
       whileInView="show"
       viewport={VIEWPORT}
-      className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-12"
+      className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-[repeat(24,minmax(0,1fr))]"
     >
       {/* 10 — imagem secundária: só a imagem, cobrindo a seção inteira. */}
       <motion.div
         variants={item}
-        className="relative min-h-[280px] overflow-hidden rounded-2xl border border-ink/10 bg-cream-soft sm:col-span-2 lg:col-span-7 lg:min-h-[420px]"
+        className="relative min-h-[280px] overflow-hidden rounded-2xl border border-ink/10 bg-cream-soft sm:col-span-2 lg:col-span-14 lg:min-h-[420px]"
       >
         <img
           src={identity.secondaryImage.src}
@@ -103,10 +108,10 @@ export default function CaseVisualIdentity({
           retângulo) vive dentro, emoldurado por esse cinza. */}
       <motion.div
         variants={item}
-        className="flex flex-col overflow-hidden rounded-2xl bg-cream-soft sm:col-span-2 lg:col-span-5"
+        className="flex flex-col overflow-hidden rounded-2xl bg-cream-soft sm:col-span-2 lg:col-span-10"
       >
         <div className="px-5 pt-5">
-          <span className="text-[11px] font-medium uppercase tracking-[0.16em] text-stone-soft">
+          <span className="text-[18px] font-normal leading-none text-ink">
             Cores
           </span>
         </div>
@@ -156,98 +161,39 @@ export default function CaseVisualIdentity({
       <BrandTile
         brandAsset={identity.brandAsset}
         primaryHex={colors.primary.hex}
-        compact={hasTypographySpecimen}
+        compact
       />
 
-      {/* 13 — fonte utilizada. Cases com `specimen` recebem a prancha editorial;
-          os demais continuam no formato compacto do design system. */}
-      {typography.specimen ? (
-        <TypographySpecimenTile
-          fontStack={fontStack}
-          specimen={typography.specimen}
-        />
-      ) : (
-        <Tile label="Fonte" className="sm:col-span-2 lg:col-span-6">
-          <div className="flex h-full flex-col">
-            {/* Cabeçalho: família + uso + pesos */}
-            <div className="flex items-end justify-between gap-3 border-b border-ink/10 pb-4">
-              <div className="flex flex-col">
-                <span
-                  className="text-[22px] font-semibold leading-none tracking-[-0.02em] text-ink"
-                  style={{ fontFamily: fontStack }}
-                >
-                  {typography.primary.family}
-                </span>
-                <span className="mt-1.5 text-[12px] text-stone-soft">
-                  {typography.primary.usage}
-                </span>
-              </div>
-              <span className="shrink-0 font-mono text-[11px] text-stone-soft">
-                {typography.primary.weights.join(' · ')}
-              </span>
-            </div>
-
-            {/* Escala tipográfica — cada papel com a sua amostra viva */}
-            <dl className="divide-y divide-ink/10">
-              <TypeRow role="Título" meta="600">
-                <span
-                  className="block leading-[1.05] tracking-[-0.02em] text-ink"
-                  style={{ fontFamily: fontStack, fontSize: 'clamp(1.6rem, 3vw, 2.4rem)', fontWeight: 600 }}
-                >
-                  {typography.sample.title}
-                </span>
-              </TypeRow>
-              <TypeRow role="Corpo" meta="400">
-                <p
-                  className="text-[14px] leading-[1.55] text-charcoal"
-                  style={{ fontFamily: fontStack }}
-                >
-                  {typography.sample.text}
-                </p>
-              </TypeRow>
-            </dl>
-
-            {typography.secondary && (
-              <p className="mt-4 text-[12px] text-stone-soft">
-                Secundária: {typography.secondary.family}
-              </p>
-            )}
-          </div>
-        </Tile>
-      )}
+      {/* 13 — a mesma prancha editorial é alimentada pelos dados de tipografia
+          de cada case; `specimen.alphabet` apenas sobrescreve os defaults. */}
+      <AlphabetSpecimenTile alphabet={alphabetSpecimen} />
 
       {/* 14 — biblioteca de ícones */}
       <Tile
         label="Ícones"
         surface="soft"
         bordered={false}
-        className={`sm:col-span-1 ${hasTypographySpecimen ? 'lg:col-span-2' : 'lg:col-span-3'}`}
+        labelClassName="text-[18px] font-normal leading-none text-ink"
+        className="sm:col-span-1 lg:col-span-7"
       >
         <div className="flex h-full flex-col">
           <ul
-            className={`grid ${
-              hasTypographySpecimen
-                ? 'flex-1 grid-cols-5 grid-rows-7 gap-1'
-                : 'grid-cols-3 gap-y-6 sm:grid-cols-2 lg:grid-cols-3'
-            }`}
+            className="grid flex-1 gap-2"
+            style={{
+              gridTemplateColumns: `repeat(${iconColumns}, minmax(0, 1fr))`,
+              gridTemplateRows: `repeat(${iconRows}, minmax(0, 1fr))`,
+            }}
           >
-            {icons.items.map((name) => {
-              const Icon = iconMap[name];
-              if (!Icon) return null;
-              return (
-                <li
-                  key={name}
-                  className={`flex items-center justify-center ${hasTypographySpecimen ? 'min-h-0' : 'aspect-square'}`}
-                >
-                  <Icon
-                    size={hasTypographySpecimen ? 15 : 22}
-                    strokeWidth={1.5}
-                    aria-hidden="true"
-                    className="text-ink transition-colors duration-300"
-                  />
-                </li>
-              );
-            })}
+            {resolvedIcons.map(({ name, Icon }) => (
+              <li key={name} className="flex min-h-0 items-center justify-center">
+                <Icon
+                  size={21}
+                  strokeWidth={1.5}
+                  aria-hidden="true"
+                  className="text-ink transition-colors duration-300"
+                />
+              </li>
+            ))}
           </ul>
           <p className="mt-auto pt-4 text-[12px] text-stone-soft">
             {icons.library} ·{' '}
@@ -289,7 +235,7 @@ function BrandTile({
     return (
       <motion.div
         variants={item}
-        className={`relative min-h-[200px] overflow-hidden rounded-2xl border border-ink/10 bg-cream-soft sm:col-span-1 ${compact ? 'lg:col-span-2' : 'lg:col-span-3'}`}
+        className={`relative min-h-[200px] overflow-hidden rounded-2xl border border-ink/10 bg-cream-soft sm:col-span-1 ${compact ? 'lg:col-span-7' : 'lg:col-span-6'}`}
       >
         <img
           src={brandAsset.src}
@@ -307,7 +253,7 @@ function BrandTile({
   return (
     <motion.div
       variants={item}
-      className={`flex min-h-[200px] flex-col items-center justify-center gap-4 overflow-hidden rounded-2xl border border-ink/10 bg-cream-soft sm:col-span-1 ${compact ? 'lg:col-span-2' : 'lg:col-span-3'}`}
+      className={`flex min-h-[200px] flex-col items-center justify-center gap-4 overflow-hidden rounded-2xl border border-ink/10 bg-cream-soft sm:col-span-1 ${compact ? 'lg:col-span-7' : 'lg:col-span-6'}`}
     >
       <span
         aria-hidden="true"
@@ -335,101 +281,6 @@ function isLight(hex: string) {
   return (0.299 * r + 0.587 * g + 0.114 * b) / 255 > 0.6;
 }
 
-/**
- * Linha do espécime de tipografia: meta à esquerda (papel + fonte/peso) e a
- * amostra viva à direita, separadas por um filete — como num guia de marca.
- */
-function TypeRow({
-  role,
-  meta,
-  children,
-}: {
-  role: string;
-  meta: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="grid grid-cols-[minmax(76px,auto)_1fr] gap-4 py-4 sm:gap-6">
-      <dt className="pt-1">
-        <span className={LABEL}>{role}</span>
-        <span className="mt-1 block font-mono text-[11px] text-stone-soft">
-          {meta}
-        </span>
-      </dt>
-      <dd className="min-w-0 self-center">{children}</dd>
-    </div>
-  );
-}
-
-function TypographySpecimenTile({
-  fontStack,
-  specimen,
-}: {
-  fontStack: string;
-  specimen: NonNullable<VisualIdentity['typography']['specimen']>;
-}) {
-  if (specimen.layout === 'alphabet' && specimen.alphabet) {
-    return <AlphabetSpecimenTile alphabet={specimen.alphabet} />;
-  }
-
-  return (
-    <motion.section
-      variants={item}
-      aria-label="Fonte"
-      className="case-typography-specimen flex min-h-[580px] flex-col overflow-hidden rounded-2xl sm:col-span-2 lg:col-span-8"
-    >
-      <div className="flex h-full flex-1 flex-col px-6 py-6 sm:px-8 sm:py-7">
-        <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-[14px] font-normal leading-none">
-            {specimen.eyebrow}
-          </p>
-          <ul className="flex items-center gap-7 text-[14px] leading-none">
-            {specimen.weights.map((weight) => (
-              <li
-                key={`${weight.label}-${weight.value}`}
-                style={{ fontFamily: fontStack, fontWeight: weight.value }}
-              >
-                {weight.label}
-              </li>
-            ))}
-          </ul>
-        </header>
-
-        <div className="flex flex-1 items-center justify-center py-14 sm:py-16">
-          <p
-            className="text-[clamp(8rem,23vw,18rem)] font-medium leading-[0.82] tracking-[-0.075em]"
-            style={{ fontFamily: fontStack }}
-          >
-            {specimen.display}
-          </p>
-        </div>
-
-        <dl className="grid gap-x-8 gap-y-8 sm:grid-cols-3">
-          {specimen.roles.slice(0, 3).map((role, index) => (
-            <div key={role.label} className="min-w-0">
-              <dt className="pb-3 text-[13px] font-semibold leading-none">
-                {role.label}
-              </dt>
-              <dd
-                className={`whitespace-pre-line pt-4 font-light opacity-45 ${
-                  index === 0
-                    ? 'text-[19px] leading-[1.2]'
-                    : index === 1
-                      ? 'text-[13px] leading-[1.25]'
-                      : 'text-[10px] leading-[1.25]'
-                }`}
-                style={{ fontFamily: fontStack }}
-              >
-                {role.text}
-              </dd>
-            </div>
-          ))}
-        </dl>
-      </div>
-    </motion.section>
-  );
-}
-
 function AlphabetSpecimenTile({
   alphabet,
 }: {
@@ -443,19 +294,19 @@ function AlphabetSpecimenTile({
     <motion.section
       variants={item}
       aria-label="Fonte"
-      className="case-typography-specimen flex min-h-[380px] flex-col overflow-hidden rounded-2xl sm:col-span-2 lg:col-span-8"
+      className="case-typography-specimen flex min-h-[380px] flex-col overflow-hidden rounded-2xl sm:col-span-2 lg:col-span-10"
     >
-      <div className="grid h-full flex-1 px-6 py-6 sm:grid-cols-[1.15fr_0.85fr] sm:gap-12 sm:px-8 sm:py-8">
+      <div className="grid h-full flex-1 px-6 py-6 sm:grid-cols-[1.05fr_0.95fr] sm:gap-8 sm:px-8 sm:py-8">
         <div className="flex min-w-0 flex-col">
           <p
-            className="text-[18px] italic leading-none"
+            className="text-[18px] font-normal leading-none"
             style={{ fontFamily: alphabetFontStack }}
           >
             {alphabet.eyebrow}
           </p>
 
           <p
-            className="mt-4 inline-flex gap-[0.04em] text-[clamp(9rem,19vw,16rem)] font-normal leading-[0.8]"
+            className="mt-4 inline-flex gap-[0.04em] text-[clamp(7.5rem,14vw,12rem)] font-normal leading-[0.8]"
             style={{ fontFamily: alphabetFontStack }}
           >
             {Array.from(alphabet.display).map((character, index) => (
@@ -463,7 +314,7 @@ function AlphabetSpecimenTile({
             ))}
           </p>
 
-          <ul className="mt-auto grid grid-cols-4 gap-3 pt-4 text-[12px] leading-none">
+          <ul className="mt-auto flex items-end justify-between gap-2 pt-4 text-[11px] leading-none">
             {alphabet.weights.map((weight) => (
               <li
                 key={`${weight.label}-${weight.value}`}
@@ -477,14 +328,14 @@ function AlphabetSpecimenTile({
 
         <div className="mt-10 flex min-w-0 flex-col justify-between sm:mt-0">
           <p
-            className="text-[clamp(2.7rem,5vw,4rem)] font-light leading-none tracking-[-0.04em]"
+            className="text-[clamp(2.2rem,3.4vw,3.35rem)] font-light leading-none tracking-[-0.04em]"
             style={{ fontFamily: alphabetFontStack }}
           >
             {alphabet.family}
           </p>
 
           <div
-            className="mt-12 space-y-2 break-all text-[14px] font-medium leading-[1.2] sm:mt-0"
+            className="mt-12 space-y-2 break-all text-[12px] font-medium leading-[1.2] sm:mt-0"
             style={{ fontFamily: alphabetFontStack }}
           >
             <p>{alphabet.uppercase}</p>
@@ -497,10 +348,44 @@ function AlphabetSpecimenTile({
   );
 }
 
+type TypographyData = VisualIdentity['typography'];
+type AlphabetData = NonNullable<
+  NonNullable<TypographyData['specimen']>['alphabet']
+>;
+
+/** Converte o bloco compacto do JSON na prancha editorial usada pelo layout. */
+function resolveAlphabetSpecimen(typography: TypographyData): AlphabetData {
+  const override = typography.specimen?.alphabet;
+  const weightLabels: Record<number, string> = {
+    300: 'Light',
+    400: 'Regular',
+    500: 'Medium',
+    600: 'SemiBold',
+    700: 'Bold',
+  };
+
+  return {
+    eyebrow:
+      override?.eyebrow ?? typography.specimen?.eyebrow ?? 'Typography',
+    display: override?.display ?? typography.specimen?.display ?? 'Aa',
+    family: override?.family ?? typography.primary.family,
+    weights:
+      override?.weights ??
+      typography.primary.weights.slice(0, 4).map((value) => ({
+        label: weightLabels[value] ?? String(value),
+        value,
+      })),
+    uppercase: override?.uppercase ?? typography.sample.uppercase,
+    lowercase: override?.lowercase ?? typography.sample.lowercase,
+    numerals: override?.numerals ?? '0123456789',
+  };
+}
+
 function Tile({
   label,
   className,
   bodyClassName,
+  labelClassName,
   surface = 'default',
   bordered = true,
   children,
@@ -508,6 +393,7 @@ function Tile({
   label: string;
   className?: string;
   bodyClassName?: string;
+  labelClassName?: string;
   surface?: 'default' | 'soft';
   bordered?: boolean;
   children: React.ReactNode;
@@ -518,7 +404,7 @@ function Tile({
       className={`flex flex-col overflow-hidden rounded-2xl ${bordered ? 'border border-ink/10' : ''} ${surface === 'soft' ? 'bg-cream-soft' : 'bg-surface'} ${className ?? ''}`}
     >
       <div className="px-5 pt-5">
-        <span className={LABEL}>{label}</span>
+        <span className={labelClassName ?? LABEL}>{label}</span>
       </div>
       <div className={`flex-1 p-5 ${bodyClassName ?? ''}`}>{children}</div>
     </motion.div>

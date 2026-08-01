@@ -1,0 +1,220 @@
+{
+  "slug": "case-teste",
+  "title": "Case de Teste",
+  "client": "Projeto interno — QA",
+  "category": "Case de demonstração",
+  "year": "2026",
+  "services": [
+    "UX/UI",
+    "Design System",
+    "Front-end"
+  ],
+  "industries": [
+    "Tecnologia",
+    "Educação"
+  ],
+  "location": "Maceió, BR",
+  "growthStage": "Interno",
+  "cover": "/projetos/radar-tarifario-global/capa.webp",
+  "visualIdentity": {
+    "secondaryImage": {
+      "src": "/projetos/app-tempo-previsto/capa.webp",
+      "alt": "Aplicação do case de teste em tela",
+      "caption": "Imagem secundária vinda do próprio case (sem placeholder compartilhado)."
+    },
+    "colors": {
+      "primary": {
+        "name": "Principal",
+        "hex": "#7C3AED"
+      },
+      "background": {
+        "name": "Fundo",
+        "hex": "#0B0B0F"
+      },
+      "text": {
+        "name": "Texto",
+        "hex": "#F5F5F7"
+      },
+      "additional": [
+        {
+          "name": "Ciano",
+          "hex": "#22D3EE"
+        },
+        {
+          "name": "Âmbar",
+          "hex": "#F59E0B"
+        }
+      ],
+      "gradient": {
+        "name": "Gradiente de teste",
+        "css": "linear-gradient(90deg, #7C3AED 0%, #22D3EE 100%)",
+        "angle": 90,
+        "stops": [
+          {
+            "color": "#7C3AED",
+            "position": "0%"
+          },
+          {
+            "color": "#22D3EE",
+            "position": "100%"
+          }
+        ]
+      }
+    },
+    "brandAsset": {
+      "type": "logo",
+      "src": "/projetos/boletim-economico-visao-alagoas/capa.webp",
+      "alt": "Marca do case de teste",
+      "title": "Identidade do case de teste",
+      "monogram": "CT"
+    },
+    "typography": {
+      "primary": {
+        "family": "Inter",
+        "usage": "Títulos, textos e interface",
+        "weights": [
+          400,
+          500,
+          600,
+          700
+        ]
+      },
+      "secondary": null,
+      "sample": {
+        "uppercase": "CASE DE TESTE",
+        "lowercase": "case de teste",
+        "title": "Case de Teste",
+        "text": "Conteúdo de demonstração para validar a renderização do case."
+      },
+      "specimen": {
+        "layout": "alphabet",
+        "eyebrow": "Typography & Colors",
+        "display": "Inter",
+        "weights": [
+          {
+            "label": "Light",
+            "value": 300
+          },
+          {
+            "label": "Regular",
+            "value": 400
+          },
+          {
+            "label": "Medium",
+            "value": 500
+          }
+        ],
+        "roles": [
+          {
+            "label": "Heading (72px)",
+            "text": "Stop Chasing Leads.\nLet AI Book Clients."
+          },
+          {
+            "label": "Sub Heading (36px)",
+            "text": "AI-powered automation that captures leads, qualifies prospects, and books appointments automatically."
+          },
+          {
+            "label": "Body (16px)",
+            "text": "Lead7.ai helps businesses automate their entire lead generation process with intelligent AI conversations, smart qualification, automated follow-ups, and seamless appointment scheduling."
+          }
+        ],
+        "alphabet": {
+          "eyebrow": "Typography",
+          "display": "Aa",
+          "family": "DM Sans",
+          "weights": [
+            {
+              "label": "Regular",
+              "value": 400
+            },
+            {
+              "label": "Medium",
+              "value": 500
+            },
+            {
+              "label": "SemiBold",
+              "value": 600
+            },
+            {
+              "label": "Bold",
+              "value": 700
+            }
+          ],
+          "uppercase": "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+          "lowercase": "abcdefghijklmnopqrstuvwxyz",
+          "numerals": "9876543210"
+        }
+      }
+    },
+    "icons": {
+      "library": "Lucide Icons",
+      "package": "lucide-react",
+      "website": "https://lucide.dev",
+      "items": [
+        "MapPin",
+        "ArrowRight",
+        "Menu",
+        "Search",
+        "ExternalLink",
+        "CloudSun",
+        "Calendar",
+        "RefreshCw",
+        "Bell",
+        "BarChart3",
+        "TrendingUp",
+        "Table2",
+        "Download",
+        "Map",
+        "TreePine",
+        "Flame",
+        "Filter",
+        "Leaf",
+        "Users",
+        "ShieldCheck",
+        "Globe2",
+        "ShoppingCart",
+        "Check",
+        "Plus",
+        "Trash2",
+        "Anchor",
+        "Waves",
+        "Ship",
+        "LayoutDashboard",
+        "Settings"
+      ]
+    }
+  },
+  "intro": "Case de teste usado para validar a página de estudo de caso renderizando apenas com dados próprios do cases.json.",
+  "challenge": "Garantir que todas as seções da vitrine funcionem sem depender das imagens do placeholder compartilhado.",
+  "approach": "Cada bloco (identidade visual, grade, imagem full, mockups e depoimento) recebe imagens declaradas no próprio case.",
+  "captionOne": "Esta legenda vem diretamente do campo captionOne do case de teste.",
+  "captionTwo": "E esta vem do campo captionTwo — nada é herdado do placeholder.",
+  "websiteNote": "Uma página de demonstração montada inteiramente a partir dos dados do cases.json.",
+  "testimonial": {
+    "quote": "Depoimento de teste: a página renderizou exatamente os dados que colocamos no case.",
+    "author": "Equipe de QA",
+    "role": "Projeto interno",
+    "logo": "/projetos/boletim-economico-visao-alagoas/capa.webp"
+  },
+  "showcase": {
+    "grid": [
+      "/projetos/economia-do-mar-em-alagoas/capa.webp",
+      "/projetos/panorama-das-matrizes-eletrica-e-energetica/capa.webp",
+      "/projetos/conectandoofuturo-avancandocom-esgnaindustria/capa.webp",
+      "/projetos/radar-tarifario-global/capa.webp"
+    ],
+    "full": "/projetos/app-tempo-previsto/capa.webp",
+    "mockups": [
+      {
+        "src": "/cases/figma/mockup-1.jpg",
+        "title": "Tela principal do produto (teste)"
+      },
+      {
+        "src": "/cases/figma/mockup-2.jpg",
+        "title": "Fluxo secundário do produto (teste)"
+      }
+    ],
+    "testimonialImage": "/projetos/conectandoofuturo-avancandocom-esgnaindustria/capa.webp",
+    "avatar": "/cases/figma/avatar.png"
+  }
+}
