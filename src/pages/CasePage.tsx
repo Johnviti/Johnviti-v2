@@ -598,8 +598,10 @@ const CasePage = ({ slug }: Props) => {
           </section>
         )}
 
-        {/* -------------------------------------------------------- CTA final */}
-        <section className={PAGE_X}>
+        {/* -------------------------------------------------------- CTA final
+            `pt-*` separa o card do CTA do bloco anterior (imagem full-width,
+            depoimento, etc.) — senão eles se encostam. */}
+        <section className={`${PAGE_X} pt-16 md:pt-24`}>
           <Reveal
             className={`${PAGE_SHELL} flex flex-col items-center gap-8 rounded-[32px] bg-cream-soft px-6 py-24 text-center md:py-32`}
           >

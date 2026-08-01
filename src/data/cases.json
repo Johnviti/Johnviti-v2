@@ -18,101 +18,14 @@
       "location": "Maceió, BR",
       "growthStage": "Institucional",
       "cover": "/projetos/acordo-mercosul-uniao-europeia/capa.webp",
-      "visualIdentity": {
-        "secondaryImage": {
-          "src": "/projetos/acordo-mercosul-uniao-europeia/capa.webp",
-          "alt": "Aplicação visual do Acordo Mercosul – União Europeia",
-          "caption": "Visualização da página principal do especial."
-        },
-        "colors": {
-          "primary": {
-            "name": "Azul institucional",
-            "hex": "#164194"
-          },
-          "background": {
-            "name": "Fundo",
-            "hex": "#FFFFFF"
-          },
-          "text": {
-            "name": "Texto",
-            "hex": "#111111"
-          },
-          "additional": [
-            {
-              "name": "Verde",
-              "hex": "#52AE32"
-            },
-            {
-              "name": "Azul claro",
-              "hex": "#00AEEF"
-            }
-          ],
-          "gradient": {
-            "name": "Gradiente principal",
-            "css": "linear-gradient(90deg, #4CAF2F 0%, #245C18 100%)",
-            "angle": 90,
-            "stops": [
-              {
-                "color": "#4CAF2F",
-                "position": "0%"
-              },
-              {
-                "color": "#245C18",
-                "position": "100%"
-              }
-            ]
-          }
-        },
-        "brandAsset": {
-          "type": "logo",
-          "alt": "Marca do Acordo Mercosul – União Europeia",
-          "title": "Identidade do projeto",
-          "monogram": "ME",
-          "src": "/projetos/acordo-mercosul-uniao-europeia/capa.webp"
-        },
-        "typography": {
-          "primary": {
-            "family": "Inter",
-            "usage": "Títulos, textos e interface",
-            "weights": [
-              400,
-              500,
-              600,
-              700
-            ]
-          },
-          "secondary": null,
-          "sample": {
-            "uppercase": "MERCOSUL – UNIÃO EUROPEIA",
-            "lowercase": "mercosul – união europeia",
-            "title": "Acordo Mercosul – União Europeia",
-            "text": "Informação clara para decisões mais estratégicas."
-          }
-        },
-        "icons": {
-          "library": "Lucide Icons",
-          "package": "lucide-react",
-          "website": "https://lucide.dev",
-          "items": [
-            "MapPin",
-            "ArrowRight",
-            "Menu",
-            "Search",
-            "ExternalLink"
-          ]
-        }
-      },
+      "visualIdentity": null,
       "intro": "Um especial de dados que traduz os impactos do acordo comercial entre o Mercosul e a União Europeia para a indústria alagoana.",
       "challenge": "Explicar um acordo complexo e cheio de números para um público amplo, sem perder o rigor técnico.",
       "approach": "Estruturei a narrativa em blocos visuais — setores afetados, oportunidades e riscos — com gráficos que guiam a leitura de cima para baixo.",
-      "captionOne": "Cada seção abre com um dado-âncora e desdobra o contexto logo abaixo.",
-      "captionTwo": "Gráficos e mapas assumem o protagonismo; o texto conduz, não compete.",
-      "websiteNote": "Um especial navegável que transforma um acordo internacional em leitura clara para o setor produtivo.",
-      "testimonial": {
-        "quote": "O especial deu forma visual a um tema árido e virou material de referência nas nossas conversas com o setor.",
-        "author": "Diretoria de Comunicação",
-        "role": "FIEA"
-      },
+      "captionOne": null,
+      "captionTwo": null,
+      "websiteNote": null,
+      "testimonial": null,
       "showcase": null
     },
     {
@@ -123,106 +36,24 @@
       "year": "2023",
       "services": [
         "UX/UI",
-        "Product design",
+        "Visualização de dados",
         "Front-end"
       ],
       "industries": [
-        "Clima",
-        "Mobile"
+        "Varejo",
+        "Religioso"
       ],
       "location": "Remoto, BR",
-      "growthStage": "MVP",
+      "growthStage": "Conceito",
       "cover": "/projetos/app-tempo-previsto/capa.webp",
-      "visualIdentity": {
-        "secondaryImage": {
-          "src": "/projetos/app-tempo-previsto/capa.webp",
-          "alt": "Telas do aplicativo Tempo Previsto",
-          "caption": "A previsão imediata ocupa o topo da experiência."
-        },
-        "colors": {
-          "primary": {
-            "name": "Céu claro",
-            "hex": "#0EA5E9"
-          },
-          "background": {
-            "name": "Fundo",
-            "hex": "#F1F5F9"
-          },
-          "text": {
-            "name": "Texto",
-            "hex": "#0F172A"
-          },
-          "additional": [
-            {
-              "name": "Laranja sol",
-              "hex": "#F97316"
-            }
-          ],
-          "gradient": {
-            "name": "Gradiente do céu",
-            "css": "linear-gradient(180deg, #0EA5E9 0%, #0F172A 100%)",
-            "angle": 180,
-            "stops": [
-              {
-                "color": "#0EA5E9",
-                "position": "0%"
-              },
-              {
-                "color": "#0F172A",
-                "position": "100%"
-              }
-            ]
-          }
-        },
-        "brandAsset": {
-          "type": "logo",
-          "alt": "Marca do Tempo Previsto",
-          "title": "Identidade do projeto",
-          "monogram": "TP",
-          "src": "/projetos/app-tempo-previsto/capa.webp"
-        },
-        "typography": {
-          "primary": {
-            "family": "Inter",
-            "usage": "Interface e leitura rápida",
-            "weights": [
-              500,
-              600,
-              700
-            ]
-          },
-          "secondary": null,
-          "sample": {
-            "uppercase": "TEMPO PREVISTO",
-            "lowercase": "tempo previsto",
-            "title": "App Tempo Previsto",
-            "text": "A informação certa, no momento certo, sem ruído."
-          }
-        },
-        "icons": {
-          "library": "Lucide Icons",
-          "package": "lucide-react",
-          "website": "https://lucide.dev",
-          "items": [
-            "CloudSun",
-            "Calendar",
-            "RefreshCw",
-            "Bell",
-            "MapPin"
-          ]
-        }
-      },
+      "visualIdentity": null,
       "intro": "Um app de previsão do tempo focado em clareza: a informação certa, no momento certo, sem ruído.",
       "challenge": "Apps de clima acumulam dados e poluem a tela; faltava hierarquia e leitura rápida.",
       "approach": "Desenhei uma tela inicial que responde 'como está agora e o que vem a seguir' em segundos, com detalhes sob demanda.",
-      "captionOne": "A previsão imediata ocupa o topo; a linha do tempo se aprofunda conforme o scroll.",
-      "captionTwo": "Ícones e tipografia grandes garantem leitura de relance, mesmo em movimento.",
-      "websiteNote": "Um app de clima que prioriza a decisão do usuário — sair com guarda-chuva ou não — acima de tudo.",
-      "testimonial": {
-        "quote": "Finalmente um app de tempo que eu abro e entendo na hora.",
-        "author": "Usuário beta",
-        "role": "Tempo Previsto"
-      },
+      "captionOne": null,
+      "captionTwo": null,
+      "websiteNote": null,
+      "testimonial": null,
       "showcase": null
     },
     {
@@ -491,11 +322,15 @@
     },
     {
       "slug": "plataformade-intervencoes-pedagogicas-inteligentes",
-      "title": "Plataforma de Intervenções Pedagógicas Inteligentes",
-      "client": null,
-      "category": null,
+      "title": "ONI - Sistema de Recomendação de Intervenções Pedagógica",
+      "client": "SESI — Serviço Social da Indústria",
+      "category": "Plataforma web · Dashboard",
       "year": null,
-      "services": null,
+      "services": [
+        "UX/UI",
+        "Design System",
+        "Front-end"
+      ],
       "industries": [
         "Educação",
         "Gestão pública"
@@ -503,7 +338,76 @@
       "location": "Alagoas, BR",
       "growthStage": "Enterprise",
       "cover": "/projetos/plataformade-intervencoes-pedagogicas-inteligentes/capa.webp",
-      "visualIdentity": null,
+      "visualIdentity": {
+        "secondaryImage": {
+          "src": "/projetos/plataformade-intervencoes-pedagogicas-inteligentes/interface.png",
+          "alt": "Interface da plataforma ONI — navegação, busca, calendário e componentes",
+          "caption": "Componentes da plataforma: navegação lateral, busca, calendário de eventos e alertas."
+        },
+        "colors": {
+          "primary": {
+            "name": "Cor Primária",
+            "hex": "#52AE32"
+          },
+          "background": {
+            "name": "Fundo",
+            "hex": "#FFFFFF"
+          },
+          "text": {
+            "name": "Texto",
+            "hex": "#1E1E1E"
+          },
+          "additional": [
+            {
+              "name": "Cor Secundária",
+              "hex": "#164194"
+            }
+          ],
+          "gradient": null
+        },
+        "brandAsset": {
+          "type": "logo",
+          "src": "/projetos/plataformade-intervencoes-pedagogicas-inteligentes/logo-sesi.png",
+          "src-img": null,
+          "bgColor": "#FFFFFF",
+          "alt": "Logo do SESI",
+          "title": "SESI",
+          "monogram": "SI"
+        },
+        "typography": {
+          "primary": {
+            "family": "Inter",
+            "usage": "Interface, títulos e textos",
+            "weights": [
+              400,
+              600,
+              700
+            ]
+          },
+          "secondary": null,
+          "sample": {
+            "uppercase": "ONI · INTERVENÇÕES",
+            "lowercase": "oni · intervenções",
+            "title": "Plataforma de Intervenções Pedagógicas",
+            "text": "Semáforos de risco para decidir quais escolas precisam de atenção agora."
+          }
+        },
+        "icons": {
+          "library": "Lucide Icons",
+          "package": "lucide-react",
+          "website": "https://lucide.dev",
+          "items": [
+            "LayoutDashboard",
+            "FileText",
+            "BarChart3",
+            "Users",
+            "Search",
+            "Bell",
+            "Calendar",
+            "Settings"
+          ]
+        }
+      },
       "intro": "Um painel que ajuda gestores a responder, em segundos, quais escolas precisam de atenção agora.",
       "challenge": "Dados educacionais espalhados em planilhas e sistemas isolados.",
       "approach": "Consolidei tudo em semáforos de risco com uma semântica de cor consistente do primeiro ao último gráfico.",
@@ -511,7 +415,14 @@
       "captionTwo": null,
       "websiteNote": null,
       "testimonial": null,
-      "showcase": null
+      "showcase": {
+        "bento": null,
+        "grid": null,
+        "full": "/projetos/plataformade-intervencoes-pedagogicas-inteligentes/design-system.png",
+        "mockups": null,
+        "testimonialImage": null,
+        "avatar": null
+      }
     },
     {
       "slug": "the-be-social",

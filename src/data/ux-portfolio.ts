@@ -70,7 +70,12 @@ export type VisualIdentity = {
    */
   brandAsset: {
     type: 'logo' | 'image';
+    /** Logo (ex.: SVG) exibida CENTRALIZADA sobre `bgColor`. */
     src?: string;
+    /** Imagem exibida COMO ESTÁ, cobrindo a seção inteira. */
+    'src-img'?: string | null;
+    /** Fundo do modo `src` (logo centralizada). Default branco. */
+    bgColor?: string | null;
     alt: string;
     title: string;
     monogram?: string;

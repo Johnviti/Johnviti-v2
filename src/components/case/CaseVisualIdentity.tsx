@@ -90,10 +90,10 @@ export default function CaseVisualIdentity({
       viewport={VIEWPORT}
       className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-[repeat(24,minmax(0,1fr))]"
     >
-      {/* 10 — imagem secundária: só a imagem, cobrindo a seção inteira. */}
+      {/* 10 — imagem secundária: só a imagem, em 16:9, cobrindo a seção. */}
       <motion.div
         variants={item}
-        className="relative min-h-[280px] overflow-hidden rounded-2xl border border-ink/10 bg-cream-soft sm:col-span-2 lg:col-span-14 lg:min-h-[420px]"
+        className="relative aspect-[16/9] overflow-hidden rounded-2xl border border-ink/10 bg-cream-soft sm:col-span-2 lg:col-span-14"
       >
         <img
           src={identity.secondaryImage.src}
@@ -223,27 +223,47 @@ function BrandTile({
   primaryHex: string;
   compact?: boolean;
 }) {
-  const [imgFailed, setImgFailed] = useState(false);
-  const showImage =
-    (brandAsset.type === 'image' ||
-      (brandAsset.type === 'logo' && brandAsset.src)) &&
-    !imgFailed;
+  const [coverFailed, setCoverFailed] = useState(false);
+  const [logoFailed, setLogoFailed] = useState(false);
+  const colSpan = compact ? 'lg:col-span-7' : 'lg:col-span-6';
+  const frame = `overflow-hidden rounded-2xl border border-ink/10 sm:col-span-1 ${colSpan}`;
 
-  // Com imagem: só a imagem, cobrindo a seção (SVG/assets ausentes caem para o
-  // monograma via onError).
-  if (showImage && brandAsset.src) {
+  // `src-img` (ou type image) → imagem COMO ESTÁ, cobrindo a seção inteira.
+  const coverSrc =
+    brandAsset['src-img'] ??
+    (brandAsset.type === 'image' ? brandAsset.src : null);
+  // type logo + `src` → logo CENTRALIZADA sobre `bgColor`.
+  const logoSrc = brandAsset.type === 'logo' ? brandAsset.src : null;
+
+  if (coverSrc && !coverFailed) {
     return (
-      <motion.div
-        variants={item}
-        className={`relative min-h-[200px] overflow-hidden rounded-2xl border border-ink/10 bg-cream-soft sm:col-span-1 ${compact ? 'lg:col-span-7' : 'lg:col-span-6'}`}
-      >
+      <motion.div variants={item} className={`relative min-h-[200px] bg-cream-soft ${frame}`}>
         <img
-          src={brandAsset.src}
+          src={coverSrc}
           alt={brandAsset.alt}
           loading="lazy"
           decoding="async"
-          onError={() => setImgFailed(true)}
+          onError={() => setCoverFailed(true)}
           className="absolute inset-0 h-full w-full object-cover"
+        />
+      </motion.div>
+    );
+  }
+
+  if (logoSrc && !logoFailed) {
+    return (
+      <motion.div
+        variants={item}
+        className={`flex min-h-[200px] items-center justify-center p-6 ${frame}`}
+        style={{ backgroundColor: brandAsset.bgColor ?? '#ffffff' }}
+      >
+        <img
+          src={logoSrc}
+          alt={brandAsset.alt}
+          loading="lazy"
+          decoding="async"
+          onError={() => setLogoFailed(true)}
+          className="max-h-full max-w-full object-contain"
         />
       </motion.div>
     );
@@ -253,7 +273,7 @@ function BrandTile({
   return (
     <motion.div
       variants={item}
-      className={`flex min-h-[200px] flex-col items-center justify-center gap-4 overflow-hidden rounded-2xl border border-ink/10 bg-cream-soft sm:col-span-1 ${compact ? 'lg:col-span-7' : 'lg:col-span-6'}`}
+      className={`flex min-h-[200px] flex-col items-center justify-center gap-4 bg-cream-soft ${frame}`}
     >
       <span
         aria-hidden="true"
