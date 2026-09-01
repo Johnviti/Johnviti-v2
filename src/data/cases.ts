@@ -32,6 +32,12 @@ export type Showcase = {
   grid?: string[] | null;
   /** Imagem full-width. */
   full?: string | null;
+  /**
+   * Páginas de um material (relatório A4, telas de celular) exibidas SEM
+   * corte, cada uma na sua própria proporção. Use no lugar de `grid`
+   * sempre que o conteúdo for retrato — a grade 2×2 corta em 16/10.
+   */
+  pages?: string[] | null;
   /** Telas do produto em janela de navegador — título + imagem. */
   mockups?: { src: string; title: string }[] | null;
   testimonialImage?: string | null;
@@ -46,7 +52,6 @@ export type CaseStudy = {
   year: string | null;
   services: string[] | null;
   industries: string[];
-  location: string;
   growthStage: string;
   /** Capa do projeto — hero do case e imagem do tile na galeria. */
   cover: string;
@@ -54,9 +59,16 @@ export type CaseStudy = {
   intro: string;
   challenge: string;
   approach: string;
+  /**
+   * O que o projeto ensinou — um aprendizado por item. Sai como uma seção
+   * numerada logo abaixo de Introdução/Desafio/Abordagem.
+   */
+  learnings: string[] | null;
   captionOne: string | null;
   captionTwo: string | null;
   websiteNote: string | null;
+  /** URL pública do projeto no ar — vira o botão "Visitar site" no hero. */
+  websiteUrl: string | null;
   testimonial: Testimonial | null;
   showcase: Showcase | null;
 };
@@ -67,9 +79,11 @@ type OptionalCaseContentKey =
   | 'year'
   | 'services'
   | 'visualIdentity'
+  | 'learnings'
   | 'captionOne'
   | 'captionTwo'
   | 'websiteNote'
+  | 'websiteUrl'
   | 'testimonial'
   | 'showcase';
 
@@ -82,9 +96,11 @@ const emptyOptionalContent: Pick<CaseStudy, OptionalCaseContentKey> = {
   year: null,
   services: null,
   visualIdentity: null,
+  learnings: null,
   captionOne: null,
   captionTwo: null,
   websiteNote: null,
+  websiteUrl: null,
   testimonial: null,
   showcase: null,
 };
@@ -113,11 +129,11 @@ export type CaseTranslation = Partial<
     | 'category'
     | 'services'
     | 'industries'
-    | 'location'
     | 'growthStage'
     | 'intro'
     | 'challenge'
     | 'approach'
+    | 'learnings'
     | 'captionOne'
     | 'captionTwo'
     | 'websiteNote'

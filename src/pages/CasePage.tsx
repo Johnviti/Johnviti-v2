@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, MotionConfig, type Variants } from 'framer-motion';
-import { MapPin, ArrowUp } from 'lucide-react';
+import { ArrowUp, ExternalLink } from 'lucide-react';
 import Logo from '@/components/Logo';
 import GalleryMenu from '@/components/galeria-imersiva/GalleryMenu';
 import { ContactLink } from '@/components/loader/ContactTransition';
@@ -160,6 +160,31 @@ const Chip = ({ children }: { children: React.ReactNode }) => (
   </span>
 );
 
+/** `https://hiatofitocosmeticos.com.br/` -> `hiatofitocosmeticos.com.br`. */
+const prettyHost = (url: string) => {
+  const bare = url.replace('https://', '').replace('http://', '');
+  return bare.endsWith('/') ? bare.slice(0, -1) : bare;
+};
+
+/**
+ * Botao para o projeto no ar. So aparece quando o case tem `websiteUrl`;
+ * abre em nova aba, com o icone indicando que sai do site.
+ */
+const SiteLink = ({ href, label }: { href: string; label: string }) => (
+  <a
+    href={href}
+    target="_blank"
+    rel="noreferrer noopener"
+    className="group inline-flex items-center gap-2 rounded-md bg-ink px-3 py-2 text-[11px] font-medium uppercase tracking-[0.06em] text-cream transition-opacity hover:opacity-80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+  >
+    {label}
+    <ExternalLink
+      className="size-3.5 shrink-0 transition-transform group-hover:-translate-y-px group-hover:translate-x-px"
+      aria-hidden
+    />
+  </a>
+);
+
 /** Coluna de metadado do hero: rótulo + conteúdo (anima em um stagger). */
 const MetaColumn = ({
   label,
@@ -286,12 +311,17 @@ const CasePage = ({ slug }: Props) => {
 
   const show = study.showcase;
   const related = getRelatedCases(study.slug, 2, lang);
-  const host = `${study.slug.replace(/-/g, '')}.com.br`;
+  /* A janela do mockup mostra o dominio real quando o case tem site no ar;
+     sem isso, cai no dominio ficticio derivado do slug. */
+  const host = study.websiteUrl
+    ? prettyHost(study.websiteUrl)
+    : `${study.slug.replace(/-/g, '')}.com.br`;
   const [firstMockup, ...remainingMockups] = show?.mockups ?? [];
   const hasExtendedContent = Boolean(
     study.visualIdentity ||
       study.captionOne ||
       show?.grid?.length ||
+      show?.pages?.length ||
       show?.full ||
       study.websiteNote ||
       firstMockup ||
@@ -433,20 +463,26 @@ const CasePage = ({ slug }: Props) => {
                   ))}
                 </MetaColumn>
               ) : null}
-              <MetaColumn label={t('case.industries')}>
+              {study.category ? (
+                <MetaColumn label={t('case.category')}>
+                  <Chip>{study.category}</Chip>
+                </MetaColumn>
+              ) : null}
+              <MetaColumn label={t('case.sector')}>
                 {study.industries.map((industry) => (
                   <Chip key={industry}>{industry}</Chip>
                 ))}
               </MetaColumn>
-              <MetaColumn label={t('case.location')}>
-                <span className={`flex items-center gap-1.5 ${BODY}`}>
-                  <MapPin className="size-4 shrink-0 opacity-60" aria-hidden />
-                  {study.location}
-                </span>
-              </MetaColumn>
-              <MetaColumn label={t('case.stage')}>
-                <Chip>{study.growthStage}</Chip>
-              </MetaColumn>
+              {study.year ? (
+                <MetaColumn label={t('case.year')}>
+                  <Chip>{study.year}</Chip>
+                </MetaColumn>
+              ) : null}
+              {study.websiteUrl ? (
+                <MetaColumn label={t('case.website')}>
+                  <SiteLink href={study.websiteUrl} label={t('case.visitSite')} />
+                </MetaColumn>
+              ) : null}
             </StaggerGroup>
           </div>
         </section>
@@ -465,6 +501,29 @@ const CasePage = ({ slug }: Props) => {
           </StaggerGroup>
         </section>
 
+        {/* ------------------------------------------------- Aprendizados */}
+        {study.learnings?.length ? (
+          <section className={`${PAGE_X} pb-20 md:pb-28`}>
+            <StaggerGroup className={PAGE_SHELL}>
+              <motion.h2 variants={item} className={SECTION_TITLE}>
+                {t('case.learnings')}
+              </motion.h2>
+              <ol className="mt-8 grid gap-x-8 gap-y-8 md:grid-cols-3">
+                {study.learnings.map((learning, i) => (
+                  <motion.li
+                    key={learning}
+                    variants={item}
+                    className="border-t border-ink/15 pt-4"
+                  >
+                    <span className={LABEL}>{String(i + 1).padStart(2, '0')}</span>
+                    <p className={`mt-3 max-w-[40ch] ${BODY}`}>{learning}</p>
+                  </motion.li>
+                ))}
+              </ol>
+            </StaggerGroup>
+          </section>
+        ) : null}
+
         {hasExtendedContent ? (
           <>
             {study.visualIdentity ? (
@@ -478,7 +537,7 @@ const CasePage = ({ slug }: Props) => {
             {study.captionOne ? <Caption>{study.captionOne}</Caption> : null}
 
             {show?.grid?.length ? (
-              <section className={PAGE_X}>
+              <section className={`${PAGE_X} pt-16 md:pt-20`}>
                 <StaggerGroup className={`${PAGE_SHELL} grid grid-cols-1 gap-4 sm:grid-cols-2`}>
                   {show.grid.map((src, i) => (
                     <motion.img
@@ -494,8 +553,27 @@ const CasePage = ({ slug }: Props) => {
               </section>
             ) : null}
 
+            {show?.pages?.length ? (
+              <section className={`${PAGE_X} pt-16 md:pt-20`}>
+                <StaggerGroup
+                  className={`${PAGE_SHELL} grid grid-cols-2 gap-4 md:grid-cols-4`}
+                >
+                  {show.pages.map((src, i) => (
+                    <motion.img
+                      key={src}
+                      variants={item}
+                      src={src}
+                      alt={`Página ${i + 1} de ${study.title}`}
+                      loading="lazy"
+                      className="w-full rounded-xl object-contain ring-1 ring-ink/10"
+                    />
+                  ))}
+                </StaggerGroup>
+              </section>
+            ) : null}
+
             {show?.full ? (
-              <section className={`${PAGE_X} pt-4`}>
+              <section className={`${PAGE_X} pt-16 md:pt-20`}>
                 <Reveal className={PAGE_SHELL}>
                   <img
                     src={show.full}

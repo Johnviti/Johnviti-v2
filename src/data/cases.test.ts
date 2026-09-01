@@ -52,7 +52,7 @@ describe('cases', () => {
     const mercosul = getCaseBySlug('acordo-mercosul-uniao-europeia');
     const tempo = getCaseBySlug('app-tempo-previsto');
 
-    expect(mercosul?.visualIdentity?.typography.primary.family).toBe('Inter');
+    expect(mercosul?.visualIdentity?.typography.primary.family).toBe('Poppins');
     expect(mercosul?.visualIdentity?.icons.items).toEqual([
       'MapPin',
       'ArrowRight',
@@ -60,7 +60,7 @@ describe('cases', () => {
       'Search',
       'ExternalLink',
     ]);
-    expect(tempo?.visualIdentity?.colors.primary.hex).toBe('#0EA5E9');
+    expect(tempo?.visualIdentity?.colors.primary.hex).toBe('#0066FF');
     expect(tempo?.visualIdentity?.icons.items).toHaveLength(5);
   });
 });

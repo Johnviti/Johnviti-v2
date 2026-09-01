@@ -18,6 +18,16 @@ const ContactPage = lazy(() => import('@/pages/ContactPage'));
 /* Case de portfólio UX/UI — `/ux` e `/ux/<slug>`. */
 const UxPortfolioPage = lazy(() => import('@/pages/UxPortfolioPage'));
 const UxCasePage = lazy(() => import('@/pages/UxCasePage'));
+/*
+ * Editor local de cases. O import fica dentro da condição de propósito:
+ * em produção `import.meta.env.DEV` vira `false`, o ramo morre e o Rollup
+ * não emite o chunk — a tela não chega nem a existir no build.
+ */
+const CASES_EDITOR_ON =
+  import.meta.env.DEV && import.meta.env.VITE_CASES_EDITOR === 'true';
+const CasesEditorPage = CASES_EDITOR_ON
+  ? lazy(() => import('@/pages/CasesEditorPage'))
+  : null;
 
 const PageLoader = () => (
   <div className="flex min-h-svh items-center justify-center bg-cream text-ink">
@@ -53,12 +63,15 @@ function App() {
   const devCaseSlug = isDev ? matchCaseSlug(path, '/dev/case/') : null;
   const onContact = isContactPath(path);
   /* Portfólio UX/UI: `/ux` é o índice e `/ux/<slug>` abre o estudo de caso. */
+  const isCasesEditor = Boolean(CasesEditorPage) && path === '/revisao';
   const isUxHome = path === '/ux';
   const uxSlug = matchCaseSlug(path, '/ux/');
 
   const [routeEnter, setRouteEnter] = useState(ROUTE_ENTER);
 
-  const page = onContact ? (
+  const page = isCasesEditor && CasesEditorPage ? (
+    <CasesEditorPage />
+  ) : onContact ? (
     <ContactPage />
   ) : path === '/minimal' ? (
     <MinimalPage />
@@ -82,6 +95,7 @@ function App() {
 
   /* O portfólio UX tem abertura própria e não usa o preloader do site. */
   const showPreloader =
+    !isCasesEditor &&
     !isUxHome &&
     !uxSlug &&
     !ROUTE_ENTER &&

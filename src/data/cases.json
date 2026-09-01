@@ -4,265 +4,1253 @@
       "slug": "acordo-mercosul-uniao-europeia",
       "title": "Acordo Mercosul – União Europeia",
       "client": "Observatório da Indústria — FIEA",
-      "category": "Especial de dados",
+      "category": "Estudo · Diagramação",
       "year": "2024",
       "services": [
-        "UX/UI",
-        "Visualização de dados",
-        "Front-end"
+        "Diagramação",
+        "Design editorial",
+        "Infográficos"
       ],
       "industries": [
         "Indústria",
         "Comércio exterior"
       ],
-      "location": "Maceió, BR",
       "growthStage": "Institucional",
       "cover": "/projetos/acordo-mercosul-uniao-europeia/capa.webp",
-      "visualIdentity": null,
-      "intro": "Um especial de dados que traduz os impactos do acordo comercial entre o Mercosul e a União Europeia para a indústria alagoana.",
-      "challenge": "Explicar um acordo complexo e cheio de números para um público amplo, sem perder o rigor técnico.",
-      "approach": "Estruturei a narrativa em blocos visuais — setores afetados, oportunidades e riscos — com gráficos que guiam a leitura de cima para baixo.",
+      "visualIdentity": {
+        "secondaryImage": {
+          "src": "/projetos/acordo-mercosul-uniao-europeia/capa.webp",
+          "alt": "Tela do projeto Acordo Mercosul – União Europeia",
+          "caption": "A diagramação do estudo sobre os impactos do acordo comercial entre o Mercosul e a União Europeia para a indústria alagoana."
+        },
+        "colors": {
+          "primary": {
+            "name": "Azul Institucional",
+            "hex": "#0C4DA2"
+          },
+          "background": {
+            "name": "Fundo",
+            "hex": "#FFFFFF"
+          },
+          "text": {
+            "name": "Texto",
+            "hex": "#1E1E1E"
+          },
+          "additional": [
+            {
+              "name": "Ciano",
+              "hex": "#4DD6F5"
+            },
+            {
+              "name": "Azul Claro",
+              "hex": "#B7DCFF"
+            }
+          ],
+          "gradient": null
+        },
+        "brandAsset": {
+          "type": "logo",
+          "src-img": null,
+          "bgColor": "#FFFFFF",
+          "alt": "Marca do projeto Acordo Mercosul",
+          "title": "Acordo Mercosul",
+          "monogram": "ME"
+        },
+        "typography": {
+          "primary": {
+            "family": "Poppins",
+            "usage": "Títulos e destaques",
+            "weights": [
+              400,
+              600,
+              700
+            ]
+          },
+          "secondary": {
+            "family": "Segoe UI",
+            "usage": "Corpo do relatório",
+            "weights": [
+              400,
+              600
+            ]
+          },
+          "sample": {
+            "uppercase": "ACORDO MERCOSUL",
+            "lowercase": "acordo mercosul",
+            "title": "Acordo Mercosul – União Europeia",
+            "text": "A diagramação do estudo sobre os impactos do acordo comercial entre o Mercosul e a União Europeia para a indústria alagoana."
+          }
+        },
+        "icons": {
+          "library": "Lucide Icons",
+          "package": "lucide-react",
+          "website": "https://lucide.dev",
+          "items": [
+            "MapPin",
+            "ArrowRight",
+            "Menu",
+            "Search",
+            "ExternalLink"
+          ]
+        }
+      },
+      "learnings": null,
+      "intro": "A diagramação do estudo sobre os impactos do acordo comercial entre o Mercosul e a União Europeia para a indústria alagoana.",
+      "challenge": "Um estudo denso, cheio de tabelas e números, que precisava caber em páginas legíveis sem perder o rigor técnico.",
+      "approach": "Montei uma grade de página constante — abertura, dados, análise — e transformei as tabelas mais pesadas em infográficos.",
       "captionOne": null,
       "captionTwo": null,
       "websiteNote": null,
       "testimonial": null,
-      "showcase": null
+      "showcase": {
+        "bento": null,
+        "grid": null,
+        "full": null,
+        "pages": [
+          "/projetos/acordo-mercosul-uniao-europeia/pagina-01.png",
+          "/projetos/acordo-mercosul-uniao-europeia/pagina-05.png",
+          "/projetos/acordo-mercosul-uniao-europeia/pagina-11.png",
+          "/projetos/acordo-mercosul-uniao-europeia/pagina-21.png"
+        ],
+        "mockups": null,
+        "testimonialImage": null,
+        "avatar": null
+      }
     },
     {
       "slug": "app-tempo-previsto",
       "title": "App Tempo Previsto",
       "client": "Produto próprio",
-      "category": "Aplicativo mobile",
+      "category": "Aplicativo mobile · React Native",
       "year": "2023",
+      "services": [
+        "UX/UI",
+        "React Native",
+        "Front-end"
+      ],
+      "industries": [
+        "Meteorologia",
+        "Acadêmico"
+      ],
+      "growthStage": "Pessoal",
+      "cover": "/projetos/app-tempo-previsto/capa.webp",
+      "visualIdentity": {
+        "secondaryImage": {
+          "src": "/projetos/app-tempo-previsto/capa.webp",
+          "alt": "Tela do projeto App Tempo Previsto",
+          "caption": "Um app de previsão do tempo em React Native, desenvolvido como trabalho de conclusão de curso."
+        },
+        "colors": {
+          "primary": {
+            "name": "Azul Ação",
+            "hex": "#0066FF"
+          },
+          "background": {
+            "name": "Céu",
+            "hex": "#A0D8FD"
+          },
+          "text": {
+            "name": "Texto",
+            "hex": "#FFFFFF"
+          },
+          "additional": [],
+          "gradient": null
+        },
+        "brandAsset": {
+          "type": "logo",
+          "src-img": null,
+          "bgColor": "#A0D8FD",
+          "alt": "Marca do projeto App Tempo Previsto",
+          "title": "App Tempo Previsto",
+          "monogram": "TP"
+        },
+        "typography": {
+          "primary": {
+            "family": "Inter",
+            "usage": "Interface e temperatura",
+            "weights": [
+              400,
+              700
+            ]
+          },
+          "secondary": null,
+          "sample": {
+            "uppercase": "APP TEMPO PREVISTO",
+            "lowercase": "app tempo previsto",
+            "title": "App Tempo Previsto",
+            "text": "Um app de previsão do tempo em React Native, desenvolvido como trabalho de conclusão de curso."
+          }
+        },
+        "icons": {
+          "library": "Lucide Icons",
+          "package": "lucide-react",
+          "website": "https://lucide.dev",
+          "items": [
+            "Search",
+            "MapPin",
+            "Cloud",
+            "Sun",
+            "Droplets"
+          ]
+        }
+      },
+      "learnings": null,
+      "intro": "Um app de previsão do tempo em React Native, desenvolvido como trabalho de conclusão de curso.",
+      "challenge": "Entregar um app funcional do zero — do desenho das telas ao consumo da API de clima — dentro do prazo do TCC.",
+      "approach": "Desenhei as telas no Figma e implementei em React Native, com uma home que responde “como está agora e o que vem a seguir” em segundos.",
+      "captionOne": null,
+      "captionTwo": null,
+      "websiteNote": null,
+      "testimonial": null,
+      "showcase": {
+        "bento": null,
+        "grid": null,
+        "full": null,
+        "pages": [
+          "/projetos/app-tempo-previsto/home.png",
+          "/projetos/app-tempo-previsto/login.png",
+          "/projetos/app-tempo-previsto/cadastro.png",
+          "/projetos/app-tempo-previsto/cadastro-preenchido.png"
+        ],
+        "mockups": null,
+        "testimonialImage": null,
+        "avatar": null
+      }
+    },
+    {
+      "slug": "boletim-economico-visao-alagoas",
+      "title": "Boletim Econômico Visão Alagoas",
+      "client": null,
+      "category": "Estudo · Diagramação",
+      "year": null,
+      "services": [
+        "Diagramação",
+        "Design editorial",
+        "Infográficos"
+      ],
+      "industries": [
+        "Economia",
+        "Dados públicos"
+      ],
+      "growthStage": "Institucional",
+      "cover": "/projetos/boletim-economico-visao-alagoas/capa.webp",
+      "visualIdentity": {
+        "secondaryImage": {
+          "src": "/projetos/boletim-economico-visao-alagoas/capa.webp",
+          "alt": "Tela do projeto Boletim Econômico Visão Alagoas",
+          "caption": "A diagramação do boletim econômico do estado, publicação periódica com os indicadores de Alagoas."
+        },
+        "colors": {
+          "primary": {
+            "name": "Azul Institucional",
+            "hex": "#0C4DA2"
+          },
+          "background": {
+            "name": "Fundo",
+            "hex": "#FFFFFF"
+          },
+          "text": {
+            "name": "Texto",
+            "hex": "#212121"
+          },
+          "additional": [
+            {
+              "name": "Azul FIEA",
+              "hex": "#164194"
+            },
+            {
+              "name": "Verde",
+              "hex": "#52AE32"
+            },
+            {
+              "name": "Laranja",
+              "hex": "#E84E0F"
+            }
+          ],
+          "gradient": null
+        },
+        "brandAsset": {
+          "type": "logo",
+          "src-img": null,
+          "bgColor": "#FFFFFF",
+          "alt": "Marca do projeto Boletim Econômico Visão Alagoas",
+          "title": "Boletim Econômico Visão Alagoas",
+          "monogram": "BE"
+        },
+        "typography": {
+          "primary": {
+            "family": "Segoe UI",
+            "usage": "Corpo e tabelas",
+            "weights": [
+              400,
+              600
+            ]
+          },
+          "secondary": {
+            "family": "Poppins",
+            "usage": "Títulos de seção",
+            "weights": [
+              600,
+              700
+            ]
+          },
+          "sample": {
+            "uppercase": "BOLETIM ECONÔMICO VISÃO ALAGOAS",
+            "lowercase": "boletim econômico visão alagoas",
+            "title": "Boletim Econômico Visão Alagoas",
+            "text": "A diagramação do boletim econômico do estado, publicação periódica com os indicadores de Alagoas."
+          }
+        },
+        "icons": {
+          "library": "Lucide Icons",
+          "package": "lucide-react",
+          "website": "https://lucide.dev",
+          "items": [
+            "TrendingUp",
+            "BarChart3",
+            "FileText",
+            "Calendar",
+            "ArrowRight"
+          ]
+        }
+      },
+      "learnings": null,
+      "intro": "A diagramação do boletim econômico do estado, publicação periódica com os indicadores de Alagoas.",
+      "challenge": "Muitos indicadores por edição, em um formato que se repete a cada número sem poder ficar monótono.",
+      "approach": "Criei um sistema de páginas reaproveitável: grade fixa, famílias de gráfico padronizadas e aberturas de seção que dão respiro entre os blocos de dados.",
+      "captionOne": null,
+      "captionTwo": null,
+      "websiteNote": null,
+      "testimonial": null,
+      "showcase": {
+        "bento": null,
+        "grid": null,
+        "full": null,
+        "pages": [
+          "/projetos/boletim-economico-visao-alagoas/pagina-02.png",
+          "/projetos/boletim-economico-visao-alagoas/pagina-04.png",
+          "/projetos/boletim-economico-visao-alagoas/pagina-14.png",
+          "/projetos/boletim-economico-visao-alagoas/pagina-15.png"
+        ],
+        "mockups": null,
+        "testimonialImage": null,
+        "avatar": null
+      }
+    },
+    {
+      "slug": "combate-ao-desmatamento-em-alagoas-desmatamento-e-fogo-map-biomas",
+      "title": "Combate ao Desmatamento em Alagoas",
+      "client": null,
+      "category": "Sistema web · Dashboard",
+      "year": null,
       "services": [
         "UX/UI",
         "Visualização de dados",
         "Front-end"
       ],
       "industries": [
-        "Varejo",
-        "Religioso"
-      ],
-      "location": "Remoto, BR",
-      "growthStage": "Conceito",
-      "cover": "/projetos/app-tempo-previsto/capa.webp",
-      "visualIdentity": null,
-      "intro": "Um app de previsão do tempo focado em clareza: a informação certa, no momento certo, sem ruído.",
-      "challenge": "Apps de clima acumulam dados e poluem a tela; faltava hierarquia e leitura rápida.",
-      "approach": "Desenhei uma tela inicial que responde 'como está agora e o que vem a seguir' em segundos, com detalhes sob demanda.",
-      "captionOne": null,
-      "captionTwo": null,
-      "websiteNote": null,
-      "testimonial": null,
-      "showcase": null
-    },
-    {
-      "slug": "boletim-economico-visao-alagoas",
-      "title": "Boletim Econômico Visão Alagoas",
-      "client": null,
-      "category": null,
-      "year": null,
-      "services": null,
-      "industries": [
-        "Economia",
-        "Institucional"
-      ],
-      "location": "Maceió, BR",
-      "growthStage": "Institucional",
-      "cover": "/projetos/boletim-economico-visao-alagoas/capa.webp",
-      "visualIdentity": null,
-      "intro": "A versão digital do boletim econômico do estado, que troca o PDF estático por indicadores vivos e navegáveis.",
-      "challenge": "Migrar um relatório denso para a web sem perder profundidade nem afastar o leitor.",
-      "approach": "Quebrei o boletim em seções com indicadores-chave em destaque e gráficos interativos por tema.",
-      "captionOne": null,
-      "captionTwo": null,
-      "websiteNote": null,
-      "testimonial": null,
-      "showcase": null
-    },
-    {
-      "slug": "combate-ao-desmatamento-em-alagoas-desmatamento-e-fogo-map-biomas",
-      "title": "Combate ao Desmatamento em Alagoas",
-      "client": null,
-      "category": null,
-      "year": null,
-      "services": null,
-      "industries": [
         "Meio ambiente",
         "Dados públicos"
       ],
-      "location": "Maceió, BR",
       "growthStage": "Institucional",
       "cover": "/projetos/combate-ao-desmatamento-em-alagoas-desmatamento-e-fogo-map-biomas/capa.webp",
-      "visualIdentity": null,
-      "intro": "Um especial que cruza dados do MapBiomas sobre desmatamento e fogo em Alagoas em uma leitura territorial clara.",
+      "visualIdentity": {
+        "secondaryImage": {
+          "src": "/projetos/combate-ao-desmatamento-em-alagoas-desmatamento-e-fogo-map-biomas/dashboard-1.png",
+          "alt": "Tela do projeto Combate ao Desmatamento em Alagoas",
+          "caption": "Um painel que cruza os dados do MapBiomas sobre desmatamento e fogo em Alagoas."
+        },
+        "colors": {
+          "primary": {
+            "name": "Verde Vegetação",
+            "hex": "#35A612"
+          },
+          "background": {
+            "name": "Fundo",
+            "hex": "#000000"
+          },
+          "text": {
+            "name": "Texto",
+            "hex": "#FFFFFF"
+          },
+          "additional": [
+            {
+              "name": "Alerta",
+              "hex": "#EF4343"
+            },
+            {
+              "name": "Fogo",
+              "hex": "#FF7100"
+            },
+            {
+              "name": "Verde Claro",
+              "hex": "#C0FF9A"
+            }
+          ],
+          "gradient": null
+        },
+        "brandAsset": {
+          "type": "logo",
+          "src-img": null,
+          "bgColor": "#000000",
+          "alt": "Marca do projeto Combate ao Desmatamento em Alagoas",
+          "title": "Combate ao Desmatamento em Alagoas",
+          "monogram": "DF"
+        },
+        "typography": {
+          "primary": {
+            "family": "Roboto",
+            "usage": "Interface e números",
+            "weights": [
+              400,
+              500,
+              700
+            ]
+          },
+          "secondary": {
+            "family": "Merriweather",
+            "usage": "Títulos editoriais",
+            "weights": [
+              400,
+              700
+            ]
+          },
+          "sample": {
+            "uppercase": "COMBATE AO DESMATAMENTO EM ALAGOAS",
+            "lowercase": "combate ao desmatamento em alagoas",
+            "title": "Combate ao Desmatamento em Alagoas",
+            "text": "Um painel que cruza os dados do MapBiomas sobre desmatamento e fogo em Alagoas."
+          }
+        },
+        "icons": {
+          "library": "Lucide Icons",
+          "package": "lucide-react",
+          "website": "https://lucide.dev",
+          "items": [
+            "Map",
+            "Flame",
+            "TreePine",
+            "AlertTriangle",
+            "Layers"
+          ]
+        }
+      },
+      "learnings": null,
+      "intro": "Um painel que cruza os dados do MapBiomas sobre desmatamento e fogo em Alagoas.",
       "challenge": "Tornar tangível um tema ambiental abstrato, com muitos dados geográficos e temporais.",
-      "approach": "Mapas e séries temporais contam a evolução do desmatamento por região, com filtros por período.",
+      "approach": "Mapas e séries temporais contam a evolução por região, com filtros de período e uma paleta que separa vegetação, alerta e fogo.",
       "captionOne": null,
       "captionTwo": null,
       "websiteNote": null,
       "testimonial": null,
-      "showcase": null
+      "showcase": {
+        "bento": null,
+        "grid": null,
+        "full": null,
+        "pages": null,
+        "mockups": [
+          {
+            "src": "/projetos/combate-ao-desmatamento-em-alagoas-desmatamento-e-fogo-map-biomas/dashboard-1.png",
+            "title": "Painel de desmatamento"
+          },
+          {
+            "src": "/projetos/combate-ao-desmatamento-em-alagoas-desmatamento-e-fogo-map-biomas/dashboard-2.png",
+            "title": "Focos de calor"
+          }
+        ],
+        "testimonialImage": null,
+        "avatar": null
+      }
     },
     {
       "slug": "conectandoofuturo-avancandocom-esgnaindustria",
       "title": "Conectando o Futuro: ESG na Indústria",
       "client": null,
-      "category": null,
+      "category": "Estudo · Diagramação",
       "year": null,
-      "services": null,
+      "services": [
+        "Diagramação",
+        "Design editorial",
+        "Infográficos"
+      ],
       "industries": [
         "ESG",
         "Indústria"
       ],
-      "location": "Maceió, BR",
       "growthStage": "Institucional",
       "cover": "/projetos/conectandoofuturo-avancandocom-esgnaindustria/capa.webp",
-      "visualIdentity": null,
-      "intro": "Uma landing page que apresenta a agenda ESG da indústria alagoana e convida ao engajamento.",
-      "challenge": "Comunicar um tema institucional denso (ESG) de forma inspiradora e acessível.",
-      "approach": "Estruturei a página em pilares — ambiental, social e governança — com um percurso visual que conduz à ação.",
+      "visualIdentity": {
+        "secondaryImage": {
+          "src": "/projetos/conectandoofuturo-avancandocom-esgnaindustria/capa.webp",
+          "alt": "Tela do projeto Conectando o Futuro: ESG na Indústria",
+          "caption": "A diagramação do estudo sobre a agenda ESG na indústria alagoana."
+        },
+        "colors": {
+          "primary": {
+            "name": "Azul Institucional",
+            "hex": "#0C4DA2"
+          },
+          "background": {
+            "name": "Fundo",
+            "hex": "#FFFFFF"
+          },
+          "text": {
+            "name": "Texto",
+            "hex": "#212121"
+          },
+          "additional": [
+            {
+              "name": "Azul Claro",
+              "hex": "#A4D3FF"
+            },
+            {
+              "name": "Cinza Claro",
+              "hex": "#F2F2F2"
+            }
+          ],
+          "gradient": null
+        },
+        "brandAsset": {
+          "type": "logo",
+          "src-img": null,
+          "bgColor": "#FFFFFF",
+          "alt": "Marca do projeto Conectando o Futuro",
+          "title": "Conectando o Futuro",
+          "monogram": "CF"
+        },
+        "typography": {
+          "primary": {
+            "family": "Segoe UI",
+            "usage": "Corpo do relatorio e tabelas",
+            "weights": [
+              400,
+              600
+            ]
+          },
+          "secondary": {
+            "family": "Poppins",
+            "usage": "Capa e titulos de secao",
+            "weights": [
+              600,
+              700
+            ]
+          },
+          "sample": {
+            "uppercase": "CONECTANDO O FUTURO",
+            "lowercase": "conectando o futuro",
+            "title": "Conectando o Futuro: ESG na Indústria",
+            "text": "A diagramação do estudo sobre a agenda ESG na indústria alagoana."
+          }
+        },
+        "icons": {
+          "library": "Lucide Icons",
+          "package": "lucide-react",
+          "website": "https://lucide.dev",
+          "items": [
+            "Leaf",
+            "Factory",
+            "Recycle",
+            "BarChart3",
+            "ArrowRight"
+          ]
+        }
+      },
+      "learnings": null,
+      "intro": "A diagramação do estudo sobre a agenda ESG na indústria alagoana.",
+      "challenge": "Traduzir um tema institucional denso em páginas que convidem à leitura.",
+      "approach": "Organizei o conteúdo pelos três pilares — ambiental, social e governança — com aberturas ilustradas e um ritmo que alterna texto, dado e imagem.",
       "captionOne": null,
       "captionTwo": null,
       "websiteNote": null,
       "testimonial": null,
-      "showcase": null
+      "showcase": {
+        "bento": null,
+        "grid": null,
+        "full": null,
+        "pages": [
+          "/projetos/conectandoofuturo-avancandocom-esgnaindustria/pagina-01.png",
+          "/projetos/conectandoofuturo-avancandocom-esgnaindustria/pagina-03.png",
+          "/projetos/conectandoofuturo-avancandocom-esgnaindustria/pagina-08.png",
+          "/projetos/conectandoofuturo-avancandocom-esgnaindustria/pagina-10.png"
+        ],
+        "mockups": null,
+        "testimonialImage": null,
+        "avatar": null
+      }
     },
     {
       "slug": "ecommerce-pai-eterno",
       "title": "E-commerce Pai Eterno",
       "client": null,
-      "category": null,
+      "category": "E-commerce · Tray Commerce",
       "year": null,
-      "services": null,
+      "services": [
+        "UX/UI",
+        "Tema Tray Commerce",
+        "Front-end"
+      ],
       "industries": [
         "Varejo",
         "Religioso"
       ],
-      "location": "Remoto, BR",
       "growthStage": "PME",
       "cover": "/projetos/ecommerce-pai-eterno/capa.webp",
-      "visualIdentity": null,
-      "intro": "Uma loja virtual devocional pensada para um público amplo e pouco habituado a comprar online.",
+      "visualIdentity": {
+        "secondaryImage": {
+          "src": "/projetos/ecommerce-pai-eterno/capa.webp",
+          "alt": "Tela do projeto E-commerce Pai Eterno",
+          "caption": "Uma loja devocional construída como tema na Tray Commerce, para um público pouco habituado a comprar online."
+        },
+        "colors": {
+          "primary": {
+            "name": "Vinho Litúrgico",
+            "hex": "#831918"
+          },
+          "background": {
+            "name": "Fundo",
+            "hex": "#FFFFFF"
+          },
+          "text": {
+            "name": "Texto",
+            "hex": "#333333"
+          },
+          "additional": [
+            {
+              "name": "Areia",
+              "hex": "#977969"
+            },
+            {
+              "name": "Verde Confirmação",
+              "hex": "#00E676"
+            }
+          ],
+          "gradient": null
+        },
+        "brandAsset": {
+          "type": "logo",
+          "src-img": null,
+          "bgColor": "#FFFFFF",
+          "alt": "Marca do projeto E",
+          "title": "E",
+          "monogram": "PE"
+        },
+        "typography": {
+          "primary": {
+            "family": "Open Sans",
+            "usage": "Catálogo, preços e checkout",
+            "weights": [
+              400,
+              600,
+              700
+            ]
+          },
+          "secondary": null,
+          "sample": {
+            "uppercase": "E",
+            "lowercase": "e",
+            "title": "E-commerce Pai Eterno",
+            "text": "Uma loja devocional construída como tema na Tray Commerce, para um público pouco habituado a comprar online."
+          }
+        },
+        "icons": {
+          "library": "Lucide Icons",
+          "package": "lucide-react",
+          "website": "https://lucide.dev",
+          "items": [
+            "ShoppingCart",
+            "Search",
+            "Heart",
+            "User",
+            "Package"
+          ]
+        }
+      },
+      "learnings": null,
+      "intro": "Uma loja devocional construída como tema na Tray Commerce, para um público pouco habituado a comprar online.",
       "challenge": "Cada decisão partiu de uma pergunta: minha avó conseguiria comprar sozinha?",
-      "approach": "Reduzi a jornada ao essencial, com passos claros, tipografia generosa e a identidade da marca em azul e dourado.",
+      "approach": "Personalizei o tema da Tray até a loja parecer feita sob medida — jornada reduzida ao essencial, tipografia generosa e a identidade da marca em azul e dourado.",
       "captionOne": null,
       "captionTwo": null,
       "websiteNote": null,
       "testimonial": null,
-      "showcase": null
+      "showcase": {
+        "bento": null,
+        "grid": null,
+        "full": null,
+        "pages": null,
+        "mockups": [
+          {
+            "src": "/projetos/ecommerce-pai-eterno/loja.png",
+            "title": "Loja completa"
+          }
+        ],
+        "testimonialImage": null,
+        "avatar": null
+      }
     },
     {
       "slug": "economia-do-mar-em-alagoas",
       "title": "Economia do Mar em Alagoas",
       "client": null,
-      "category": null,
+      "category": "Estudo · Diagramação",
       "year": null,
-      "services": null,
+      "services": [
+        "Diagramação",
+        "Design editorial",
+        "Infográficos"
+      ],
       "industries": [
         "Economia azul",
-        "Institucional"
+        "Turismo"
       ],
-      "location": "Maceió, BR",
       "growthStage": "Institucional",
       "cover": "/projetos/economia-do-mar-em-alagoas/capa.webp",
-      "visualIdentity": null,
-      "intro": "Um especial sobre o potencial da economia do mar para Alagoas, dos portos ao turismo.",
-      "challenge": "Reunir setores dispersos — pesca, portos, turismo e energia — em uma narrativa única.",
-      "approach": "Organizei o conteúdo por cadeia produtiva, com dados e imagens que dão escala ao potencial marítimo.",
+      "visualIdentity": {
+        "secondaryImage": {
+          "src": "/projetos/economia-do-mar-em-alagoas/capa.webp",
+          "alt": "Tela do projeto Economia do Mar em Alagoas",
+          "caption": "A diagramação do estudo sobre o potencial da economia do mar em Alagoas, dos portos ao turismo."
+        },
+        "colors": {
+          "primary": {
+            "name": "Azul Institucional",
+            "hex": "#0C4DA2"
+          },
+          "background": {
+            "name": "Fundo",
+            "hex": "#FFFFFF"
+          },
+          "text": {
+            "name": "Texto",
+            "hex": "#1E1E1E"
+          },
+          "additional": [
+            {
+              "name": "Ciano Maré",
+              "hex": "#4DD6F5"
+            },
+            {
+              "name": "Azul Claro",
+              "hex": "#B7DCFF"
+            }
+          ],
+          "gradient": null
+        },
+        "brandAsset": {
+          "type": "logo",
+          "src-img": null,
+          "bgColor": "#FFFFFF",
+          "alt": "Marca do projeto Economia do Mar em Alagoas",
+          "title": "Economia do Mar em Alagoas",
+          "monogram": "EM"
+        },
+        "typography": {
+          "primary": {
+            "family": "Segoe UI",
+            "usage": "Corpo do relatório",
+            "weights": [
+              400,
+              600
+            ]
+          },
+          "secondary": {
+            "family": "Poppins",
+            "usage": "Títulos e capas",
+            "weights": [
+              600,
+              700
+            ]
+          },
+          "sample": {
+            "uppercase": "ECONOMIA DO MAR EM ALAGOAS",
+            "lowercase": "economia do mar em alagoas",
+            "title": "Economia do Mar em Alagoas",
+            "text": "A diagramação do estudo sobre o potencial da economia do mar em Alagoas, dos portos ao turismo."
+          }
+        },
+        "icons": {
+          "library": "Lucide Icons",
+          "package": "lucide-react",
+          "website": "https://lucide.dev",
+          "items": [
+            "Waves",
+            "Ship",
+            "Fish",
+            "BarChart3",
+            "MapPin"
+          ]
+        }
+      },
+      "learnings": null,
+      "intro": "A diagramação do estudo sobre o potencial da economia do mar em Alagoas, dos portos ao turismo.",
+      "challenge": "Reunir setores dispersos — pesca, portos, turismo e energia — em uma publicação única e coerente.",
+      "approach": "Dei a cada cadeia produtiva um bloco com a mesma estrutura de página e usei fotografia em página cheia para dar escala ao tema.",
       "captionOne": null,
       "captionTwo": null,
       "websiteNote": null,
       "testimonial": null,
-      "showcase": null
+      "showcase": {
+        "bento": null,
+        "grid": null,
+        "full": null,
+        "pages": [
+          "/projetos/economia-do-mar-em-alagoas/pagina-01.png",
+          "/projetos/economia-do-mar-em-alagoas/pagina-04.png",
+          "/projetos/economia-do-mar-em-alagoas/pagina-10.png",
+          "/projetos/economia-do-mar-em-alagoas/pagina-15.png"
+        ],
+        "mockups": null,
+        "testimonialImage": null,
+        "avatar": null
+      }
     },
     {
       "slug": "meu-primeiro-portfolio",
       "title": "Meu Primeiro Portfólio",
       "client": null,
-      "category": null,
+      "category": "Site pessoal · 3D",
       "year": null,
-      "services": null,
+      "services": [
+        "UX/UI",
+        "HTML, CSS e JavaScript",
+        "WebGL"
+      ],
       "industries": [
         "Pessoal",
         "Web"
       ],
-      "location": "Remoto, BR",
       "growthStage": "Pessoal",
       "cover": "/projetos/meu-primeiro-portfolio/capa.webp",
-      "visualIdentity": null,
-      "intro": "O portfólio que marcou meus primeiros passos como designer e desenvolvedor front-end.",
-      "challenge": "Traduzir minha identidade em um site quando eu ainda estava aprendendo o ofício.",
-      "approach": "Apostei em um layout limpo e em experimentos de interface que viraram meu campo de treino.",
+      "visualIdentity": {
+        "secondaryImage": {
+          "src": "/projetos/meu-primeiro-portfolio/capa.webp",
+          "alt": "Tela do projeto Meu Primeiro Portfólio",
+          "caption": "Meu primeiro site: HTML, CSS e JavaScript puros, com uma cena 3D na abertura."
+        },
+        "colors": {
+          "primary": {
+            "name": "Âmbar",
+            "hex": "#FFD68F"
+          },
+          "background": {
+            "name": "Noite",
+            "hex": "#0E1538"
+          },
+          "text": {
+            "name": "Texto",
+            "hex": "#FFFFFF"
+          },
+          "additional": [
+            {
+              "name": "Ciano",
+              "hex": "#29B3E0"
+            },
+            {
+              "name": "Azul Ardósia",
+              "hex": "#1E3248"
+            }
+          ],
+          "gradient": null
+        },
+        "brandAsset": {
+          "type": "logo",
+          "src-img": null,
+          "bgColor": "#0E1538",
+          "alt": "Marca do projeto Meu Primeiro Portfólio",
+          "title": "Meu Primeiro Portfólio",
+          "monogram": "JA"
+        },
+        "typography": {
+          "primary": {
+            "family": "Poppins",
+            "usage": "Títulos e navegação",
+            "weights": [
+              400,
+              600,
+              700
+            ]
+          },
+          "secondary": {
+            "family": "Quantico",
+            "usage": "Detalhes técnicos",
+            "weights": [
+              400,
+              700
+            ]
+          },
+          "sample": {
+            "uppercase": "MEU PRIMEIRO PORTFÓLIO",
+            "lowercase": "meu primeiro portfólio",
+            "title": "Meu Primeiro Portfólio",
+            "text": "Meu primeiro site: HTML, CSS e JavaScript puros, com uma cena 3D na abertura."
+          }
+        },
+        "icons": {
+          "library": "Lucide Icons",
+          "package": "lucide-react",
+          "website": "https://lucide.dev",
+          "items": [
+            "Code",
+            "Github",
+            "Linkedin",
+            "Mail",
+            "ArrowUpRight"
+          ]
+        }
+      },
+      "learnings": null,
+      "intro": "Meu primeiro site: HTML, CSS e JavaScript puros, com uma cena 3D na abertura.",
+      "challenge": "Aprender 3D na web e ainda entregar um site que carregasse bem em qualquer máquina.",
+      "approach": "Construí tudo à mão, sem framework. A cena 3D virou o cartão de visita e o resto do layout ficou limpo para não competir com ela.",
       "captionOne": null,
       "captionTwo": null,
       "websiteNote": null,
       "testimonial": null,
-      "showcase": null
+      "showcase": {
+        "bento": null,
+        "grid": null,
+        "full": null,
+        "pages": null,
+        "mockups": [
+          {
+            "src": "/projetos/meu-primeiro-portfolio/site.jpg",
+            "title": "Portfólio completo"
+          }
+        ],
+        "testimonialImage": null,
+        "avatar": null
+      }
     },
     {
       "slug": "miau-dote",
       "title": "MiauDote",
       "client": null,
-      "category": null,
+      "category": "Aplicativo mobile · Conceito",
       "year": null,
-      "services": null,
+      "services": [
+        "UX/UI",
+        "Prototipagem"
+      ],
       "industries": [
         "Pets",
         "Social"
       ],
-      "location": "Remoto, BR",
       "growthStage": "Conceito",
       "cover": "/projetos/miau-dote/capa.webp",
-      "visualIdentity": null,
-      "intro": "Um app que aproxima pets que precisam de lar de pessoas dispostas a adotar — ou a doar com responsabilidade.",
+      "visualIdentity": {
+        "secondaryImage": {
+          "src": "/projetos/miau-dote/capa.webp",
+          "alt": "Tela do projeto MiauDote",
+          "caption": "Um conceito de app de adoção de pets, desenhado e prototipado no Figma."
+        },
+        "colors": {
+          "primary": {
+            "name": "Azul Profundo",
+            "hex": "#000072"
+          },
+          "background": {
+            "name": "Fundo",
+            "hex": "#FFFFFF"
+          },
+          "text": {
+            "name": "Texto",
+            "hex": "#00293B"
+          },
+          "additional": [
+            {
+              "name": "Ciano",
+              "hex": "#13CDFF"
+            },
+            {
+              "name": "Roxo",
+              "hex": "#370076"
+            },
+            {
+              "name": "Petróleo",
+              "hex": "#0E3B54"
+            }
+          ],
+          "gradient": null
+        },
+        "brandAsset": {
+          "type": "logo",
+          "src-img": null,
+          "bgColor": "#FFFFFF",
+          "alt": "Marca do projeto MiauDote",
+          "title": "MiauDote",
+          "monogram": "MD"
+        },
+        "typography": {
+          "primary": {
+            "family": "Inter",
+            "usage": "Aplicativo inteiro",
+            "weights": [
+              400,
+              500,
+              700
+            ]
+          },
+          "secondary": null,
+          "sample": {
+            "uppercase": "MIAUDOTE",
+            "lowercase": "miaudote",
+            "title": "MiauDote",
+            "text": "Um conceito de app de adoção de pets, desenhado e prototipado no Figma."
+          }
+        },
+        "icons": {
+          "library": "Lucide Icons",
+          "package": "lucide-react",
+          "website": "https://lucide.dev",
+          "items": [
+            "Heart",
+            "MessageCircle",
+            "Search",
+            "User",
+            "PawPrint"
+          ]
+        }
+      },
+      "learnings": null,
+      "intro": "Um conceito de app de adoção de pets, desenhado e prototipado no Figma.",
       "challenge": "Tornar a adoção responsável simples e afetiva, sem burocracia que desanime.",
-      "approach": "Desenhei um fluxo leve de descoberta e contato, com perfil do animal e localização no centro da experiência.",
+      "approach": "Prototipei o fluxo inteiro — descoberta, perfil do animal e contato — em vinte telas. O projeto parou no Figma de propósito: a meta era validar a experiência, não escrever código.",
       "captionOne": null,
       "captionTwo": null,
       "websiteNote": null,
       "testimonial": null,
-      "showcase": null
+      "showcase": {
+        "bento": null,
+        "grid": null,
+        "full": null,
+        "pages": [
+          "/projetos/miau-dote/boas-vindas.png",
+          "/projetos/miau-dote/feed.png",
+          "/projetos/miau-dote/perfil-pet.png",
+          "/projetos/miau-dote/chat.png"
+        ],
+        "mockups": null,
+        "testimonialImage": null,
+        "avatar": null
+      }
     },
     {
       "slug": "minha-primeira-landing-page",
       "title": "Minha Primeira Landing Page",
       "client": null,
-      "category": null,
+      "category": "Landing page · React",
       "year": null,
-      "services": null,
+      "services": [
+        "UX/UI",
+        "React",
+        "Front-end"
+      ],
       "industries": [
         "Pessoal",
         "Web"
       ],
-      "location": "Remoto, BR",
       "growthStage": "Pessoal",
       "cover": "/projetos/minha-primeira-landing-page/capa.webp",
-      "visualIdentity": null,
-      "intro": "O exercício que me ensinou a construir uma landing page do zero, do layout ao deploy.",
-      "challenge": "Sair do tutorial e entregar algo publicado, responsivo e funcional.",
-      "approach": "Foquei em uma estrutura clássica de conversão e em acertar espaçamento, ritmo e responsividade.",
+      "visualIdentity": {
+        "secondaryImage": {
+          "src": "/projetos/minha-primeira-landing-page/capa.webp",
+          "alt": "Tela do projeto Minha Primeira Landing Page",
+          "caption": "Minha primeira landing page em React — a virada de HTML puro para componentes."
+        },
+        "colors": {
+          "primary": {
+            "name": "Roxo",
+            "hex": "#4E1D9A"
+          },
+          "background": {
+            "name": "Fundo",
+            "hex": "#FFFFFF"
+          },
+          "text": {
+            "name": "Texto",
+            "hex": "#000000"
+          },
+          "additional": [
+            {
+              "name": "Ciano",
+              "hex": "#00C9F5"
+            },
+            {
+              "name": "Lilás",
+              "hex": "#AA7BE9"
+            }
+          ],
+          "gradient": null
+        },
+        "brandAsset": {
+          "type": "logo",
+          "src-img": null,
+          "bgColor": "#FFFFFF",
+          "alt": "Marca do projeto Minha Primeira Landing Page",
+          "title": "Minha Primeira Landing Page",
+          "monogram": "LP"
+        },
+        "typography": {
+          "primary": {
+            "family": "Inter",
+            "usage": "Corpo e botões",
+            "weights": [
+              400,
+              600
+            ]
+          },
+          "secondary": {
+            "family": "Poppins",
+            "usage": "Títulos da landing",
+            "weights": [
+              600,
+              700
+            ]
+          },
+          "sample": {
+            "uppercase": "MINHA PRIMEIRA LANDING PAGE",
+            "lowercase": "minha primeira landing page",
+            "title": "Minha Primeira Landing Page",
+            "text": "Minha primeira landing page em React — a virada de HTML puro para componentes."
+          }
+        },
+        "icons": {
+          "library": "Lucide Icons",
+          "package": "lucide-react",
+          "website": "https://lucide.dev",
+          "items": [
+            "PlayCircle",
+            "CheckCircle2",
+            "ArrowRight",
+            "Menu",
+            "Star"
+          ]
+        }
+      },
+      "learnings": null,
+      "intro": "Minha primeira landing page em React — a virada de HTML puro para componentes.",
+      "challenge": "Sair do tutorial e entregar algo publicado, responsivo e componentizado.",
+      "approach": "Quebrei a página em componentes reutilizáveis e usei o projeto para acertar espaçamento, ritmo e responsividade.",
       "captionOne": null,
       "captionTwo": null,
       "websiteNote": null,
       "testimonial": null,
-      "showcase": null
+      "showcase": {
+        "bento": null,
+        "grid": null,
+        "full": null,
+        "pages": [
+          "/projetos/minha-primeira-landing-page/mobile.png"
+        ],
+        "mockups": [
+          {
+            "src": "/projetos/minha-primeira-landing-page/desktop.png",
+            "title": "Versão desktop"
+          }
+        ],
+        "testimonialImage": null,
+        "avatar": null
+      }
     },
     {
       "slug": "paineis-gerencias",
       "title": "Painéis Gerenciais",
       "client": null,
-      "category": null,
+      "category": "Sistema web · Dashboard",
       "year": null,
-      "services": null,
+      "services": [
+        "UX/UI",
+        "Design System",
+        "Front-end"
+      ],
       "industries": [
         "Corporativo",
         "Software"
       ],
-      "location": "Remoto, BR",
       "growthStage": "Enterprise",
       "cover": "/projetos/paineis-gerencias/capa.webp",
-      "visualIdentity": null,
+      "visualIdentity": {
+        "secondaryImage": {
+          "src": "/projetos/paineis-gerencias/tela-2.png",
+          "alt": "Tela do projeto Painéis Gerenciais",
+          "caption": "A reconstrução do acesso a painéis de gestão a partir de um design system enxuto."
+        },
+        "colors": {
+          "primary": {
+            "name": "Azul Gestão",
+            "hex": "#0063BF"
+          },
+          "background": {
+            "name": "Fundo",
+            "hex": "#FFFFFF"
+          },
+          "text": {
+            "name": "Texto",
+            "hex": "#212121"
+          },
+          "additional": [
+            {
+              "name": "Azul Escuro",
+              "hex": "#02316F"
+            },
+            {
+              "name": "Azul Vivo",
+              "hex": "#0080FF"
+            },
+            {
+              "name": "Marinho",
+              "hex": "#002556"
+            }
+          ],
+          "gradient": null
+        },
+        "brandAsset": {
+          "type": "logo",
+          "src-img": null,
+          "bgColor": "#FFFFFF",
+          "alt": "Marca do projeto Painéis Gerenciais",
+          "title": "Painéis Gerenciais",
+          "monogram": "PG"
+        },
+        "typography": {
+          "primary": {
+            "family": "Roboto",
+            "usage": "Painéis, rótulos e números",
+            "weights": [
+              400,
+              500,
+              700
+            ]
+          },
+          "secondary": {
+            "family": "Segoe UI",
+            "usage": "Texto de apoio",
+            "weights": [
+              400,
+              600
+            ]
+          },
+          "sample": {
+            "uppercase": "PAINÉIS GERENCIAIS",
+            "lowercase": "painéis gerenciais",
+            "title": "Painéis Gerenciais",
+            "text": "A reconstrução do acesso a painéis de gestão a partir de um design system enxuto."
+          }
+        },
+        "icons": {
+          "library": "Lucide Icons",
+          "package": "lucide-react",
+          "website": "https://lucide.dev",
+          "items": [
+            "LayoutDashboard",
+            "BarChart3",
+            "PieChart",
+            "Filter",
+            "Download"
+          ]
+        }
+      },
+      "learnings": null,
       "intro": "A reconstrução do acesso a painéis de gestão a partir de um design system enxuto.",
       "challenge": "Telas herdadas por anos, sem hierarquia nem consistência entre módulos.",
       "approach": "Defini tokens e componentes-base antes das telas; cada painel passou a se montar como Lego.",
@@ -270,23 +1258,116 @@
       "captionTwo": null,
       "websiteNote": null,
       "testimonial": null,
-      "showcase": null
+      "showcase": {
+        "bento": null,
+        "grid": [
+          "/projetos/paineis-gerencias/tela-1.png",
+          "/projetos/paineis-gerencias/tela-2.png",
+          "/projetos/paineis-gerencias/tela-3.png",
+          "/projetos/paineis-gerencias/tela-4.png"
+        ],
+        "full": null,
+        "pages": null,
+        "mockups": null,
+        "testimonialImage": null,
+        "avatar": null
+      }
     },
     {
       "slug": "pape-ia",
       "title": "PapeIA",
       "client": null,
-      "category": null,
+      "category": "Plataforma web · IA",
       "year": null,
-      "services": null,
+      "services": [
+        "UX/UI",
+        "Design System",
+        "Front-end"
+      ],
       "industries": [
         "Atendimento",
         "IA"
       ],
-      "location": "Remoto, BR",
       "growthStage": "MVP",
       "cover": "/projetos/pape-ia/capa.webp",
-      "visualIdentity": null,
+      "visualIdentity": {
+        "secondaryImage": {
+          "src": "/projetos/pape-ia/login.png",
+          "alt": "Tela do projeto PapeIA",
+          "caption": "Uma plataforma de atendimento com IA que unifica canais, agentes e conversas em um só fluxo."
+        },
+        "colors": {
+          "primary": {
+            "name": "Grafite",
+            "hex": "#1B1B1D"
+          },
+          "background": {
+            "name": "Fundo",
+            "hex": "#09090B"
+          },
+          "text": {
+            "name": "Texto",
+            "hex": "#FFFFFF"
+          },
+          "additional": [
+            {
+              "name": "Superfície",
+              "hex": "#373C43"
+            },
+            {
+              "name": "Borda",
+              "hex": "#393E46"
+            }
+          ],
+          "gradient": null
+        },
+        "brandAsset": {
+          "type": "logo",
+          "src-img": null,
+          "bgColor": "#09090B",
+          "alt": "Marca do projeto PapeIA",
+          "title": "PapeIA",
+          "monogram": "PA"
+        },
+        "typography": {
+          "primary": {
+            "family": "Inter",
+            "usage": "Chat e interface",
+            "weights": [
+              400,
+              500,
+              600
+            ]
+          },
+          "secondary": {
+            "family": "Inter Display",
+            "usage": "Títulos",
+            "weights": [
+              600,
+              700
+            ]
+          },
+          "sample": {
+            "uppercase": "PAPEIA",
+            "lowercase": "papeia",
+            "title": "PapeIA",
+            "text": "Uma plataforma de atendimento com IA que unifica canais, agentes e conversas em um só fluxo."
+          }
+        },
+        "icons": {
+          "library": "Lucide Icons",
+          "package": "lucide-react",
+          "website": "https://lucide.dev",
+          "items": [
+            "MessageSquare",
+            "Send",
+            "Sparkles",
+            "FileText",
+            "Settings"
+          ]
+        }
+      },
+      "learnings": null,
       "intro": "Uma plataforma de atendimento com IA que unifica canais, agentes e conversas em um só fluxo.",
       "challenge": "Dar poder à automação sem esconder o humano — e sem transformar a tela em um cockpit intimidador.",
       "approach": "Desenhei um inbox com agentes de IA lado a lado: pausar, responder e etiquetar no mesmo ritmo da conversa.",
@@ -294,23 +1375,124 @@
       "captionTwo": null,
       "websiteNote": null,
       "testimonial": null,
-      "showcase": null
+      "showcase": {
+        "bento": null,
+        "grid": null,
+        "full": null,
+        "pages": null,
+        "mockups": [
+          {
+            "src": "/projetos/pape-ia/login.png",
+            "title": "Entrada"
+          },
+          {
+            "src": "/projetos/pape-ia/chat.png",
+            "title": "Chat"
+          },
+          {
+            "src": "/projetos/pape-ia/chat-conversa.png",
+            "title": "Conversa em andamento"
+          }
+        ],
+        "testimonialImage": null,
+        "avatar": null
+      }
     },
     {
       "slug": "plataforma-integradade-gestaodas-unidades",
       "title": "Plataforma Integrada de Gestão das Unidades",
       "client": null,
-      "category": null,
+      "category": "Plataforma web",
       "year": null,
-      "services": null,
+      "services": [
+        "UX/UI",
+        "Design System",
+        "Front-end"
+      ],
       "industries": [
         "Gestão",
         "Software"
       ],
-      "location": "Maceió, BR",
       "growthStage": "Enterprise",
       "cover": "/projetos/plataforma-integradade-gestaodas-unidades/capa.webp",
-      "visualIdentity": null,
+      "visualIdentity": {
+        "secondaryImage": {
+          "src": "/projetos/plataforma-integradade-gestaodas-unidades/gestao.png",
+          "alt": "Tela do projeto Plataforma Integrada de Gestão das Unidades",
+          "caption": "Uma plataforma que unifica a gestão de múltiplas unidades em um só lugar."
+        },
+        "colors": {
+          "primary": {
+            "name": "Azul Institucional",
+            "hex": "#0A5AA4"
+          },
+          "background": {
+            "name": "Fundo",
+            "hex": "#FFFFFF"
+          },
+          "text": {
+            "name": "Texto",
+            "hex": "#1E1F25"
+          },
+          "additional": [
+            {
+              "name": "Marinho",
+              "hex": "#002E74"
+            },
+            {
+              "name": "Azul Médio",
+              "hex": "#014D93"
+            }
+          ],
+          "gradient": null
+        },
+        "brandAsset": {
+          "type": "logo",
+          "src-img": null,
+          "bgColor": "#FFFFFF",
+          "alt": "Marca do projeto Plataforma Integrada de Gestão das Unidades",
+          "title": "Plataforma Integrada de Gestão das Unidades",
+          "monogram": "PU"
+        },
+        "typography": {
+          "primary": {
+            "family": "Segoe UI",
+            "usage": "Interface e tabelas",
+            "weights": [
+              400,
+              600
+            ]
+          },
+          "secondary": {
+            "family": "Inter",
+            "usage": "Números e indicadores",
+            "weights": [
+              400,
+              600,
+              700
+            ]
+          },
+          "sample": {
+            "uppercase": "PLATAFORMA INTEGRADA DE GESTÃO DAS UNIDADES",
+            "lowercase": "plataforma integrada de gestão das unidades",
+            "title": "Plataforma Integrada de Gestão das Unidades",
+            "text": "Uma plataforma que unifica a gestão de múltiplas unidades em um só lugar."
+          }
+        },
+        "icons": {
+          "library": "Lucide Icons",
+          "package": "lucide-react",
+          "website": "https://lucide.dev",
+          "items": [
+            "Building2",
+            "Users",
+            "LayoutDashboard",
+            "FileText",
+            "Search"
+          ]
+        }
+      },
+      "learnings": null,
       "intro": "Uma plataforma que unifica a gestão de múltiplas unidades em um só lugar.",
       "challenge": "Dados e rotinas espalhados por unidades, cada uma com o seu próprio jeito.",
       "approach": "Centralizei indicadores e processos em uma visão comum, com aprofundamento por unidade.",
@@ -318,7 +1500,20 @@
       "captionTwo": null,
       "websiteNote": null,
       "testimonial": null,
-      "showcase": null
+      "showcase": {
+        "bento": null,
+        "grid": [
+          "/projetos/plataforma-integradade-gestaodas-unidades/dashboard.png",
+          "/projetos/plataforma-integradade-gestaodas-unidades/gestao.png",
+          "/projetos/plataforma-integradade-gestaodas-unidades/unidades.png",
+          "/projetos/plataforma-integradade-gestaodas-unidades/relatorios.png"
+        ],
+        "full": null,
+        "pages": null,
+        "mockups": null,
+        "testimonialImage": null,
+        "avatar": null
+      }
     },
     {
       "slug": "plataformade-intervencoes-pedagogicas-inteligentes",
@@ -335,7 +1530,6 @@
         "Educação",
         "Gestão pública"
       ],
-      "location": "Alagoas, BR",
       "growthStage": "Enterprise",
       "cover": "/projetos/plataformade-intervencoes-pedagogicas-inteligentes/capa.webp",
       "visualIdentity": {
@@ -408,6 +1602,7 @@
           ]
         }
       },
+      "learnings": null,
       "intro": "Um painel que ajuda gestores a responder, em segundos, quais escolas precisam de atenção agora.",
       "challenge": "Dados educacionais espalhados em planilhas e sistemas isolados.",
       "approach": "Consolidei tudo em semáforos de risco com uma semântica de cor consistente do primeiro ao último gráfico.",
@@ -421,24 +1616,103 @@
         "full": "/projetos/plataformade-intervencoes-pedagogicas-inteligentes/design-system.png",
         "mockups": null,
         "testimonialImage": null,
-        "avatar": null
+        "avatar": null,
+        "pages": null
       }
     },
     {
       "slug": "the-be-social",
       "title": "The Be Social",
       "client": null,
-      "category": null,
+      "category": "Site institucional",
       "year": null,
-      "services": null,
+      "services": [
+        "UX/UI",
+        "Front-end"
+      ],
       "industries": [
         "Marketing",
         "Social media"
       ],
-      "location": "Remoto, BR",
       "growthStage": "Agência",
       "cover": "/projetos/the-be-social/capa.webp",
-      "visualIdentity": null,
+      "visualIdentity": {
+        "secondaryImage": {
+          "src": "/projetos/the-be-social/capa.webp",
+          "alt": "Tela do projeto The Be Social",
+          "caption": "O site de uma agência de social media que precisava parecer tão criativa quanto o trabalho que entrega."
+        },
+        "colors": {
+          "primary": {
+            "name": "Magenta",
+            "hex": "#D60B42"
+          },
+          "background": {
+            "name": "Noite",
+            "hex": "#191A28"
+          },
+          "text": {
+            "name": "Texto",
+            "hex": "#FFFFFF"
+          },
+          "additional": [
+            {
+              "name": "Vermelho",
+              "hex": "#B91C1C"
+            },
+            {
+              "name": "Cinza Frio",
+              "hex": "#BDBFD4"
+            }
+          ],
+          "gradient": null
+        },
+        "brandAsset": {
+          "type": "logo",
+          "src-img": null,
+          "bgColor": "#191A28",
+          "alt": "Marca do projeto The Be Social",
+          "title": "The Be Social",
+          "monogram": "BS"
+        },
+        "typography": {
+          "primary": {
+            "family": "Space Grotesk",
+            "usage": "Títulos e chamadas",
+            "weights": [
+              500,
+              700
+            ]
+          },
+          "secondary": {
+            "family": "Plus Jakarta Sans",
+            "usage": "Corpo do site",
+            "weights": [
+              400,
+              600
+            ]
+          },
+          "sample": {
+            "uppercase": "THE BE SOCIAL",
+            "lowercase": "the be social",
+            "title": "The Be Social",
+            "text": "O site de uma agência de social media que precisava parecer tão criativa quanto o trabalho que entrega."
+          }
+        },
+        "icons": {
+          "library": "Lucide Icons",
+          "package": "lucide-react",
+          "website": "https://lucide.dev",
+          "items": [
+            "Instagram",
+            "Megaphone",
+            "TrendingUp",
+            "Users",
+            "ArrowUpRight"
+          ]
+        }
+      },
+      "learnings": null,
       "intro": "O site de uma agência de social media que precisava parecer tão criativa quanto o trabalho que entrega.",
       "challenge": "Traduzir energia e criatividade sem cair no clichê de agência.",
       "approach": "Apostei em um layout ousado, ritmo dinâmico e cases em destaque para provar o valor logo de cara.",
@@ -446,71 +1720,332 @@
       "captionTwo": null,
       "websiteNote": null,
       "testimonial": null,
-      "showcase": null
+      "showcase": {
+        "bento": null,
+        "grid": null,
+        "full": null,
+        "pages": null,
+        "mockups": [
+          {
+            "src": "/projetos/the-be-social/site.jpg",
+            "title": "Site completo"
+          }
+        ],
+        "testimonialImage": null,
+        "avatar": null
+      }
     },
     {
       "slug": "panorama-das-matrizes-eletrica-e-energetica",
       "title": "Panorama das Matrizes Elétrica e Energética",
       "client": null,
-      "category": null,
+      "category": "Power BI · Dashboard",
       "year": null,
-      "services": null,
+      "services": [
+        "UX/UI",
+        "Power BI",
+        "Visualização de dados"
+      ],
       "industries": [
         "Energia",
-        "Institucional"
+        "Indústria"
       ],
-      "location": "Maceió, BR",
       "growthStage": "Institucional",
       "cover": "/projetos/panorama-das-matrizes-eletrica-e-energetica/capa.webp",
-      "visualIdentity": null,
-      "intro": "Um panorama visual das matrizes elétrica e energética, das fontes ao consumo.",
+      "visualIdentity": {
+        "secondaryImage": {
+          "src": "/projetos/panorama-das-matrizes-eletrica-e-energetica/capa.webp",
+          "alt": "Tela do projeto Panorama das Matrizes Elétrica e Energética",
+          "caption": "Um painel em Power BI que compara as matrizes elétrica e energética, das fontes ao consumo."
+        },
+        "colors": {
+          "primary": {
+            "name": "Azul Energia",
+            "hex": "#25AAE1"
+          },
+          "background": {
+            "name": "Noite",
+            "hex": "#030B21"
+          },
+          "text": {
+            "name": "Texto",
+            "hex": "#FFFFFF"
+          },
+          "additional": [
+            {
+              "name": "Marinho",
+              "hex": "#003274"
+            }
+          ],
+          "gradient": null
+        },
+        "brandAsset": {
+          "type": "logo",
+          "src-img": null,
+          "bgColor": "#030B21",
+          "alt": "Marca do projeto Panorama das Matrizes Elétrica e Energética",
+          "title": "Panorama das Matrizes Elétrica e Energética",
+          "monogram": "MT"
+        },
+        "typography": {
+          "primary": {
+            "family": "Segoe UI",
+            "usage": "Relatório inteiro",
+            "weights": [
+              400,
+              600,
+              700
+            ]
+          },
+          "secondary": null,
+          "sample": {
+            "uppercase": "PANORAMA DAS MATRIZES ELÉTRICA E ENERGÉTICA",
+            "lowercase": "panorama das matrizes elétrica e energética",
+            "title": "Panorama das Matrizes Elétrica e Energética",
+            "text": "Um painel em Power BI que compara as matrizes elétrica e energética, das fontes ao consumo."
+          }
+        },
+        "icons": {
+          "library": "Lucide Icons",
+          "package": "lucide-react",
+          "website": "https://lucide.dev",
+          "items": [
+            "Zap",
+            "BarChart3",
+            "Factory",
+            "Gauge",
+            "TrendingUp"
+          ]
+        }
+      },
+      "learnings": null,
+      "intro": "Um painel em Power BI que compara as matrizes elétrica e energética, das fontes ao consumo.",
       "challenge": "Diferenciar matriz elétrica de energética para um público não técnico.",
-      "approach": "Usei gráficos comparativos e uma narrativa que separa as duas matrizes antes de cruzá-las.",
+      "approach": "Separei as duas matrizes em páginas próprias antes de cruzá-las, com gráficos comparativos e uma legenda que se repete em todas as telas.",
       "captionOne": null,
       "captionTwo": null,
       "websiteNote": null,
       "testimonial": null,
-      "showcase": null
+      "showcase": {
+        "bento": null,
+        "grid": null,
+        "full": null,
+        "pages": [
+          "/projetos/panorama-das-matrizes-eletrica-e-energetica/pagina-13.png",
+          "/projetos/panorama-das-matrizes-eletrica-e-energetica/pagina-27.png"
+        ],
+        "mockups": null,
+        "testimonialImage": null,
+        "avatar": null
+      }
     },
     {
       "slug": "panorama-de-desenvolvimento-dos-municipios",
       "title": "Panorama de Desenvolvimento dos Municípios",
       "client": null,
-      "category": null,
+      "category": "Power BI · Dashboard",
       "year": null,
-      "services": null,
+      "services": [
+        "UX/UI",
+        "Power BI",
+        "Visualização de dados"
+      ],
       "industries": [
         "Dados públicos",
-        "Institucional"
+        "Gestão pública"
       ],
-      "location": "Maceió, BR",
       "growthStage": "Institucional",
       "cover": "/projetos/panorama-de-desenvolvimento-dos-municipios/capa.webp",
-      "visualIdentity": null,
-      "intro": "Uma plataforma para comparar indicadores de desenvolvimento entre os municípios alagoanos.",
-      "challenge": "Permitir comparar 102 municípios sem sobrecarregar a interface.",
-      "approach": "Combinei mapa, ranking e ficha por município, com filtros que respondem na hora.",
+      "visualIdentity": {
+        "secondaryImage": {
+          "src": "/projetos/panorama-de-desenvolvimento-dos-municipios/capa.webp",
+          "alt": "Tela do projeto Panorama de Desenvolvimento dos Municípios",
+          "caption": "Um painel em Power BI para comparar indicadores de desenvolvimento entre os municípios alagoanos."
+        },
+        "colors": {
+          "primary": {
+            "name": "Azul Institucional",
+            "hex": "#0A5AA4"
+          },
+          "background": {
+            "name": "Fundo",
+            "hex": "#FFFFFF"
+          },
+          "text": {
+            "name": "Texto",
+            "hex": "#1E1E1E"
+          },
+          "additional": [
+            {
+              "name": "Ardósia",
+              "hex": "#3F516E"
+            },
+            {
+              "name": "Azul Claro",
+              "hex": "#B7DCFF"
+            }
+          ],
+          "gradient": null
+        },
+        "brandAsset": {
+          "type": "logo",
+          "src-img": null,
+          "bgColor": "#FFFFFF",
+          "alt": "Marca do projeto Panorama de Desenvolvimento dos Municípios",
+          "title": "Panorama de Desenvolvimento dos Municípios",
+          "monogram": "PM"
+        },
+        "typography": {
+          "primary": {
+            "family": "Segoe UI",
+            "usage": "Corpo e tabelas",
+            "weights": [
+              400,
+              600
+            ]
+          },
+          "secondary": {
+            "family": "Poppins",
+            "usage": "Títulos de seção",
+            "weights": [
+              600,
+              700
+            ]
+          },
+          "sample": {
+            "uppercase": "PANORAMA DE DESENVOLVIMENTO DOS MUNICÍPIOS",
+            "lowercase": "panorama de desenvolvimento dos municípios",
+            "title": "Panorama de Desenvolvimento dos Municípios",
+            "text": "Um painel em Power BI para comparar indicadores de desenvolvimento entre os municípios alagoanos."
+          }
+        },
+        "icons": {
+          "library": "Lucide Icons",
+          "package": "lucide-react",
+          "website": "https://lucide.dev",
+          "items": [
+            "MapPin",
+            "BarChart3",
+            "Users",
+            "FileText",
+            "TrendingUp"
+          ]
+        }
+      },
+      "learnings": null,
+      "intro": "Um painel em Power BI para comparar indicadores de desenvolvimento entre os municípios alagoanos.",
+      "challenge": "Permitir comparar 102 municípios sem sobrecarregar a tela.",
+      "approach": "Combinei mapa, ranking e ficha por município, com segmentações que respondem na hora.",
       "captionOne": null,
       "captionTwo": null,
       "websiteNote": null,
       "testimonial": null,
-      "showcase": null
+      "showcase": {
+        "bento": null,
+        "grid": null,
+        "full": null,
+        "pages": [
+          "/projetos/panorama-de-desenvolvimento-dos-municipios/pagina-01.png",
+          "/projetos/panorama-de-desenvolvimento-dos-municipios/pagina-03.png",
+          "/projetos/panorama-de-desenvolvimento-dos-municipios/pagina-04.png",
+          "/projetos/panorama-de-desenvolvimento-dos-municipios/pagina-06.png"
+        ],
+        "mockups": null,
+        "testimonialImage": null,
+        "avatar": null
+      }
     },
     {
       "slug": "plataforma-do-obervatorio-interna",
       "title": "Plataforma do Observatório",
       "client": null,
-      "category": null,
+      "category": "Plataforma web",
       "year": null,
-      "services": null,
+      "services": [
+        "UX/UI",
+        "Design System",
+        "Front-end"
+      ],
       "industries": [
         "Indústria",
-        "Institucional"
+        "Dados públicos"
       ],
-      "location": "Maceió, BR",
       "growthStage": "Institucional",
       "cover": "/projetos/plataforma-do-obervatorio-interna/capa.webp",
-      "visualIdentity": null,
+      "visualIdentity": {
+        "secondaryImage": {
+          "src": "/projetos/plataforma-do-obervatorio-interna/capa.webp",
+          "alt": "Tela do projeto Plataforma do Observatório",
+          "caption": "A área interna do Observatório da Indústria, onde os dados deixam de ser PDF e viram vitrine viva."
+        },
+        "colors": {
+          "primary": {
+            "name": "Azul Observatório",
+            "hex": "#25AAE1"
+          },
+          "background": {
+            "name": "Fundo",
+            "hex": "#FFFFFF"
+          },
+          "text": {
+            "name": "Texto",
+            "hex": "#000000"
+          },
+          "additional": [
+            {
+              "name": "Azul Institucional",
+              "hex": "#0C4DA2"
+            }
+          ],
+          "gradient": null
+        },
+        "brandAsset": {
+          "type": "logo",
+          "src-img": null,
+          "bgColor": "#FFFFFF",
+          "alt": "Marca do projeto Plataforma do Observatório",
+          "title": "Plataforma do Observatório",
+          "monogram": "PO"
+        },
+        "typography": {
+          "primary": {
+            "family": "Observatório Nacional Sans",
+            "usage": "Marca e títulos",
+            "weights": [
+              400,
+              700
+            ]
+          },
+          "secondary": {
+            "family": "DM Sans",
+            "usage": "Corpo do site",
+            "weights": [
+              400,
+              500,
+              700
+            ]
+          },
+          "sample": {
+            "uppercase": "PLATAFORMA DO OBSERVATÓRIO",
+            "lowercase": "plataforma do observatório",
+            "title": "Plataforma do Observatório",
+            "text": "A área interna do Observatório da Indústria, onde os dados deixam de ser PDF e viram vitrine viva."
+          }
+        },
+        "icons": {
+          "library": "Lucide Icons",
+          "package": "lucide-react",
+          "website": "https://lucide.dev",
+          "items": [
+            "Telescope",
+            "BarChart3",
+            "Users",
+            "Mail",
+            "ArrowRight"
+          ]
+        }
+      },
+      "learnings": null,
       "intro": "A área interna do Observatório da Indústria, onde os dados deixam de ser PDF e viram vitrine viva.",
       "challenge": "Equilibrar a sobriedade institucional com uma linguagem que comunique tecnologia.",
       "approach": "Interface escura de base azul em que gráficos e indicadores são os protagonistas.",
@@ -518,31 +2053,280 @@
       "captionTwo": null,
       "websiteNote": null,
       "testimonial": null,
-      "showcase": null
+      "showcase": {
+        "bento": null,
+        "grid": null,
+        "full": null,
+        "pages": null,
+        "mockups": [
+          {
+            "src": "/projetos/plataforma-do-obervatorio-interna/sobre.png",
+            "title": "Sobre"
+          },
+          {
+            "src": "/projetos/plataforma-do-obervatorio-interna/time.png",
+            "title": "Time"
+          },
+          {
+            "src": "/projetos/plataforma-do-obervatorio-interna/contato.png",
+            "title": "Contato"
+          }
+        ],
+        "testimonialImage": null,
+        "avatar": null
+      }
     },
     {
       "slug": "radar-tarifario-global",
       "title": "Radar Tarifário Global",
       "client": null,
-      "category": null,
+      "category": "Power BI · Dashboard",
       "year": null,
-      "services": null,
+      "services": [
+        "UX/UI",
+        "Power BI",
+        "Visualização de dados"
+      ],
       "industries": [
         "Comércio exterior",
-        "Institucional"
+        "Indústria"
       ],
-      "location": "Maceió, BR",
       "growthStage": "Institucional",
       "cover": "/projetos/radar-tarifario-global/capa.webp",
-      "visualIdentity": null,
-      "intro": "Um radar que acompanha mudanças tarifárias pelo mundo e seus reflexos para a indústria.",
-      "challenge": "Transformar um fluxo constante de mudanças tarifárias em algo legível e atual.",
-      "approach": "Organizei o conteúdo por país e setor, com destaques do que mudou e por quê.",
+      "visualIdentity": {
+        "secondaryImage": {
+          "src": "/projetos/radar-tarifario-global/powerbi-1.png",
+          "alt": "Tela do projeto Radar Tarifário Global",
+          "caption": "Um painel em Power BI que acompanha mudanças tarifárias pelo mundo e seus reflexos para a indústria."
+        },
+        "colors": {
+          "primary": {
+            "name": "Ciano Radar",
+            "hex": "#00FFFF"
+          },
+          "background": {
+            "name": "Índigo",
+            "hex": "#0B053F"
+          },
+          "text": {
+            "name": "Texto",
+            "hex": "#FFFFFF"
+          },
+          "additional": [
+            {
+              "name": "Petróleo",
+              "hex": "#09344F"
+            },
+            {
+              "name": "Azul Profundo",
+              "hex": "#05233B"
+            }
+          ],
+          "gradient": null
+        },
+        "brandAsset": {
+          "type": "logo",
+          "src-img": null,
+          "bgColor": "#0B053F",
+          "alt": "Marca do projeto Radar Tarifário Global",
+          "title": "Radar Tarifário Global",
+          "monogram": "RT"
+        },
+        "typography": {
+          "primary": {
+            "family": "Segoe UI",
+            "usage": "Painéis do Power BI",
+            "weights": [
+              400,
+              600
+            ]
+          },
+          "secondary": {
+            "family": "Inter",
+            "usage": "Números e rótulos",
+            "weights": [
+              400,
+              600,
+              700
+            ]
+          },
+          "sample": {
+            "uppercase": "RADAR TARIFÁRIO GLOBAL",
+            "lowercase": "radar tarifário global",
+            "title": "Radar Tarifário Global",
+            "text": "Um painel em Power BI que acompanha mudanças tarifárias pelo mundo e seus reflexos para a indústria."
+          }
+        },
+        "icons": {
+          "library": "Lucide Icons",
+          "package": "lucide-react",
+          "website": "https://lucide.dev",
+          "items": [
+            "Radar",
+            "Globe",
+            "TrendingUp",
+            "BarChart3",
+            "Filter"
+          ]
+        }
+      },
+      "learnings": null,
+      "intro": "Um painel em Power BI que acompanha mudanças tarifárias pelo mundo e seus reflexos para a indústria.",
+      "challenge": "Transformar um fluxo constante de mudanças tarifárias em leitura atual e comparável.",
+      "approach": "Organizei os dados por país e setor, com destaques do que mudou no período e segmentações que cruzam origem e produto.",
       "captionOne": null,
       "captionTwo": null,
       "websiteNote": null,
       "testimonial": null,
-      "showcase": null
+      "showcase": {
+        "bento": null,
+        "grid": [
+          "/projetos/radar-tarifario-global/capa-alta-fidelidade.png",
+          "/projetos/radar-tarifario-global/powerbi-1.png",
+          "/projetos/radar-tarifario-global/powerbi-2.png",
+          "/projetos/radar-tarifario-global/powerbi-3.png"
+        ],
+        "full": null,
+        "pages": null,
+        "mockups": null,
+        "testimonialImage": null,
+        "avatar": null
+      }
+    },
+    {
+      "slug": "hiato-fitocosmeticos",
+      "title": "Hiato Fitocosméticos",
+      "client": "Hiato Fitocosméticos",
+      "category": "E-commerce · WordPress",
+      "year": "2024",
+      "services": [
+        "UX/UI",
+        "Design de e-commerce",
+        "WordPress"
+      ],
+      "industries": [
+        "Varejo",
+        "Cosméticos"
+      ],
+      "growthStage": "PME",
+      "cover": "/projetos/hiato-fitocosmeticos/capa.png",
+      "visualIdentity": {
+        "secondaryImage": {
+          "src": "/projetos/hiato-fitocosmeticos/marca.jpg",
+          "alt": "Seção do sabonete vegetal de jabuticaba sobre fundo verde-sálvia",
+          "caption": "A linha de jabuticaba abre a loja: produto em destaque, fundo sálvia e um único botão de ação."
+        },
+        "colors": {
+          "primary": {
+            "name": "Verde Sálvia",
+            "hex": "#516250"
+          },
+          "background": {
+            "name": "Fundo",
+            "hex": "#E3ECE5"
+          },
+          "text": {
+            "name": "Texto",
+            "hex": "#3C3C3C"
+          },
+          "additional": [
+            {
+              "name": "Terracota (ações)",
+              "hex": "#D05D39"
+            },
+            {
+              "name": "Oliva Areia",
+              "hex": "#D0D3AC"
+            }
+          ],
+          "gradient": null
+        },
+        "brandAsset": {
+          "type": "logo",
+          "src": "/projetos/hiato-fitocosmeticos/logo.svg",
+          "src-img": null,
+          "bgColor": "#FFFFFF",
+          "alt": "Logotipo da Hiato Fitocosméticos",
+          "title": "Hiato Fitocosméticos",
+          "monogram": "HI"
+        },
+        "typography": {
+          "primary": {
+            "family": "Lato",
+            "usage": "Interface, navegação, produtos e preços",
+            "weights": [
+              400,
+              500,
+              700,
+              900
+            ]
+          },
+          "secondary": {
+            "family": "Cormorant Garamond",
+            "usage": "Títulos editoriais e chamadas de coleção",
+            "weights": [
+              300,
+              600
+            ]
+          },
+          "sample": {
+            "uppercase": "HIATO · FITOCOSMÉTICOS",
+            "lowercase": "hiato · fitocosméticos",
+            "title": "Experimente a pureza da natureza",
+            "text": "Uma pausa no dia: cosméticos naturais, veganos e feitos com jabuticaba."
+          }
+        },
+        "icons": {
+          "library": "Lucide Icons",
+          "package": "lucide-react",
+          "website": "https://lucide.dev",
+          "items": [
+            "Search",
+            "User",
+            "Heart",
+            "ShoppingCart",
+            "ChevronDown",
+            "Leaf",
+            "Sparkles",
+            "Package"
+          ]
+        }
+      },
+      "learnings": null,
+      "intro": "Uma loja de cosméticos naturais que vende ritual, não só produto — a pausa que dá nome à marca.",
+      "challenge": "Catálogo artesanal disperso entre categorias, kits e coleções, sem um caminho claro da vitrine até o carrinho.",
+      "approach": "Estruturei a loja em torno da linha de jabuticaba e reservei o terracota só para ação: em cada tela existe um botão óbvio, e o resto respira em verde-sálvia.",
+      "captionOne": "Os mais vendidos abrem a home — a jabuticaba puxa o catálogo inteiro.",
+      "captionTwo": "Terracota só aparece onde se clica; o resto da paleta fica em segundo plano.",
+      "websiteNote": "Cosméticos naturais e veganos, com a jabuticaba no centro da linha.",
+      "websiteUrl": "https://hiatofitocosmeticos.com.br/",
+      "testimonial": null,
+      "showcase": {
+        "bento": null,
+        "grid": null,
+        "full": "/projetos/hiato-fitocosmeticos/home.jpg",
+        "mockups": [
+          {
+            "src": "/projetos/hiato-fitocosmeticos/categorias.png",
+            "title": "Categorias"
+          },
+          {
+            "src": "/projetos/hiato-fitocosmeticos/produto.png",
+            "title": "Página de produto"
+          },
+          {
+            "src": "/projetos/hiato-fitocosmeticos/carrinho.png",
+            "title": "Carrinho"
+          },
+          {
+            "src": "/projetos/hiato-fitocosmeticos/blog.png",
+            "title": "Blog"
+          }
+        ],
+        "testimonialImage": null,
+        "avatar": null,
+        "pages": null
+      }
     }
   ]
 }

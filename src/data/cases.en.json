@@ -2,14 +2,20 @@
   "acordo-mercosul-uniao-europeia": {
     "title": "Mercosur – European Union Agreement",
     "client": "Observatório da Indústria — FIEA",
-    "category": "Data feature",
-    "services": ["UX/UI", "Data visualisation", "Front-end"],
-    "industries": ["Industry", "Foreign trade"],
-    "location": "Maceió, Brazil",
+    "category": "Study · Editorial layout",
+    "services": [
+      "Editorial layout",
+      "Publication design",
+      "Infographics"
+    ],
+    "industries": [
+      "Industry",
+      "Foreign trade"
+    ],
     "growthStage": "Institutional",
-    "intro": "A data feature that translates the impact of the Mercosur–European Union trade agreement for the industry of Alagoas.",
-    "challenge": "Explaining a complex, number-heavy agreement to a broad audience without losing technical rigour.",
-    "approach": "I structured the narrative into visual blocks — affected sectors, opportunities and risks — with charts that guide the reading from top to bottom.",
+    "intro": "The editorial layout of the study on how the Mercosur–European Union trade deal affects industry in Alagoas.",
+    "challenge": "A dense study, full of tables and figures, that had to fit into readable pages without losing technical rigour.",
+    "approach": "I set a constant page grid — opener, data, analysis — and turned the heaviest tables into infographics.",
     "captionOne": "Every section opens with an anchor figure and unfolds the context right below it.",
     "captionTwo": "Charts and maps take the lead; the copy guides instead of competing.",
     "websiteNote": "A navigable feature that turns an international agreement into a clear read for the productive sector.",
@@ -22,14 +28,20 @@
   "app-tempo-previsto": {
     "title": "Tempo Previsto App",
     "client": "In-house product",
-    "category": "Mobile app",
-    "services": ["UX/UI", "Product design", "Front-end"],
-    "industries": ["Weather", "Mobile"],
-    "location": "Remote, Brazil",
-    "growthStage": "MVP",
-    "intro": "A weather app built around clarity: the right information, at the right moment, with no noise.",
-    "challenge": "Weather apps pile up data and clutter the screen; hierarchy and quick reading were missing.",
-    "approach": "I designed a home screen that answers \"what it is like now and what comes next\" in seconds, with details on demand.",
+    "category": "Mobile app · React Native",
+    "services": [
+      "UX/UI",
+      "React Native",
+      "Front-end"
+    ],
+    "industries": [
+      "Meteorology",
+      "Academic"
+    ],
+    "growthStage": "Personal",
+    "intro": "A weather app built in React Native as my final course project.",
+    "challenge": "Shipping a working app from scratch — from screen design to consuming the weather API — within the deadline.",
+    "approach": "I designed the screens in Figma and built them in React Native, with a home screen that answers “what it's like now and what's next” in seconds.",
     "captionOne": "The immediate forecast owns the top; the timeline deepens as you scroll.",
     "captionTwo": "Large icons and type keep it readable at a glance, even on the move.",
     "websiteNote": "A weather app that puts the user's decision — umbrella or no umbrella — above everything else.",
@@ -42,14 +54,20 @@
   "boletim-economico-visao-alagoas": {
     "title": "Visão Alagoas Economic Bulletin",
     "client": "Observatório da Indústria — FIEA",
-    "category": "Data publication",
-    "services": ["UX/UI", "Data visualisation", "Front-end"],
-    "industries": ["Economy", "Institutional"],
-    "location": "Maceió, Brazil",
+    "category": "Study · Editorial layout",
+    "services": [
+      "Editorial layout",
+      "Publication design",
+      "Infographics"
+    ],
+    "industries": [
+      "Economy",
+      "Open data"
+    ],
     "growthStage": "Institutional",
-    "intro": "The digital edition of the state's economic bulletin, trading a static PDF for living, navigable indicators.",
-    "challenge": "Moving a dense report to the web without losing depth or pushing the reader away.",
-    "approach": "I broke the bulletin into sections with key indicators up front and interactive charts by theme.",
+    "intro": "The editorial layout of the state's economic bulletin, a recurring publication tracking Alagoas indicators.",
+    "challenge": "Many indicators per issue, in a format that repeats every edition and still cannot feel monotonous.",
+    "approach": "I built a reusable page system: fixed grid, standardised chart families and section openers that give the data blocks room to breathe.",
     "captionOne": "Each indicator carries the number, the change and the context in a single read.",
     "captionTwo": "Historical series gain charts that respond to touch.",
     "websiteNote": "An economic bulletin that stopped being a file and became a panel for continuous reference.",
@@ -62,14 +80,20 @@
   "combate-ao-desmatamento-em-alagoas-desmatamento-e-fogo-map-biomas": {
     "title": "Fighting Deforestation in Alagoas",
     "client": "Observatório da Indústria — FIEA",
-    "category": "Data feature",
-    "services": ["UX/UI", "Data visualisation", "Front-end"],
-    "industries": ["Environment", "Open data"],
-    "location": "Maceió, Brazil",
+    "category": "Web system · Dashboard",
+    "services": [
+      "UX/UI",
+      "Data visualisation",
+      "Front-end"
+    ],
+    "industries": [
+      "Environment",
+      "Open data"
+    ],
     "growthStage": "Institutional",
-    "intro": "A feature that crosses MapBiomas data on deforestation and fire in Alagoas into a clear territorial read.",
-    "challenge": "Making an abstract environmental subject tangible, with heaps of geographic and time-series data.",
-    "approach": "Maps and time series tell how deforestation evolved by region, with filters by period.",
+    "intro": "A dashboard cross-referencing MapBiomas data on deforestation and fire in Alagoas.",
+    "challenge": "Making an abstract environmental subject tangible, with a lot of geographic and time-series data.",
+    "approach": "Maps and time series tell the story region by region, with period filters and a palette that keeps vegetation, alert and fire apart.",
     "captionOne": "The map is the centre of the narrative; the numbers confirm what the eyes already see.",
     "captionTwo": "The timeline reveals progress and setbacks, year by year.",
     "websiteNote": "MapBiomas data turned into a territorial story about deforestation and fire.",
@@ -82,14 +106,20 @@
   "conectandoofuturo-avancandocom-esgnaindustria": {
     "title": "Connecting the Future: ESG in Industry",
     "client": "Observatório da Indústria — FIEA",
-    "category": "Landing page",
-    "services": ["UX/UI", "Front-end", "Motion"],
-    "industries": ["ESG", "Industry"],
-    "location": "Maceió, Brazil",
+    "category": "Study · Editorial layout",
+    "services": [
+      "Editorial layout",
+      "Publication design",
+      "Infographics"
+    ],
+    "industries": [
+      "ESG",
+      "Industry"
+    ],
     "growthStage": "Institutional",
-    "intro": "A landing page that presents the ESG agenda of the industry in Alagoas and invites engagement.",
-    "challenge": "Communicating a dense institutional subject (ESG) in an inspiring, accessible way.",
-    "approach": "I structured the page around the pillars — environmental, social and governance — with a visual path that leads to action.",
+    "intro": "The editorial layout of the study on the ESG agenda in Alagoas industry.",
+    "challenge": "Turning a dense institutional subject into pages that invite reading.",
+    "approach": "I organised the content around the three pillars — environmental, social and governance — with illustrated openers and a rhythm alternating text, data and image.",
     "captionOne": "Each ESG pillar gets its own visual block and call to action.",
     "captionTwo": "Subtle animation reinforces the idea of progress and future.",
     "websiteNote": "A landing page that turns the industry's ESG strategy into a story about the future.",
@@ -102,14 +132,20 @@
   "ecommerce-pai-eterno": {
     "title": "Pai Eterno E-commerce",
     "client": "Pai Eterno",
-    "category": "Online store",
-    "services": ["UX/UI", "Front-end", "Research", "Accessibility"],
-    "industries": ["Retail", "Faith"],
-    "location": "Remote, Brazil",
+    "category": "E-commerce · Tray Commerce",
+    "services": [
+      "UX/UI",
+      "Tray Commerce theme",
+      "Front-end"
+    ],
+    "industries": [
+      "Retail",
+      "Faith"
+    ],
     "growthStage": "SMB",
-    "intro": "A devotional online store designed for a broad audience with little experience buying online.",
-    "challenge": "Every decision started from one question: could my grandmother buy this on her own?",
-    "approach": "I reduced the journey to the essentials, with clear steps, generous type and the brand's blue-and-gold identity.",
+    "intro": "A devotional shop built as a Tray Commerce theme, for an audience with little experience buying online.",
+    "challenge": "Every decision came from one question: could my grandmother buy this on her own?",
+    "approach": "I customised the Tray theme until the shop felt bespoke — the journey cut to essentials, generous type, and the brand's blue and gold throughout.",
     "captionOne": "One decision per screen, with the primary button always in sight.",
     "captionTwo": "Gold appears only at meaningful moments — seals and confirmation.",
     "websiteNote": "A devotional store where solemnity and simplicity walk together.",
@@ -122,14 +158,20 @@
   "economia-do-mar-em-alagoas": {
     "title": "The Ocean Economy in Alagoas",
     "client": "Observatório da Indústria — FIEA",
-    "category": "Data feature",
-    "services": ["UX/UI", "Data visualisation", "Front-end"],
-    "industries": ["Blue economy", "Institutional"],
-    "location": "Maceió, Brazil",
+    "category": "Study · Editorial layout",
+    "services": [
+      "Editorial layout",
+      "Publication design",
+      "Infographics"
+    ],
+    "industries": [
+      "Blue economy",
+      "Tourism"
+    ],
     "growthStage": "Institutional",
-    "intro": "A feature about the potential of the ocean economy for Alagoas, from ports to tourism.",
-    "challenge": "Bringing scattered sectors — fishing, ports, tourism and energy — into a single narrative.",
-    "approach": "I organised the content by value chain, with data and imagery that give scale to the maritime potential.",
+    "intro": "The editorial layout of the study on the potential of the ocean economy in Alagoas, from ports to tourism.",
+    "challenge": "Bringing scattered sectors — fishing, ports, tourism and energy — into one coherent publication.",
+    "approach": "Each value chain got its own block on the same page structure, with full-page photography to give the subject scale.",
     "captionOne": "Each sector of the blue economy gets its own slice of data.",
     "captionTwo": "Photography and numbers alternate to make the subject concrete.",
     "websiteNote": "A navigable overview of the economic potential of the Alagoas coast.",
@@ -142,14 +184,20 @@
   "meu-primeiro-portfolio": {
     "title": "My First Portfolio",
     "client": "Personal project",
-    "category": "Portfolio",
-    "services": ["Design", "Front-end"],
-    "industries": ["Personal", "Web"],
-    "location": "Remote, Brazil",
+    "category": "Personal site · 3D",
+    "services": [
+      "UX/UI",
+      "HTML, CSS and JavaScript",
+      "WebGL"
+    ],
+    "industries": [
+      "Personal",
+      "Web"
+    ],
     "growthStage": "Personal",
-    "intro": "The portfolio that marked my first steps as a designer and front-end developer.",
-    "challenge": "Translating my identity into a website while I was still learning the craft.",
-    "approach": "I went for a clean layout and interface experiments that became my training ground.",
+    "intro": "My first website: plain HTML, CSS and JavaScript, with a 3D scene on the opening screen.",
+    "challenge": "Learning 3D on the web and still shipping a site that loaded well on any machine.",
+    "approach": "I built everything by hand, no framework. The 3D scene became the calling card and the rest of the layout stayed clean so it wouldn't compete.",
     "captionOne": "Every section was an excuse to learn something new in CSS.",
     "captionTwo": "Simplicity out of necessity — and out of taste.",
     "websiteNote": "The starting point: a portfolio documenting the beginning of the journey.",
@@ -162,14 +210,19 @@
   "miau-dote": {
     "title": "MiauDote",
     "client": "In-house project",
-    "category": "App / Product",
-    "services": ["UX/UI", "Product design", "Branding"],
-    "industries": ["Pets", "Social"],
-    "location": "Remote, Brazil",
+    "category": "Mobile app · Concept",
+    "services": [
+      "UX/UI",
+      "Prototyping"
+    ],
+    "industries": [
+      "Pets",
+      "Social"
+    ],
     "growthStage": "Concept",
-    "intro": "An app that brings pets in need of a home closer to people willing to adopt — or to rehome responsibly.",
-    "challenge": "Making responsible adoption simple and warm, without paperwork that discourages people.",
-    "approach": "I designed a light discovery-and-contact flow, with the animal's profile and location at the centre of the experience.",
+    "intro": "A concept for a pet adoption app, designed and prototyped in Figma.",
+    "challenge": "Making responsible adoption simple and warm, without paperwork that puts people off.",
+    "approach": "I prototyped the whole flow — discovery, animal profile and contact — across twenty screens. It stopped at Figma on purpose: the goal was validating the experience, not writing code.",
     "captionOne": "Adopt or rehome: two clear doors on the very first screen.",
     "captionTwo": "Every profile carries temperament, location and availability status.",
     "websiteNote": "Pet adoption with less friction and more affection, from discovery to home.",
@@ -182,14 +235,20 @@
   "minha-primeira-landing-page": {
     "title": "My First Landing Page",
     "client": "Personal project",
-    "category": "Landing page",
-    "services": ["Design", "Front-end"],
-    "industries": ["Personal", "Web"],
-    "location": "Remote, Brazil",
+    "category": "Landing page · React",
+    "services": [
+      "UX/UI",
+      "React",
+      "Front-end"
+    ],
+    "industries": [
+      "Personal",
+      "Web"
+    ],
     "growthStage": "Personal",
-    "intro": "The exercise that taught me to build a landing page from scratch, from layout to deploy.",
-    "challenge": "Getting out of the tutorial and shipping something published, responsive and working.",
-    "approach": "I focused on a classic conversion structure and on getting spacing, rhythm and responsiveness right.",
+    "intro": "My first landing page in React — the shift from plain HTML to components.",
+    "challenge": "Getting past the tutorial and shipping something published, responsive and componentised.",
+    "approach": "I broke the page into reusable components and used the project to get spacing, rhythm and responsiveness right.",
     "captionOne": "One fold to introduce, one to convince, one to invite.",
     "captionTwo": "Every margin tweak was a hands-on lesson.",
     "websiteNote": "The first landing page I published — small in scope, big in learning.",
@@ -202,10 +261,16 @@
   "paineis-gerencias": {
     "title": "Management Dashboards",
     "client": "Corporate system",
-    "category": "Internal system",
-    "services": ["Product design", "Design system", "Front-end"],
-    "industries": ["Corporate", "Software"],
-    "location": "Remote, Brazil",
+    "category": "Web system · Dashboard",
+    "services": [
+      "UX/UI",
+      "Design system",
+      "Front-end"
+    ],
+    "industries": [
+      "Corporate",
+      "Software"
+    ],
     "growthStage": "Enterprise",
     "intro": "Rebuilding access to management dashboards on top of a lean design system.",
     "challenge": "Screens inherited over years, with no hierarchy and no consistency across modules.",
@@ -222,10 +287,16 @@
   "pape-ia": {
     "title": "PapeIA",
     "client": "In-house project",
-    "category": "Product / AI",
-    "services": ["UX/UI", "Product design", "AI"],
-    "industries": ["Customer support", "AI"],
-    "location": "Remote, Brazil",
+    "category": "Web platform · AI",
+    "services": [
+      "UX/UI",
+      "Design system",
+      "Front-end"
+    ],
+    "industries": [
+      "Customer support",
+      "AI"
+    ],
     "growthStage": "MVP",
     "intro": "An AI-powered support platform that brings channels, agents and conversations into a single flow.",
     "challenge": "Empowering automation without hiding the human — and without turning the screen into an intimidating cockpit.",
@@ -242,10 +313,16 @@
   "plataforma-integradade-gestaodas-unidades": {
     "title": "Integrated Unit Management Platform",
     "client": "Corporate system",
-    "category": "Management platform",
-    "services": ["Product design", "UX/UI", "Front-end"],
-    "industries": ["Management", "Software"],
-    "location": "Maceió, Brazil",
+    "category": "Web platform",
+    "services": [
+      "UX/UI",
+      "Design system",
+      "Front-end"
+    ],
+    "industries": [
+      "Management",
+      "Software"
+    ],
     "growthStage": "Enterprise",
     "intro": "A platform that brings the management of multiple units together in one place.",
     "challenge": "Data and routines scattered across units, each one with its own way of working.",
@@ -263,9 +340,15 @@
     "title": "Smart Pedagogical Intervention Platform",
     "client": "Department of Education",
     "category": "Analytics dashboard",
-    "services": ["UX/UI", "Data visualisation", "Front-end"],
-    "industries": ["Education", "Public sector"],
-    "location": "Alagoas, Brazil",
+    "services": [
+      "UX/UI",
+      "Data visualisation",
+      "Front-end"
+    ],
+    "industries": [
+      "Education",
+      "Public sector"
+    ],
     "growthStage": "Enterprise",
     "intro": "A dashboard that helps managers answer, in seconds, which schools need attention right now.",
     "challenge": "Education data scattered across spreadsheets and isolated systems.",
@@ -282,10 +365,15 @@
   "the-be-social": {
     "title": "The Be Social",
     "client": "The Be Social",
-    "category": "Website / Branding",
-    "services": ["Web design", "Branding", "Front-end"],
-    "industries": ["Marketing", "Social media"],
-    "location": "Remote, Brazil",
+    "category": "Marketing site",
+    "services": [
+      "UX/UI",
+      "Front-end"
+    ],
+    "industries": [
+      "Marketing",
+      "Social media"
+    ],
     "growthStage": "Agency",
     "intro": "The website of a social media agency that needed to look as creative as the work it delivers.",
     "challenge": "Translating energy and creativity without falling into the agency cliché.",
@@ -302,14 +390,20 @@
   "panorama-das-matrizes-eletrica-e-energetica": {
     "title": "Electricity and Energy Mix Overview",
     "client": "Observatório da Indústria — FIEA",
-    "category": "Data feature",
-    "services": ["UX/UI", "Data visualisation", "Front-end"],
-    "industries": ["Energy", "Institutional"],
-    "location": "Maceió, Brazil",
+    "category": "Power BI · Dashboard",
+    "services": [
+      "UX/UI",
+      "Power BI",
+      "Data visualisation"
+    ],
+    "industries": [
+      "Energy",
+      "Industry"
+    ],
     "growthStage": "Institutional",
-    "intro": "A visual overview of the electricity and energy mixes, from sources to consumption.",
-    "challenge": "Telling the electricity mix apart from the energy mix for a non-technical audience.",
-    "approach": "I used comparative charts and a narrative that separates the two mixes before crossing them.",
+    "intro": "A Power BI dashboard comparing the electricity and energy matrices, from sources to consumption.",
+    "challenge": "Telling the electricity matrix apart from the energy matrix for a non-technical audience.",
+    "approach": "I gave each matrix its own page before crossing them, with comparative charts and a legend that repeats on every screen.",
     "captionOne": "Each energy source gets visual weight proportional to its role.",
     "captionTwo": "Side-by-side comparisons make the differences immediate.",
     "websiteNote": "The state's energy mixes explained with visual clarity.",
@@ -322,14 +416,20 @@
   "panorama-de-desenvolvimento-dos-municipios": {
     "title": "Municipal Development Overview",
     "client": "Observatório da Indústria — FIEA",
-    "category": "Data platform",
-    "services": ["UX/UI", "Data visualisation", "Front-end"],
-    "industries": ["Open data", "Institutional"],
-    "location": "Maceió, Brazil",
+    "category": "Power BI · Dashboard",
+    "services": [
+      "UX/UI",
+      "Power BI",
+      "Data visualisation"
+    ],
+    "industries": [
+      "Open data",
+      "Public sector"
+    ],
     "growthStage": "Institutional",
-    "intro": "A platform to compare development indicators across the municipalities of Alagoas.",
-    "challenge": "Letting people compare 102 municipalities without overloading the interface.",
-    "approach": "I combined a map, a ranking and a per-municipality profile, with filters that respond instantly.",
+    "intro": "A Power BI dashboard for comparing development indicators across the municipalities of Alagoas.",
+    "challenge": "Letting people compare 102 municipalities without overloading the screen.",
+    "approach": "I combined a map, a ranking and a per-municipality profile, with slicers that respond instantly.",
     "captionOne": "The map gives the overview; the profile goes deep into each municipality.",
     "captionTwo": "Rankings make comparisons immediate and fair.",
     "websiteNote": "Municipal indicators made comparable through map, ranking and profile.",
@@ -342,10 +442,16 @@
   "plataforma-do-obervatorio-interna": {
     "title": "Observatory Platform",
     "client": "Observatório da Indústria — FIEA",
-    "category": "Institutional platform",
-    "services": ["Product design", "UX/UI", "Front-end"],
-    "industries": ["Industry", "Institutional"],
-    "location": "Maceió, Brazil",
+    "category": "Web platform",
+    "services": [
+      "UX/UI",
+      "Design system",
+      "Front-end"
+    ],
+    "industries": [
+      "Industry",
+      "Open data"
+    ],
     "growthStage": "Institutional",
     "intro": "The inner area of the Observatório da Indústria, where data stops being a PDF and becomes a living showcase.",
     "challenge": "Balancing institutional restraint with a language that speaks technology.",
@@ -362,14 +468,20 @@
   "radar-tarifario-global": {
     "title": "Global Tariff Radar",
     "client": "Observatório da Indústria — FIEA",
-    "category": "Data feature",
-    "services": ["UX/UI", "Data visualisation", "Front-end"],
-    "industries": ["Foreign trade", "Institutional"],
-    "location": "Maceió, Brazil",
+    "category": "Power BI · Dashboard",
+    "services": [
+      "UX/UI",
+      "Power BI",
+      "Data visualisation"
+    ],
+    "industries": [
+      "Foreign trade",
+      "Industry"
+    ],
     "growthStage": "Institutional",
-    "intro": "A radar that tracks tariff changes around the world and what they mean for industry.",
-    "challenge": "Turning a constant stream of tariff changes into something readable and current.",
-    "approach": "I organised the content by country and sector, highlighting what changed and why.",
+    "intro": "A Power BI dashboard tracking tariff changes around the world and what they mean for industry.",
+    "challenge": "Turning a constant stream of tariff changes into something current and comparable.",
+    "approach": "I organised the data by country and sector, highlighting what changed in the period, with slicers that cross origin and product.",
     "captionOne": "What changed comes first; the detail waits in the deep dive.",
     "captionTwo": "Country and sector filters leave every user with their own slice.",
     "websiteNote": "An always-current radar of the global tariffs that affect the productive sector.",
@@ -378,5 +490,26 @@
       "author": "Foreign Trade Unit",
       "role": "FIEA"
     }
+  },
+  "hiato-fitocosmeticos": {
+    "title": "Hiato Fitocosméticos",
+    "client": "Hiato Fitocosméticos",
+    "category": "E-commerce · WordPress",
+    "services": [
+      "UX/UI",
+      "E-commerce design",
+      "WordPress"
+    ],
+    "industries": [
+      "Retail",
+      "Cosmetics"
+    ],
+    "growthStage": "SMB",
+    "intro": "A natural cosmetics shop that sells a ritual, not just a product — the pause the brand is named after.",
+    "challenge": "A handmade catalogue scattered across categories, kits and collections, with no clear path from shelf to cart.",
+    "approach": "I built the shop around the jabuticaba line and reserved terracotta for action alone: every screen has one obvious button, and the rest breathes in sage green.",
+    "captionOne": "Best sellers open the home page — jabuticaba pulls the whole catalogue along.",
+    "captionTwo": "Terracotta shows up only where you click; the rest of the palette stays in the background.",
+    "websiteNote": "Natural, vegan cosmetics with jabuticaba at the heart of the line."
   }
 }

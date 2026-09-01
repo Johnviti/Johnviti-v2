@@ -248,7 +248,7 @@ const Preloader = () => {
 
       <p
         data-progress
-        className="pointer-events-none absolute bottom-5 left-5 text-[18px] font-medium tabular-nums tracking-tight text-ink/70 md:bottom-8 md:left-8 md:text-[22px]"
+        className="pointer-events-none absolute bottom-4 left-5 text-[clamp(3.5rem,11vw,8rem)] font-bold leading-none tabular-nums tracking-tight text-ink/70 md:bottom-6 md:left-8"
         aria-hidden
       >
         <span data-progress-value>0%</span>

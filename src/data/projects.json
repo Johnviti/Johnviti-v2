@@ -112,5 +112,11 @@
     "name": "Radar Tarifário Global",
     "cover": "/projetos/radar-tarifario-global/capa.webp",
     "aspect": 1.782
+  },
+  {
+    "slug": "hiato-fitocosmeticos",
+    "name": "Hiato Fitocosméticos",
+    "cover": "/projetos/hiato-fitocosmeticos/capa.png",
+    "aspect": 2.954
   }
 ]
